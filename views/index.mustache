@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{pageTitle}}{{^pageTitle}}F1 Prediction League{{/pageTitle}}</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+<header class="bg-red-600 text-white shadow-md">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2 text-xl font-bold">
+                <i class="fas fa-flag-checkered"></i>
+                <span>Pole Pick</span>
+            </a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="/race/1" class="hover:text-gray-200 transition duration-150">Australia</a></li>
+                    <li><a href="/race/2" class="hover:text-gray-200 transition duration-150">Bahrain</a></li>
+                    <li><a href="/race/3" class="hover:text-gray-200 transition duration-150">Saudi Arabia</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-4 py-6 flex-grow">
+    <div class="race-header mb-6 text-center">
+        <h2 class="text-3xl font-bold text-gray-800">{{race.name}}</h2>
+        <div class="race-info flex justify-center gap-6 mt-2 text-gray-600">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+        <!-- Top Left: Race Info -->
+        <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+            {{> race}}
+        </section>
+
+        <!-- Top Right: Prediction Form or User's Prediction -->
+        <section class="md:col-span-4 bg-white rounded-lg shadow-md p-6">
+            {{> prediction}}
+        </section>
+
+        <!-- Bottom Left: Race Results -->
+        <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+            {{> result}}
+        </section>
+
+        <!-- Bottom Right: Other Users' Predictions -->
+        <section class="md:col-span-4 bg-white rounded-lg shadow-md p-6">
+            {{> predictions}}
+        </section>
+    </div>
+</main>
+
+<footer class="bg-gray-800 text-white py-4 mt-8">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; Tammo</p>
+    </div>
+</footer>
+
+</body>
+</html>

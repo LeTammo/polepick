@@ -1,0 +1,137 @@
+<div class="flex justify-between items-center mb-4">
+    <h3 class="text-xl font-semibold text-gray-800">Other Predictions</h3>
+
+    {{^userHasPredicted}}
+        {{^race.predictionsEnded}}
+            <button id="togglePredictionsBtn" class="py-1 px-3 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition duration-150">
+                <span class="reveal-text">Reveal</span>
+                <span class="hide-text hidden">Hide</span>
+            </button>
+        {{/race.predictionsEnded}}
+    {{/userHasPredicted}}
+</div>
+
+<div id="otherPredictionsContainer" class="{{^userHasPredicted}}{{^race.predictionsEnded}}hidden{{/race.predictionsEnded}}{{/userHasPredicted}}">
+    {{#hasResult}}
+        <div class="flex justify-between mb-3">
+            <span class="font-medium">User</span>
+            <span class="font-medium">Points</span>
+        </div>
+        <div class="divide-y">
+            {{#predictions}}
+                <div class="py-3 hover:bg-gray-50 transition duration-150 prediction-item cursor-pointer" data-username="{{username}}">
+                    <div class="flex justify-between items-center">
+                        <span>{{username}}</span>
+                        <span class="font-semibold text-lg">{{points}} pts</span>
+                    </div>
+                    <div class="prediction-details mt-2">
+                        <div class="grid grid-cols-3 gap-2 mb-2">
+                            <div class="text-center p-2 bg-red-100 rounded-md text-xs">
+                                <div class="font-semibold">1st</div>
+                                <div>{{firstDriver}}</div>
+                            </div>
+                            <div class="text-center p-2 bg-blue-100 rounded-md text-xs">
+                                <div class="font-semibold">2nd</div>
+                                <div>{{secondDriver}}</div>
+                            </div>
+                            <div class="text-center p-2 bg-green-100 rounded-md text-xs">
+                                <div class="font-semibold">3rd</div>
+                                <div>{{thirdDriver}}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            {{#othersDrivers}}
+                                <div class="bg-gray-100 px-2 py-1 rounded">{{.}}</div>
+                            {{/othersDrivers}}
+                        </div>
+                    </div>
+                </div>
+            {{/predictions}}
+        </div>
+    {{/hasResult}}
+
+    {{^hasResult}}
+        <div class="divide-y">
+            {{#predictions}}
+                <div class="py-3 hover:bg-gray-50 transition duration-150 prediction-item cursor-pointer" data-username="{{username}}">
+                    <div class="flex justify-between items-center">
+                        <span>{{username}}</span>
+                        <span class="text-sm text-gray-500">{{timestamp}}</span>
+                    </div>
+                    <div class="prediction-details mt-2">
+                        <div class="grid grid-cols-3 gap-2 mb-2">
+                            <div class="text-center p-2 bg-red-100 rounded-md text-xs">
+                                <div class="font-semibold">1st</div>
+                                <div>{{firstDriver}}</div>
+                            </div>
+                            <div class="text-center p-2 bg-blue-100 rounded-md text-xs">
+                                <div class="font-semibold">2nd</div>
+                                <div>{{secondDriver}}</div>
+                            </div>
+                            <div class="text-center p-2 bg-green-100 rounded-md text-xs">
+                                <div class="font-semibold">3rd</div>
+                                <div>{{thirdDriver}}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            {{#othersDrivers}}
+                                <div class="bg-gray-100 px-2 py-1 rounded">{{.}}</div>
+                            {{/othersDrivers}}
+                        </div>
+                    </div>
+                </div>
+            {{/predictions}}
+        </div>
+    {{/hasResult}}
+
+    {{^predictions.length}}
+        <div class="p-4 bg-gray-100 rounded-md text-center">
+            <p class="text-gray-700">No predictions yet</p>
+        </div>
+    {{/predictions.length}}
+</div>
+
+<div id="predictionsHiddenMessage" class="{{#userHasPredicted}}hidden{{/userHasPredicted}}{{#race.predictionsEnded}}hidden{{/race.predictionsEnded}}">
+    <div class="p-4 bg-gray-100 rounded-md text-center">
+        <i class="fas fa-eye-slash text-gray-500 text-2xl mb-2"></i>
+        <p class="text-gray-700 mb-1">Predictions are hidden</p>
+        <p class="text-gray-500 text-sm">Make your prediction first or click "Reveal" to see other predictions</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePredictionsBtn = document.getElementById('togglePredictionsBtn');
+        const otherPredictionsContainer = document.getElementById('otherPredictionsContainer');
+        const predictionsHiddenMessage = document.getElementById('predictionsHiddenMessage');
+
+        togglePredictionsBtn.addEventListener('click', function() {
+            const revealText = togglePredictionsBtn.querySelector('.reveal-text');
+            const hideText = togglePredictionsBtn.querySelector('.hide-text');
+
+            if (revealText.classList.contains('hidden')) {
+                revealText.classList.remove('hidden');
+                hideText.classList.add('hidden');
+                otherPredictionsContainer.classList.add('hidden');
+                predictionsHiddenMessage.classList.remove('hidden');
+            } else {
+                revealText.classList.add('hidden');
+                hideText.classList.remove('hidden');
+                otherPredictionsContainer.classList.remove('hidden');
+                predictionsHiddenMessage.classList.add('hidden');
+            }
+        });
+
+        const predictionItems = document.querySelectorAll('.prediction-item');
+        predictionItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const predictionDetails = item.querySelector('.prediction-details');
+                if (predictionDetails.classList.contains('hidden')) {
+                    predictionDetails.classList.remove('hidden');
+                } else {
+                    predictionDetails.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>

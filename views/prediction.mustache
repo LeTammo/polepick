@@ -1,0 +1,470 @@
+<h3 class="text-xl font-semibold mb-4 text-gray-800">
+    {{#userPrediction}}Your Prediction{{/userPrediction}}
+    {{^userPrediction}}Make Your Prediction{{/userPrediction}}
+</h3>
+
+{{#race.predictionsEnded}}
+    <div class="p-4 bg-gray-100 rounded-md text-center">
+        <i class="fas fa-lock text-gray-500 text-2xl mb-2"></i>
+        <p class="text-gray-700">Prediction time has ended</p>
+    </div>
+    {{#userPrediction}}
+        <div class="mt-4">
+            <h4 class="text-lg font-medium mb-2 text-gray-700">Your Prediction</h4>
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <div class="text-center p-3 bg-red-600 text-white rounded-md">
+                    <div class="text-xl font-bold">1st</div>
+                    <div>{{userPrediction.firstDriver}}</div>
+                </div>
+                <div class="text-center p-3 bg-blue-600 text-white rounded-md">
+                    <div class="text-xl font-bold">2nd</div>
+                    <div>{{userPrediction.secondDriver}}</div>
+                </div>
+                <div class="text-center p-3 bg-green-600 text-white rounded-md">
+                    <div class="text-xl font-bold">3rd</div>
+                    <div>{{userPrediction.thirdDriver}}</div>
+                </div>
+            </div>
+            <h5 class="font-medium text-gray-700 mb-2">Points Finishers (4-10)</h5>
+            <div class="flex flex-wrap gap-2 bg-gray-100 p-3 rounded-md">
+                {{#userPrediction.othersDrivers}}
+                    <div class="bg-white px-2 py-1 rounded border border-gray-300 text-sm">{{.}}</div>
+                {{/userPrediction.othersDrivers}}
+            </div>
+        </div>
+    {{/userPrediction}}
+{{/race.predictionsEnded}}
+
+{{^race.predictionsEnded}}
+    {{#userPrediction}}
+        <div class="mb-4">
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <div class="text-center p-3 bg-red-600 text-white rounded-md">
+                    <div class="text-xl font-bold">1st</div>
+                    <div>{{userPrediction.firstDriver}}</div>
+                </div>
+                <div class="text-center p-3 bg-blue-600 text-white rounded-md">
+                    <div class="text-xl font-bold">2nd</div>
+                    <div>{{userPrediction.secondDriver}}</div>
+                </div>
+                <div class="text-center p-3 bg-green-600 text-white rounded-md">
+                    <div class="text-xl font-bold">3rd</div>
+                    <div>{{userPrediction.thirdDriver}}</div>
+                </div>
+            </div>
+            <h5 class="font-medium text-gray-700 mb-2">Points Finishers (4-10)</h5>
+            <div class="flex flex-wrap gap-2 bg-gray-100 p-3 rounded-md mb-4">
+                {{#userPrediction.othersDrivers}}
+                    <div class="bg-white px-2 py-1 rounded border border-gray-300 text-sm">{{.}}</div>
+                {{/userPrediction.othersDrivers}}
+            </div>
+            <button id="editPredictionBtn" class="w-full py-2 px-4 bg-yellow-500 text-white font-medium rounded hover:bg-yellow-600 transition duration-150">
+                Edit Prediction
+            </button>
+        </div>
+    {{/userPrediction}}
+
+    <div id="predictionFormContainer" class="{{#userPrediction}}hidden{{/userPrediction}}">
+        <form id="predictionForm" action="/race/{{race.id}}/predict" method="POST">
+            <div class="prediction-container grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="drivers-pool col-span-1 md:col-span-1">
+                    <div id="driversPool" class="drivers-list bg-gray-100 p-3 rounded-md min-h-64 h-full overflow-y-auto">
+                        {{#drivers}}
+                            <div class="driver-item w-full mb-2 p-1 text-md font-bold text-center hover:scale-105 transition duration-150
+                                        rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm cursor-move"
+                                 draggable="true" data-driver="{{name}}" data-color="{{color}}">
+                                {{name}}
+                            </div>
+                        {{/drivers}}
+                    </div>
+                </div>
+
+                <div class="col-span-1 md:col-span-2 flex flex-col justify-between gap-4">
+                    <div class="prediction-slots">
+                        <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-6">
+                            <div class="prediction-slot col-span-1 h-32 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="secondSlot" data-position="second">
+                                <div class="position-number text-2xl font-bold text-gray-500">2</div>
+                                <div class="position-label text-sm text-gray-500">Second Place</div>
+                                <input type="hidden" name="second" id="secondInput">
+                            </div>
+                            <div class="prediction-slot col-span-1 h-40 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="firstSlot" data-position="first">
+                                <div class="position-number text-3xl font-bold text-gray-500">1</div>
+                                <div class="position-label text-sm text-gray-500">First Place</div>
+                                <input type="hidden" name="first" id="firstInput">
+                            </div>
+                            <div class="prediction-slot col-span-1 h-28 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="thirdSlot" data-position="third">
+                                <div class="position-number text-xl font-bold text-gray-500">3</div>
+                                <div class="position-label text-sm text-gray-500">Third Place</div>
+                                <input type="hidden" name="third" id="thirdInput">
+                            </div>
+                        </div>
+
+                        <h4 class="text-lg font-medium mb-2 text-gray-700">Points Finishers (Positions 4-10)</h4>
+                        <div class="points-slots bg-gray-100 p-3 rounded-md min-h-40" id="othersSlot">
+                            <div class="points-instructions text-gray-500 text-center py-4">Drag drivers here to complete your prediction</div>
+                            <div id="othersContainer" class="others-container flex flex-wrap gap-2"></div>
+                            <div id="othersInputs"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions flex justify-end gap-4">
+                        <div class="username-field">
+                            <label for="username" class="hidden block text-sm font-medium text-gray-700">Your Name</label>
+                            <input type="text" id="username" name="username" required placeholder="Enter your name"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                        <button type="submit" class="py-2 px-6 bg-red-600  text-white font-medium rounded hover:bg-red-700 transition duration-150" id="submitBtn" disabled>Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const driversPool = document.getElementById('driversPool');
+            const firstSlot = document.getElementById('firstSlot');
+            const secondSlot = document.getElementById('secondSlot');
+            const thirdSlot = document.getElementById('thirdSlot');
+            const othersSlot = document.getElementById('othersSlot');
+            const othersContainer = document.getElementById('othersContainer');
+            const othersInputs = document.getElementById('othersInputs');
+            const submitBtn = document.getElementById('submitBtn');
+
+            const firstInput = document.getElementById('firstInput');
+            const secondInput = document.getElementById('secondInput');
+            const thirdInput = document.getElementById('thirdInput');
+
+            const predictions = { first: null, second: null, third: null, others: [] };
+            const driverColors = {};
+
+            const predictionForm = document.getElementById('predictionForm');
+            const usernameInput = document.getElementById('username');
+
+            const allPredictions = JSON.parse(`{{{predictionsJson}}}`);
+            const raceId = window.location.pathname.split('/').pop();
+            let storedUsername = localStorage.getItem(`pole-pick-username-for-race-${raceId}`);
+
+            if (storedUsername && usernameInput) {
+                usernameInput.value = storedUsername;
+            }
+
+            const userPrediction = allPredictions.find(p => p.username === storedUsername);
+            if (userPrediction) {
+                moveDriverToFirst(userPrediction.firstDriver);
+                moveDriverToSecond(userPrediction.secondDriver);
+                moveDriverToThird(userPrediction.thirdDriver);
+                userPrediction.othersDrivers.forEach(driver => {
+                    moveDriverToOthers(driver);
+                });
+            }
+
+            function moveDriverToFirst(driverName) {
+                predictions.first = driverName;
+                firstInput.value = driverName;
+                moveDriver(firstSlot, driverName);
+            }
+            function moveDriverToSecond(driverName) {
+                predictions.first = driverName;
+                firstInput.value = driverName;
+                moveDriver(secondSlot, driverName);
+            }
+            function moveDriverToThird(driverName) {
+                predictions.first = driverName;
+                firstInput.value = driverName;
+                moveDriver(thirdSlot, driverName);
+            }
+            function moveDriverToOthers(driverName) {
+                predictions.others.push(driverName);
+                moveDriver(othersSlot, driverName);
+            }
+            function moveDriver(where, driverName) {
+                driversPool.querySelectorAll('.driver-item').forEach(item => {
+                    if (item.dataset.driver === driverName) {
+                        where.appendChild(item);
+                    }
+                });
+            }
+
+            document.querySelectorAll('.driver-item').forEach(item => {
+                driverColors[item.dataset.driver] = item.dataset.color;
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+
+            [firstSlot, secondSlot, thirdSlot, othersSlot, othersContainer, driversPool].forEach(slot => {
+                slot.addEventListener('dragover', handleDragOver);
+                slot.addEventListener('dragleave', handleDragLeave);
+                slot.addEventListener('drop', handleDrop);
+            });
+
+            function handleDragStart(e) {
+                e.dataTransfer.setData('text/plain', e.target.dataset.driver);
+                e.dataTransfer.effectAllowed = 'move';
+                window.draggedElement = e.target;
+                setTimeout(() => {
+                    e.target.classList.add('dragging');
+                    e.target.style.opacity = '0.4';
+                }, 0);
+            }
+
+            function handleDragEnd(e) {
+                if (window.draggedElement) {
+                    window.draggedElement.classList.remove('dragging');
+                    window.draggedElement.style.opacity = '1';
+                }
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                e.currentTarget.classList.add('border-red-500');
+            }
+
+            function handleDragLeave(e) {
+                e.currentTarget.classList.remove('border-red-500');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('border-red-500');
+
+                const driver = e.dataTransfer.getData('text/plain');
+                const color = driverColors[driver];
+                const targetSlot = e.currentTarget;
+
+                if (targetSlot.id === 'driversPool') {
+                    removeDriverFromPreviousSlot(driver);
+                    return;
+                }
+
+                removeDriverFromPreviousSlot(driver);
+
+                let existingDriver = null;
+
+                if (targetSlot.id === 'firstSlot' || targetSlot.dataset.position === 'first') {
+                    existingDriver = predictions.first;
+                    predictions.first = driver;
+                    firstInput.value = driver;
+                    renderPodiumSlot(firstSlot, driver, color, 'first');
+
+                    removeFromDriversPool(driver);
+
+                } else if (targetSlot.id === 'secondSlot' || targetSlot.dataset.position === 'second') {
+                    existingDriver = predictions.second;
+                    predictions.second = driver;
+                    secondInput.value = driver;
+                    renderPodiumSlot(secondSlot, driver, color, 'second');
+
+                    removeFromDriversPool(driver);
+
+                } else if (targetSlot.id === 'thirdSlot' || targetSlot.dataset.position === 'third') {
+                    existingDriver = predictions.third;
+                    predictions.third = driver;
+                    thirdInput.value = driver;
+                    renderPodiumSlot(thirdSlot, driver, color, 'third');
+
+                    removeFromDriversPool(driver);
+
+                } else if (targetSlot.id === 'othersSlot' || targetSlot.id === 'othersContainer') {
+                    if (predictions.others.length < 7) {
+                        predictions.others.push(driver);
+                        addDriverToOthers(driver, color);
+
+                        removeFromDriversPool(driver);
+                    }
+                }
+
+                if (existingDriver && existingDriver !== driver) {
+                    addToDriversPool(existingDriver);
+                }
+
+                checkFormValidity();
+            }
+
+            function removeFromDriversPool(driverName) {
+                const driverElements = driversPool.querySelectorAll(`.driver-item[data-driver="${driverName}"]`);
+                driverElements.forEach(el => el.remove());
+            }
+
+            function addToDriversPool(driverName) {
+                const existing = driversPool.querySelector(`.driver-item[data-driver="${driverName}"]`);
+                if (!existing) {
+                    const color = driverColors[driverName];
+                    const driverEl = document.createElement('div');
+                    driverEl.className = "driver-item p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
+                    driverEl.textContent = driverName;
+                    driverEl.draggable = true;
+                    driverEl.setAttribute('data-color', color);
+                    driverEl.setAttribute('data-driver', driverName);
+                    driverEl.addEventListener('dragstart', handleDragStart);
+                    driverEl.addEventListener('dragend', handleDragEnd);
+                    driversPool.appendChild(driverEl);
+                }
+            }
+
+            function removeDriverFromPreviousSlot(driver) {
+                if (predictions.first === driver) {
+                    predictions.first = null;
+                    firstInput.value = '';
+                    renderPodiumSlot(firstSlot, null, null, 'first');
+                    addToDriversPool(driver);
+                } else if (predictions.second === driver) {
+                    predictions.second = null;
+                    secondInput.value = '';
+                    renderPodiumSlot(secondSlot, null, null, 'second');
+                    addToDriversPool(driver);
+                } else if (predictions.third === driver) {
+                    predictions.third = null;
+                    thirdInput.value = '';
+                    renderPodiumSlot(thirdSlot, null, null, 'third');
+                    addToDriversPool(driver);
+                } else {
+                    const index = predictions.others.indexOf(driver);
+                    if (index !== -1) {
+                        const driverElement = othersContainer.querySelector(`.driver-item[data-driver="${driver}"]`);
+                        if (driverElement) {
+                            driverElement.remove();
+                        }
+
+                        const input = othersInputs.querySelector(`input[value="${driver}"]`);
+                        if (input) {
+                            input.remove();
+                        }
+
+                        predictions.others.splice(index, 1);
+
+                        updateOthersCounter();
+
+                        addToDriversPool(driver);
+                    }
+                }
+            }
+
+            function renderPodiumSlot(slot, driver, color, position) {
+                const hiddenInput = slot.querySelector('input[type="hidden"]');
+
+                const positionAttr = slot.getAttribute('data-position');
+                slot.innerHTML = '';
+                slot.setAttribute('data-position', positionAttr);
+
+                const posNumber = document.createElement('div');
+                posNumber.className = 'position-number text-' + (position === 'first' ? '3xl' : position === 'second' ? '2xl' : 'xl') + ' font-bold text-gray-500';
+                posNumber.textContent = position === 'first' ? '1' : position === 'second' ? '2' : '3';
+                slot.appendChild(posNumber);
+
+                const posLabel = document.createElement('div');
+                posLabel.className = 'position-label text-sm text-gray-500';
+                posLabel.textContent = position.charAt(0).toUpperCase() + position.slice(1) + ' Place';
+                slot.appendChild(posLabel);
+
+                slot.appendChild(hiddenInput);
+
+                if (driver) {
+                    const driverEl = document.createElement('div');
+                    driverEl.className = "w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
+                    driverEl.textContent = driver;
+                    driverEl.draggable = true;
+                    driverEl.setAttribute('data-color', color);
+                    driverEl.setAttribute('data-driver', driver);
+                    driverEl.addEventListener('dragstart', handleDragStart);
+                    driverEl.addEventListener('dragend', handleDragEnd);
+                    slot.appendChild(driverEl);
+                }
+            }
+
+            function addDriverToOthers(driver, color) {
+                const driverEl = document.createElement('div');
+                driverEl.className = "driver-item p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
+                driverEl.textContent = driver;
+                driverEl.draggable = true;
+                driverEl.setAttribute('data-color', color);
+                driverEl.setAttribute('data-driver', driver);
+                driverEl.addEventListener('dragstart', handleDragStart);
+                driverEl.addEventListener('dragend', handleDragEnd);
+
+                const counter = othersContainer.querySelector('.drivers-counter');
+                if (counter) {
+                    othersContainer.insertBefore(driverEl, counter);
+                } else {
+                    othersContainer.appendChild(driverEl);
+                }
+
+                const index = predictions.others.indexOf(driver);
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `others[${index}]`;
+                input.value = driver;
+                othersInputs.appendChild(input);
+
+                updateOthersCounter();
+            }
+
+            function updateOthersCounter() {
+                const existingCounter = othersContainer.querySelector('.drivers-counter');
+                if (existingCounter) {
+                    existingCounter.remove();
+                }
+
+                if (predictions.others.length < 7) {
+                    const counter = document.createElement('div');
+                    counter.className = 'drivers-counter text-gray-500 text-center mt-2';
+                    counter.textContent = `${predictions.others.length}/7 selected`;
+                    othersContainer.appendChild(counter);
+                }
+
+                const pointsInstructions = document.querySelector('.points-instructions');
+                if (pointsInstructions) {
+                    pointsInstructions.style.display = predictions.others.length === 0 ? 'block' : 'none';
+                }
+            }
+
+            function checkFormValidity() {
+                submitBtn.disabled = !(predictions.first && predictions.second && predictions.third && predictions.others.length === 7);
+            }
+
+            predictionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const username = usernameInput.value;
+                if (!username) {
+                    alert('Please enter your name');
+                    return;
+                }
+
+                localStorage.setItem(`pole-pick-username-for-race-${raceId}`, username);
+
+                const formData = {
+                    username: username,
+                    first: firstInput.value,
+                    second: secondInput.value,
+                    third: thirdInput.value,
+                    others: predictions.others,
+                };
+
+                console.log(formData)
+
+                fetch(`/race/${raceId}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.reload();
+                            } else {
+                                alert('Error submitting prediction: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error submitting prediction. Please try again.');
+                        });
+            });
+        });
+    </script>
+
+{{/race.predictionsEnded}}
