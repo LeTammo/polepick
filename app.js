@@ -39,33 +39,25 @@ function saveData(file, data) {
 }
 
 function calculatePoints(prediction, result) {
+    const resultDrivers = [result.first, result.second, result.third, ...result.others];
+    const predictionDrivers = [prediction.first, prediction.second, prediction.third, ...prediction.others];
+
     let points = 0;
 
     if (prediction.first === result.first) {
         points += 4;
+        resultDrivers.splice(resultDrivers.indexOf(result.first), 1);
     }
 
     if (prediction.second === result.second) {
         points += 3;
+        resultDrivers.splice(resultDrivers.indexOf(result.second), 1);
     }
 
     if (prediction.third === result.third) {
         points += 2;
+        resultDrivers.splice(resultDrivers.indexOf(result.third), 1);
     }
-
-    const predictionDrivers = [
-        prediction.first,
-        prediction.second,
-        prediction.third,
-        ...prediction.others
-    ];
-
-    const resultDrivers = [
-        result.first,
-        result.second,
-        result.third,
-        ...result.others
-    ];
 
     predictionDrivers.forEach(driver => {
         if (resultDrivers.includes(driver)) {
