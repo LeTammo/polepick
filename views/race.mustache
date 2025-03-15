@@ -1,4 +1,4 @@
-<h3 class="text-xl font-semibold mb-4 text-gray-800">{{race.name}}</h3>
+<h3 class="text-xl text-center font-semibold mb-4 text-gray-800">{{race.name}}</h3>
 <div class="mb-4">
     <div class="flex justify-between gap-6 items-center mb-2">
         <span><i class="fas fa-clock mr-1"></i> {{race.formattedTime}}</span>
@@ -11,13 +11,14 @@
     </div>
 </div>
 
-<div class="grid grid-cols-2 gap-2 overflow-y-auto p-2 bg-gray-100 rounded-2xl">
+<div id="driversPool" class="drivers-list grid grid-cols-2 gap-2 overflow-y-auto p-2 bg-gray-100 rounded-2xl">
     {{#drivers}}
-        <div class="p-1 text-md font-bold text-center
-                    rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm
-                    {{#isOdd}}mt-4{{/isOdd}}
-                    {{^isOdd}}mb-4{{/isOdd}}">
-            {{name}}
+        <div class="{{#isOdd}}mt-4{{/isOdd}} {{^isOdd}}mb-4{{/isOdd}}">
+            <div draggable="true" data-driver="{{name}}" data-color="{{color}}"
+                 class="driver-item w-full p-1 text-md font-bold text-center hover:scale-105 transition duration-150 cursor-move
+                    rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm">
+                {{name}}
+            </div>
         </div>
     {{/drivers}}
 </div>
