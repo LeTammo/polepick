@@ -1,6 +1,12 @@
-<h3 class="text-xl text-center font-semibold mb-4 text-gray-800">
-    Your Prediction
-</h3>
+<div class="relative">
+    <h3 class="text-xl text-center font-semibold mb-4 text-gray-800">
+        Your Prediction
+    </h3>
+    <button id="viewPredictions"
+            class="absolute top-0 right-0 px-2 py-1 bg-gray-300 text-white text-xs font-medium rounded hover:bg-gray-500 transition duration-150">
+        X
+    </button>
+</div>
 
 {{#race.predictionsEnded}}
     <div class="p-4 bg-gray-100 rounded-md text-center">
@@ -121,6 +127,13 @@
             const firstInput = document.getElementById('firstInput');
             const secondInput = document.getElementById('secondInput');
             const thirdInput = document.getElementById('thirdInput');
+
+            const viewPredictionsBtn = document.getElementById('viewPredictions');
+            viewPredictionsBtn.addEventListener('click', function () {
+                document.querySelector('#predictions').classList.remove('hidden');
+                document.querySelector('#prediction').classList.add('hidden');
+                document.getElementById('otherPredictionsContainer').classList.remove('hidden');
+            });
 
             const predictions = { first: null, second: null, third: null, others: [] };
             const driverColors = {};
