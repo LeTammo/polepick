@@ -356,11 +356,6 @@
                 posNumber.textContent = position === 'first' ? '1' : position === 'second' ? '2' : '3';
                 slot.appendChild(posNumber);
 
-                const posLabel = document.createElement('div');
-                posLabel.className = 'position-label text-sm text-gray-500';
-                posLabel.textContent = position.charAt(0).toUpperCase() + position.slice(1) + ' Place';
-                slot.appendChild(posLabel);
-
                 slot.appendChild(hiddenInput);
 
                 if (driver) {
@@ -411,7 +406,7 @@
 
                 if (predictions.others.length < 7) {
                     const counter = document.createElement('div');
-                    counter.className = 'w-full drivers-counter text-gray-500 text-center mt-2';
+                    counter.className = 'w-full drivers-counter text-gray-400 text-sm text-center mt-2';
                     counter.textContent = `${predictions.others.length}/7 selected`;
                     othersContainer.appendChild(counter);
                 }
