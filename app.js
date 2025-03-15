@@ -84,7 +84,6 @@ function formatTime(timeString) {
     });
 }
 
-// Map driver IDs to full names using the drivers.json
 function getDriverById(driverId) {
     const drivers = loadData('drivers.json');
     const driver = drivers.find(d => d.id === driverId);
