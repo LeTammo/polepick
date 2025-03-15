@@ -26,15 +26,15 @@
     </div>
 </header>
 
-<main class="container max-w-[1220px] mx-auto px-4 py-6 flex-grow">
+<main class="container max-w-[1400px] mx-auto px-4 py-6 flex-grow">
     <div class="race-header mb-6 text-center">
         <h2 class="text-3xl font-bold text-gray-800">{{race.name}}</h2>
         <div class="race-info flex justify-center gap-6 mt-2 text-gray-600">
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <section class="bg-white rounded-lg shadow-md p-6">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+        <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
             {{^result}}
                 {{> race}}
             {{/result}}
@@ -43,7 +43,7 @@
             {{/result}}
         </section>
 
-        <section class="bg-white rounded-lg shadow-md p-6">
+        <section class="md:col-span-4 bg-white rounded-lg shadow-md p-6">
             <div id="prediction">
                 {{> prediction}}
             </div>

@@ -1,9 +1,9 @@
 <h3 class="text-xl text-center font-semibold text-gray-800 mb-4">Predictions</h3>
 
 <div id="otherPredictionsContainer" class="{{^userHasPredicted}}{{^race.predictionsEnded}}hidden{{/race.predictionsEnded}}{{/userHasPredicted}}">
-    <div>
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {{#predictions}}
-            <div data-username="{{username}}" class="mb-6">
+            <div data-username="{{username}}" class="shadow-xl rounded-lg bg-white p-2 border border-1 border-gray-100">
                 <div class="flex justify-between items-center">
                     <span class="font-bold">{{username}}</span>
                     {{#hasResult}}<span class="font-semibold text-lg">{{points}} pts</span>{{/hasResult}}
