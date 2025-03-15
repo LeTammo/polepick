@@ -95,12 +95,20 @@
                 <div class="drivers-pool max-w-[500px] m-auto">
                         <div id="othersSlot" class="points-slots bg-gray-100 p-3 rounded-md min-h-40 border-2 border-dashed border-gray-300">
                         <div class="position-number text-xl text-center font-bold text-gray-500 pt-4">4-10</div>
-                        <div class="position-label text-sm text-gray-500 text-center pb-4">Players with points</div>
-                        <div class="points-instructions text-gray-500 text-center py-4">Drag drivers here to complete your prediction</div>
+                        <div class="position-label text-sm text-gray-500 text-center pb-4">Players with points<br><i class="text-gray-400">(order doesnt matter)</i></div>
+                        <div class="points-instructions text-gray-500 text-center py-4 animate-pulse">Drag drivers here to complete your prediction</div>
                         <div id="othersContainer" class="others-container grid grid-cols-1 md:grid-cols-2 flex-wrap gap-2"></div>
                         <div id="othersInputs"></div>
                     </div>
                 </div>
+            </div>
+
+            <div class="text-center text-gray-400 text-sm" id="">
+                <i>Correct 1st place:</i> 4 points.<br>
+                <i>Correct 2nd place:</i> 3 points.<br>
+                <i>Correct 3rd place:</i> 2 points.<br>
+                <i>Any other correct top 10 driver:</i> 1 point<br>
+                <i>unless already scored for the podium.</i>
             </div>
 
             <div class="form-actions flex justify-center gap-4">
