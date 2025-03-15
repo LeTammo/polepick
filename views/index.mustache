@@ -48,6 +48,35 @@
                 {{> prediction}}
             </div>
             <div id="predictions" class="hidden">
+                <div>
+                    <div id="information" class="relative">
+                        <button id="info-button" class="absolute top-0 left-0 text-gray-500 hover:text-gray-700">
+                            <svg class="m-1" width="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                        </button>
+                        <div id="popover" class="absolute -left-3 top-6 mt-2 w-70 bg-gray-200 shadow-md border border-gray-300 rounded-lg p-4 text-sm text-gray-600 hidden before:absolute before:top-[-7px] before:left-[17px] before:w-0 before:h-0 before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-300 after:absolute after:top-[-5px] after:left-4 after:w-0 after:h-0 after:border-l-7 after:border-r-7 after:border-b-7 after:border-l-transparent after:border-r-transparent after:border-b-white">
+                            <div class="text-gray-700">
+                                <i>Correct 1st place:</i> 4 points.<br>
+                                <i>Correct 2nd place:</i> 3 points.<br>
+                                <i>Correct 3rd place:</i> 2 points.<br>
+                                <i>Any other correct top 10 driver:</i> 1 point<br>
+                                <i>unless already scored for the podium.</i>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <script>
+                        const infoButton = document.getElementById('info-button');
+                        const popover = document.getElementById('popover');
+
+                        infoButton.addEventListener('click', () => {
+                            popover.classList.toggle('hidden');
+                        });
+                    </script>
+                </div>
                 {{> predictions}}
             </div>
         </section>

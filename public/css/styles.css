@@ -4,4 +4,8 @@ body {
         cursor: not-allowed;
         color: #aaa9b2;
     }
+
+    #info-button {
+        filter: opacity(0.3);
+    }
 }
