@@ -33,8 +33,8 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-6">
-        <section class="xl:col-span-2 bg-white rounded-lg shadow-md p-6">
+    <div class="grid grid-cols-1 md:grid-cols-9 gap-6">
+        <section class="md:col-span-5 lg:col-span-4 xl:col-span-3 bg-white rounded-lg shadow-md p-6">
             {{^result}}
                 {{> race}}
             {{/result}}
@@ -43,7 +43,7 @@
             {{/result}}
         </section>
 
-        <section class="xl:col-span-4 bg-white rounded-lg shadow-md p-6">
+        <section class="md:col-span-4 lg:col-span-5 xl:col-span-6 bg-white rounded-lg shadow-md p-6">
             <div id="prediction">
                 {{> prediction}}
             </div>

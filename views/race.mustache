@@ -20,7 +20,8 @@
         <div class="{{#isOdd}}mt-4{{/isOdd}} {{^isOdd}}mb-4{{/isOdd}}">
             <div draggable="true" data-driver="{{name}}" data-color="{{color}}"
                  class="driver-item w-full p-1 text-md font-bold text-center hover:scale-105 transition duration-150 cursor-move
-                    rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm">
+                        rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm
+                        nowrap whitespace-nowrap overflow-hidden overflow-ellipsis">
                 {{name}}
             </div>
         </div>

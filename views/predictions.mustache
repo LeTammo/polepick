@@ -1,7 +1,7 @@
 <h3 class="text-xl text-center font-semibold text-gray-800 mb-4">Predictions</h3>
 
 <div id="otherPredictionsContainer" class="{{^userHasPredicted}}{{^race.predictionsEnded}}hidden{{/race.predictionsEnded}}{{/userHasPredicted}}">
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
         {{#predictions}}
             <div data-username="{{username}}" class="shadow-xl rounded-lg bg-white p-2 border border-1 border-gray-100">
                 <div class="flex justify-between items-center">
@@ -12,19 +12,22 @@
                     <div class="col-span-1 h-14 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
                         <div class="position-number font-bold text-gray-500">2nd</div>
                         <div class="px-2 font-bold text-center rounded-lg border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-sm">
-                            {{second.name}}
+                            <span class="driver-identifier">{{second.id}}</span>
+                            <span class="driver-name hidden">{{second.name}}</span>
                         </div>
                     </div>
                     <div class="col-span-1 h-16 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
                         <div class="position-number font-bold text-gray-500">1st</div>
                         <div class="px-2 font-bold text-center rounded-lg border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-sm">
-                            {{first.name}}
+                            <span class="driver-identifier">{{first.id}}</span>
+                            <span class="driver-name hidden">{{first.name}}</span>
                         </div>
                     </div>
                     <div class="col-span-1 h-12 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
                         <div class="position-number font-bold text-gray-500">3rd</div>
                         <div class="px-2 font-bold text-center rounded-lg border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-sm">
-                            {{third.name}}
+                            <span class="driver-identifier">{{third.id}}</span>
+                            <span class="driver-name hidden">{{third.name}}</span>
                         </div>
                     </div>
                 </div>
@@ -33,7 +36,8 @@
                     <div class="gap-2 text-center">
                         {{#others}}
                             <div class="inline-block px-2 mb-2 font-bold text-center rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm">
-                                {{name}}
+                                <span class="driver-identifier">{{id}}</span>
+                                <span class="driver-name hidden">{{name}}</span>
                             </div>
                         {{/others}}
                     </div>
