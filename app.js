@@ -203,6 +203,8 @@ app.get('/race/:id', (req, res) => {
 
 app.post('/race/:id/predict', (req, res) => {
     const { username, first, second, third, others } = req.body;
+    console.log(`${username} made a prediction for race #${req.params.id}`);
+
     const raceId = req.params.id;
 
     const race = loadData('races.json').find(r => r.id === raceId);
