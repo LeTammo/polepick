@@ -157,7 +157,6 @@ app.get('/race/:id', (req, res) => {
         .filter(p => p.raceId === raceId)
         .map(prediction => {
             const points = result ? calculatePoints(prediction, result) : 0;
-            console.log(prediction)
             return {
                 username: prediction.username,
                 first: {
