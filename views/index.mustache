@@ -20,8 +20,6 @@
             <nav>
                 <ul class="flex space-x-6">
                     <li><a href="/race/1" class="hover:text-gray-200 transition duration-150">Australia</a></li>
-                    <li><a href="/race/2" class="hover:text-gray-200 transition duration-150">Bahrain</a></li>
-                    <li><a href="/race/3" class="hover:text-gray-200 transition duration-150">Saudi Arabia</a></li>
                 </ul>
             </nav>
         </div>
@@ -36,24 +34,22 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Top Left: Race Info -->
         <section class="bg-white rounded-lg shadow-md p-6">
-            {{> race}}
+            {{^result}}
+                {{> race}}
+            {{/result}}
+            {{#result}}
+                {{> result}}
+            {{/result}}
         </section>
 
-        <!-- Top Right: Prediction Form or User's Prediction -->
         <section class="bg-white rounded-lg shadow-md p-6">
-            {{> prediction}}
-        </section>
-
-        <!-- Bottom Left: Race Results -->
-        <section class="bg-white rounded-lg shadow-md p-6">
-            {{> result}}
-        </section>
-
-        <!-- Bottom Right: Other Users' Predictions -->
-        <section class="bg-white rounded-lg shadow-md p-6">
-            {{> predictions}}
+            <div id="prediction">
+                {{> prediction}}
+            </div>
+            <div id="predictions" class="hidden">
+                {{> predictions}}
+            </div>
         </section>
     </div>
 </main>

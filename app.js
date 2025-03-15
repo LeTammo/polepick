@@ -139,12 +139,31 @@ app.get('/race/:id', (req, res) => {
         .filter(p => p.raceId === raceId)
         .map(prediction => {
             const points = result ? calculatePoints(prediction, result) : 0;
+            console.log(prediction)
             return {
-                ...prediction,
-                firstDriver: getDriverById(prediction.first),
-                secondDriver: getDriverById(prediction.second),
-                thirdDriver: getDriverById(prediction.third),
-                othersDrivers: prediction.others.map(getDriverById),
+                username: prediction.username,
+                first: {
+                    'id': prediction.first,
+                    'name': getDriverById(prediction.first),
+                    'color': allDrivers.find(d => d.id === prediction.first).color
+                },
+                second: {
+                    'id': prediction.second,
+                    'name': getDriverById(prediction.second),
+                    'color': allDrivers.find(d => d.id === prediction.second).color
+                },
+                third: {
+                    'id': prediction.third,
+                    'name': getDriverById(prediction.third),
+                    'color': allDrivers.find(d => d.id === prediction.third).color
+                },
+                others: prediction.others.map(driverId => {
+                    return {
+                        'id': driverId,
+                        'name': getDriverById(driverId),
+                        'color': allDrivers.find(d => d.id === driverId).color
+                    };
+                }),
                 points: points
             };
         })

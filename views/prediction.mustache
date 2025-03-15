@@ -131,7 +131,6 @@
             const allPredictions = JSON.parse(`{{{predictionsJson}}}`);
             const raceId = window.location.pathname.split('/').pop();
             let storedUsername = localStorage.getItem(`pole-pick-username-for-race-${raceId}`);
-            const togglePredictionsBtn = document.getElementById('togglePredictionsBtn');
 
             if (storedUsername && usernameInput) {
                 usernameInput.value = storedUsername;
@@ -139,11 +138,12 @@
 
             const userPrediction = allPredictions.find(p => p.username === storedUsername);
             if (userPrediction) {
+                document.querySelector('#prediction').classList.add('hidden');
+                document.querySelector('#predictions').classList.remove('hidden');
+
                 document.querySelector('.points-instructions').style.display = 'none';
                 document.getElementById('otherPredictionsContainer').classList.remove('hidden');
                 document.getElementById('predictionsHiddenMessage').classList.add('hidden');
-                document.querySelector('.reveal-text').classList.add('hidden');
-                document.querySelector('.hide-text').classList.remove('hidden');
 
                 moveDriverToFirst(userPrediction.firstDriver);
                 moveDriverToSecond(userPrediction.secondDriver);
