@@ -1,32 +1,36 @@
-<h3 class="text-xl font-semibold mb-4 text-gray-800">Race Results</h3>
+<h3 class="text-xl font-semibold mb-4 text-center text-gray-800">Race Result</h3>
 
 {{#result}}
-    <div class="grid grid-cols-3 gap-2 mb-4">
-        <div class="text-center p-3 bg-red-600 text-white rounded-md">
-            <div class="text-xl font-bold">1st</div>
-            <div>{{firstDriver}}</div>
+    <div class="mb-6">
+        <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-2">
+            <div class="col-span-1 h-32 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
+                <div class="position-number font-bold text-gray-500">2nd</div>
+                <div class="w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-sm">
+                    {{first.name}}
+                </div>
+            </div>
+            <div class="col-span-1 h-40 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
+                <div class="position-number font-bold text-gray-500">1st</div>
+                <div class="w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-sm">
+                    {{second.name}}
+                </div>
+            </div>
+            <div class="col-span-1 h-28 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
+                <div class="position-number font-bold text-gray-500">3rd</div>
+                <div class="w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-sm">
+                    {{third.name}}
+                </div>
+            </div>
         </div>
-        <div class="text-center p-3 bg-blue-600 text-white rounded-md">
-            <div class="text-xl font-bold">2nd</div>
-            <div>{{secondDriver}}</div>
+        <div class="max-w-[500px] m-auto bg-gray-100 pt-3 px-3 rounded-md">
+            <div class="gap-2">
+                {{#others}}
+                    <div class="inline-block px-1 mb-3 text-md font-bold text-center rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm">
+                        {{name}}
+                    </div>
+                {{/others}}
+            </div>
         </div>
-        <div class="text-center p-3 bg-green-600 text-white rounded-md">
-            <div class="text-xl font-bold">3rd</div>
-            <div>{{thirdDriver}}</div>
-        </div>
-    </div>
-    <h4 class="font-medium text-gray-700 mb-2">Points Finishers (4-10)</h4>
-    <div class="flex flex-wrap gap-2 bg-gray-100 p-3 rounded-md">
-        {{#othersDrivers}}
-            <div class="bg-white px-2 py-1 rounded border border-gray-300 text-sm">{{.}}</div>
-        {{/othersDrivers}}
     </div>
 {{/result}}
 
-{{^result}}
-    <div class="p-8 bg-gray-100 rounded-md text-center">
-        <i class="fas fa-hourglass-half text-gray-500 text-3xl mb-3"></i>
-        <p class="text-gray-700 text-lg">No results yet</p>
-        <p class="text-gray-500 text-sm mt-1">Results will be posted once the race is completed</p>
-    </div>
-{{/result}}

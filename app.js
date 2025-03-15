@@ -128,10 +128,28 @@ app.get('/race/:id', (req, res) => {
     if (result) {
         formattedResult = {
             ...result,
-            firstDriver: getDriverById(result.first),
-            secondDriver: getDriverById(result.second),
-            thirdDriver: getDriverById(result.third),
-            othersDrivers: result.others.map(getDriverById)
+            first: {
+                'id': result.first,
+                'name': getDriverById(result.first),
+                'color': allDrivers.find(d => d.id === result.first).color
+            },
+            second: {
+                'id': result.second,
+                'name': getDriverById(result.second),
+                'color': allDrivers.find(d => d.id === result.second).color
+            },
+            third: {
+                'id': result.third,
+                'name': getDriverById(result.third),
+                'color': allDrivers.find(d => d.id === result.third).color
+            },
+            others: result.others.map(driverId => {
+                return {
+                    'id': driverId,
+                    'name': getDriverById(driverId),
+                    'color': allDrivers.find(d => d.id === driverId).color
+                };
+            })
         };
     }
 
