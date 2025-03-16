@@ -57,7 +57,12 @@
             dismissInfoBtn.addEventListener('click', () => {
                 const target = dismissInfoBtn.getAttribute('data-dismiss-target');
                 document.querySelector(target).classList.add('hidden');
+                localStorage.setItem("dismissedInfo1", true);
             });
+
+            if (localStorage.getItem("dismissedInfo1")) {
+                document.getElementById('toast-default').classList.add('hidden');
+            }
         </script>
     </div>
 
