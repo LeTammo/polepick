@@ -5,19 +5,22 @@
         <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-2">
             <div class="col-span-1 h-32 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
                 <div class="position-number font-bold text-gray-500">2nd</div>
-                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-sm">
+                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-sm"
+                     {{#second.color_dark}}style="text-shadow: 0 0 3px {{second.color_dark}};"{{/second.color_dark}}>
                     {{second.name}}
                 </div>
             </div>
             <div class="col-span-1 h-40 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
                 <div class="position-number font-bold text-gray-500">1st</div>
-                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-sm">
+                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-sm"
+                     {{#first.color_dark}}style="text-shadow: 0 0 3px {{first.color_dark}};"{{/first.color_dark}}>
                     {{first.name}}
                 </div>
             </div>
             <div class="col-span-1 h-28 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md">
                 <div class="position-number font-bold text-gray-500">3rd</div>
-                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-sm">
+                <div class="w-full px-2 mb-2 text-md font-bold text-center rounded-lg border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-sm"
+                     {{#third.color_dark}}style="text-shadow: 0 0 3px {{third.color_dark}};"{{/third.color_dark}}>
                     {{third.name}}
                 </div>
             </div>
@@ -25,7 +28,8 @@
         <div class="max-w-[500px] m-auto bg-gray-100 pt-3 px-3 rounded-md">
             <div class="gap-2 text-center">
                 {{#others}}
-                    <div class="inline-block px-2 mb-3 text-md font-bold text-center rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm">
+                    <div class="inline-block px-2 mb-3 text-md font-bold text-center rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-sm"
+                         {{#color_dark}}style="text-shadow: 0 0 3px {{color_dark}};"{{/color_dark}}>
                         {{name}}
                     </div>
                 {{/others}}

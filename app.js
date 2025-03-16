@@ -119,6 +119,7 @@ app.get('/race/:id', (req, res) => {
             name: d.name,
             team: d.team,
             color: d.color,
+            color_dark: d.color_dark,
             isOdd: index % 2 !== 0
         };
     });
@@ -133,23 +134,27 @@ app.get('/race/:id', (req, res) => {
             first: {
                 'id': result.first,
                 'name': getDriverById(result.first),
-                'color': allDrivers.find(d => d.id === result.first).color
+                'color': allDrivers.find(d => d.id === result.first).color,
+                'color_dark': allDrivers.find(d => d.id === result.first).color_dark
             },
             second: {
                 'id': result.second,
                 'name': getDriverById(result.second),
-                'color': allDrivers.find(d => d.id === result.second).color
+                'color': allDrivers.find(d => d.id === result.second).color,
+                'color_dark': allDrivers.find(d => d.id === result.second).color_dark
             },
             third: {
                 'id': result.third,
                 'name': getDriverById(result.third),
-                'color': allDrivers.find(d => d.id === result.third).color
+                'color': allDrivers.find(d => d.id === result.third).color,
+                'color_dark': allDrivers.find(d => d.id === result.third).color_dark
             },
             others: result.others.map(driverId => {
                 return {
                     'id': driverId,
                     'name': getDriverById(driverId),
-                    'color': allDrivers.find(d => d.id === driverId).color
+                    'color': allDrivers.find(d => d.id === driverId).color,
+                    'color_dark': allDrivers.find(d => d.id === driverId).color_dark
                 };
             })
         };
@@ -164,23 +169,27 @@ app.get('/race/:id', (req, res) => {
                 first: {
                     'id': prediction.first,
                     'name': getDriverById(prediction.first),
-                    'color': allDrivers.find(d => d.id === prediction.first).color
+                    'color': allDrivers.find(d => d.id === prediction.first).color,
+                    'color_dark': allDrivers.find(d => d.id === prediction.first).color_dark
                 },
                 second: {
                     'id': prediction.second,
                     'name': getDriverById(prediction.second),
-                    'color': allDrivers.find(d => d.id === prediction.second).color
+                    'color': allDrivers.find(d => d.id === prediction.second).color,
+                    'color_dark': allDrivers.find(d => d.id === prediction.second).color_dark
                 },
                 third: {
                     'id': prediction.third,
                     'name': getDriverById(prediction.third),
-                    'color': allDrivers.find(d => d.id === prediction.third).color
+                    'color': allDrivers.find(d => d.id === prediction.third).color,
+                    'color_dark': allDrivers.find(d => d.id === prediction.third).color_dark
                 },
                 others: prediction.others.map(driverId => {
                     return {
                         'id': driverId,
                         'name': getDriverById(driverId),
-                        'color': allDrivers.find(d => d.id === driverId).color
+                        'color': allDrivers.find(d => d.id === driverId).color,
+                        'color_dark': allDrivers.find(d => d.id === driverId).color_dark
                     };
                 }),
                 points: points
