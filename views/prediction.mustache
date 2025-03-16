@@ -115,9 +115,17 @@
             </div>
         </form>
     </div>
+{{/race.predictionsEnded}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const viewPredictionsBtn = document.getElementById('viewPredictions');
+            viewPredictionsBtn.addEventListener('click', function () {
+                document.querySelector('#predictions').classList.remove('hidden');
+                document.querySelector('#prediction').classList.add('hidden');
+                document.getElementById('otherPredictionsContainer').classList.remove('hidden');
+            });
+
             const driversPool = document.getElementById('driversPool');
             const firstSlot = document.getElementById('firstSlot');
             const secondSlot = document.getElementById('secondSlot');
@@ -130,13 +138,6 @@
             const firstInput = document.getElementById('firstInput');
             const secondInput = document.getElementById('secondInput');
             const thirdInput = document.getElementById('thirdInput');
-
-            const viewPredictionsBtn = document.getElementById('viewPredictions');
-            viewPredictionsBtn.addEventListener('click', function () {
-                document.querySelector('#predictions').classList.remove('hidden');
-                document.querySelector('#prediction').classList.add('hidden');
-                document.getElementById('otherPredictionsContainer').classList.remove('hidden');
-            });
 
             const predictions = { first: null, second: null, third: null, others: [] };
             const driverColors = {};
@@ -463,5 +464,3 @@
             });
         });
     </script>
-
-{{/race.predictionsEnded}}
