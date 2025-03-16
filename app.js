@@ -149,12 +149,22 @@ app.get('/race/:id', (req, res) => {
                 'color': allDrivers.find(d => d.id === result.third).color,
                 'color_dark': allDrivers.find(d => d.id === result.third).color_dark
             },
-            others: result.others.map(driverId => {
+            others: result.others.map((driverId, index) => {
                 return {
                     'id': driverId,
                     'name': getDriverById(driverId),
                     'color': allDrivers.find(d => d.id === driverId).color,
-                    'color_dark': allDrivers.find(d => d.id === driverId).color_dark
+                    'color_dark': allDrivers.find(d => d.id === driverId).color_dark,
+                    'position': index + 4
+                };
+            }),
+            remaining: result.remaining.map((driverId, index) => {
+                return {
+                    'id': driverId,
+                    'name': getDriverById(driverId),
+                    'color': allDrivers.find(d => d.id === driverId).color,
+                    'color_dark': allDrivers.find(d => d.id === driverId).color_dark,
+                    'position': index + 11
                 };
             })
         };
