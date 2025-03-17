@@ -17,6 +17,38 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+function formatBackendDate(dateString) {
+    return new Date(dateString).toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).replace(',', '');
+}
+
+function log(message) { console.log(`[polepick] ${formatBackendDate(new Date())} - ${message}`); }
+
+function checkIfFilesExist() {
+    if (!fs.existsSync(path.join(__dirname, 'data'))) {
+        log('Data folder not found. Creating data folder');
+        fs.mkdirSync(path.join(__dirname, 'data'));
+        log('Data folder created.');
+    }
+
+    const files = ['drivers.json', 'races.json', 'results.json', 'predictions.json'];
+    files.forEach(file => {
+        if (!fs.existsSync(path.join(__dirname, 'data', file))) {
+            log(`${file} not found. Creating ${file}`);
+            fs.writeFileSync(path.join(__dirname, 'data', file), '[]', 'utf8');
+            log(`${file} created.`);
+        }
+    });
+}
+
+checkIfFilesExist();
+
 function loadData(file) {
     try {
         const data = fs.readFileSync(path.join(__dirname, 'data', file), 'utf8');
