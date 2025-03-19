@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
-<header class="bg-red-600 text-white shadow-md">
+<header class="bg-red-900 bg-opacity-90 text-white shadow-md shadow-gray-400">
     <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
             <a href="/" class="flex items-center space-x-2 text-xl font-bold">
@@ -25,30 +25,6 @@
         </div>
     </div>
 </header>
-
-<div id="resultModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-95 backdrop-blur-md z-50">
-    <div class="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
-        <h3 class="text-2xl font-bold mb-4">
-            <i class="fas fa-flag-checkered"></i>
-            Pole Pick
-        </h3>
-        <p class="text-gray-700 text-lg font-semibold mb-4">Do you want to reveal the result now?</p>
-        <button id="revealResultBtn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
-            Yes
-        </button>
-    </div>
-</div>
-
-<script>
-    document.getElementById('revealResultBtn').addEventListener('click', () => {
-        document.getElementById('resultModal').classList.add('hidden');
-        localStorage.setItem("dismissedModal", true);
-    });
-
-    if (localStorage.getItem("dismissedModal")) {
-        document.getElementById('resultModal').classList.add('hidden');
-    }
-</script>
 
 <main class="container max-w-[1400px] mx-auto px-4 py-6 flex-grow">
     <div class="race-header mb-6 text-center">

@@ -1,94 +1,118 @@
 <h3 class="text-xl font-semibold mb-4 text-center text-gray-800">Race Result</h3>
 
 {{#result}}
-    <div class="nowrap whitespace-nowrap overflow-hidden overflow-ellipsis">
-        <!-- Podium -->
-        <div class="podium-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
-            <!-- 1st Place -->
-            <div class="flex">
-                <div class="w-2 transform -rotate-90 origin-top-left translate-y-[86px] -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
-                    Podium
-                </div>
-                <div class="flex-grow grid grid-cols-1 gap-3">
-                    <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
-                        <div class="ml-4 w-16 bg-yellow-400 border-2 border-yellow-400 rounded-l-lg flex items-center justify-center text-white">
-                            1
-                        </div>
-                        <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+    <div class="relative">
+        <div id="resultModal" class="absolute inset-0 flex items-center rounded-lg justify-center bg-red-900 bg-opacity-85 backdrop-blur-md z-10 shadow-2xl shadow-red-900"
+             style="box-shadow: 0 0 20px #7f1d1d, 0 0 10px #7f1d1d;">
+            <div class="text-white text-center p-4">
+                <button id="revealResultBtn" class="mt-4 px-4 py-2 bg-red-300 hover:bg-red-400 hover:bg-opacity-80 animate-bounce text-black rounded">
+                    Reveal Result
+                </button>
+                <p class="text-sm italic text-red-300 opacity-80 pt-6">Race result is hidden<br>to prevent spoilers</p>
+            </div>
+        </div>
+        <div id="raceResult" class="nowrap whitespace-nowrap overflow-hidden overflow-ellipsis grayscale">
+            <!-- Podium -->
+            <div class="podium-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
+                <!-- 1st Place -->
+                <div class="flex">
+                    <div class="w-2 transform -rotate-90 origin-top-left translate-y-[86px] -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
+                        Podium
+                    </div>
+                    <div class="flex-grow grid grid-cols-1 gap-3">
+                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                            <div class="ml-4 w-16 bg-yellow-400 border-2 border-yellow-400 rounded-l-lg flex items-center justify-center text-white">
+                                1
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-md shadow-zinc-400">
-                            {{first.name}}
+                                {{first.name}}
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- 2nd Place -->
-                    <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
-                        <div class="ml-4 w-16 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
-                            2
-                        </div>
-                        <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                        <!-- 2nd Place -->
+                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                            <div class="ml-4 w-16 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
+                                2
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-md shadow-zinc-400">
-                            {{second.name}}
+                                {{second.name}}
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- 3rd Place -->
-                    <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
-                        <div class="ml-4 w-16 bg-amber-600 border-2 border-amber-600 rounded-l-lg flex items-center justify-center text-white">
-                            3
-                        </div>
-                        <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                        <!-- 3rd Place -->
+                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                            <div class="ml-4 w-16 bg-amber-600 border-2 border-amber-600 rounded-l-lg flex items-center justify-center text-white">
+                                3
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-md shadow-zinc-400">
-                            {{third.name}}
+                                {{third.name}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Remaining top 10 -->
-        <div class="top-10-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
-            <div class="flex">
-                <div class="w-2 transform -rotate-90 origin-top-left translate-y-40 -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
-                    TOP 10
-                </div>
-                <div class="flex-grow grid grid-cols-1 gap-2">
-                    {{#others}}
-                        <div class="flex items-center">
-                            <div class="ml-8 w-12 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
-                                {{position}}
-                            </div>
-                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+            <!-- Remaining top 10 -->
+            <div class="top-10-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
+                <div class="flex">
+                    <div class="w-2 transform -rotate-90 origin-top-left translate-y-40 -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
+                        TOP 10
+                    </div>
+                    <div class="flex-grow grid grid-cols-1 gap-2">
+                        {{#others}}
+                            <div class="flex items-center">
+                                <div class="ml-8 w-12 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                    {{position}}
+                                </div>
+                                <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                         border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400"
-                                 style="text-shadow: 0 0 8px gray;">
-                                {{name}}
+                                     style="text-shadow: 0 0 8px gray;">
+                                    {{name}}
+                                </div>
                             </div>
-                        </div>
-                    {{/others}}
+                        {{/others}}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Remaining drivers -->
-        <div class="remaining-section bg-gray-100 rounded-lg p-4 shadow-sm">
-            <div class="flex">
-                <div class="w-2 transform -rotate-90 origin-top-left translate-y-48 -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
-                    No Points
-                </div>
-                <div class="flex-grow grid grid-cols-1 gap-2">
-                    {{#remaining}}
-                        <div class="flex items-center">
-                            <div class="ml-10 w-10 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
-                                {{position}}
-                            </div>
-                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+            <!-- Remaining drivers -->
+            <div class="remaining-section bg-gray-100 rounded-lg p-4 shadow-sm">
+                <div class="flex">
+                    <div class="w-2 transform -rotate-90 origin-top-left translate-y-48 -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
+                        No Points
+                    </div>
+                    <div class="flex-grow grid grid-cols-1 gap-2">
+                        {{#remaining}}
+                            <div class="flex items-center">
+                                <div class="ml-10 w-10 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                    {{position}}
+                                </div>
+                                <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                         border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400"
-                                 style="text-shadow: 0 0 8px gray;">
-                                {{name}}
+                                     style="text-shadow: 0 0 8px gray;">
+                                    {{name}}
+                                </div>
                             </div>
-                        </div>
-                    {{/remaining}}
+                        {{/remaining}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('revealResultBtn').addEventListener('click', () => {
+            document.getElementById('raceResult').classList.toggle('grayscale');
+            document.getElementById('resultModal').classList.add('hidden');
+            localStorage.setItem("revealRace{{race.id}}", true);
+        });
+
+        if (localStorage.getItem("revealRace{{race.id}}")) {
+            document.getElementById('resultModal').classList.add('hidden');
+            document.getElementById('raceResult').classList.remove('grayscale');
+        }
+    </script>
 {{/result}}
