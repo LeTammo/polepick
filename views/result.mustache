@@ -110,10 +110,10 @@
             document.querySelectorAll('.predictionPoints').forEach(element => {
                 element.classList.remove('hidden');
             })
-            localStorage.setItem("revealRace{{race.id}}", true);
+            localStorage.setItem("polepick-revealRace{{race.id}}", true);
         });
 
-        if (localStorage.getItem("revealRace{{race.id}}")) {
+        if (localStorage.getItem("polepick-revealRace{{race.id}}")) {
             document.getElementById('raceResult').classList.remove('grayscale');
             document.getElementById('resultModal').classList.add('hidden');
             document.querySelectorAll('.predictionPoints').forEach(element => {

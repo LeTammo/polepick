@@ -59,7 +59,7 @@
     {{/predictions}}
 
     <script>
-        if (localStorage.getItem("revealRace{{race.id}}")) {
+        if (localStorage.getItem("polepick-revealRace{{race.id}}")) {
             document.querySelectorAll('.predictionPoints').forEach(element => {
                 element.classList.remove('hidden');
             })

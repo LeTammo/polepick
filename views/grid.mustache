@@ -30,10 +30,10 @@
         document.getElementById('revealQualificationResultBtn').addEventListener('click', () => {
             document.getElementById('driversGrid').classList.remove('grayscale');
             document.getElementById('qualificationModal').classList.add('hidden');
-            localStorage.setItem("revealQualification{{race.id}}", true);
+            localStorage.setItem("polepick-revealQualification{{race.id}}", true);
         });
 
-        if (localStorage.getItem("revealQualification{{race.id}}")) {
+        if (localStorage.getItem("polepick-revealQualification{{race.id}}")) {
             document.getElementById('driversGrid').classList.remove('grayscale');
             document.getElementById('qualificationModal').classList.add('hidden');
         }

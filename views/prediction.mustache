@@ -146,7 +146,7 @@
 
             const allPredictions = JSON.parse(`{{{predictionsJson}}}`);
             const raceId = window.location.pathname.split('/').pop();
-            let storedUsername = localStorage.getItem(`pole-pick-username-for-race-${raceId}`);
+            let storedUsername = localStorage.getItem(`polepick-username-for-race-${raceId}`);
 
             if (storedUsername && usernameInput) {
                 usernameInput.value = storedUsername;
@@ -429,7 +429,7 @@
                     return;
                 }
 
-                localStorage.setItem(`pole-pick-username-for-race-${raceId}`, username);
+                localStorage.setItem(`polepick-username-for-race-${raceId}`, username);
 
                 const formData = {
                     username: username,
