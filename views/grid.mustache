@@ -1,15 +1,41 @@
 <h3 class="text-xl text-center font-semibold mb-4 text-gray-800">Drivers Grid</h3>
 
-<div id="driversGrid" class="drivers-list max-w-[400px] m-auto grid grid-cols-2 gap-2 overflow-y-auto p-2 bg-gray-100 rounded-2xl">
-    {{#drivers}}
-        <div class="{{#isOdd}}mt-4{{/isOdd}} {{^isOdd}}mb-4{{/isOdd}}">
-            <div draggable="true" data-driver="{{name}}" data-color="{{color}}"
-                 class="driver-item w-full p-1 text-md font-bold text-center hover:scale-105 transition duration-150 cursor-move
-                        rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-300
-                        nowrap whitespace-nowrap overflow-hidden overflow-ellipsis"
-                 style="text-shadow: 0 0 8px gray;">
-                {{name}}
+<div class="">
+    <div class="relative">
+        <div id="qualificationModal" class="absolute inset-0 flex items-center rounded-lg justify-center bg-red-900 bg-opacity-85 backdrop-blur-md z-10 shadow-2xl shadow-red-900"
+             style="box-shadow: 0 0 20px #7f1d1d, 0 0 10px #7f1d1d;">
+            <div class="text-white text-center p-4">
+                <button id="revealQualificationResultBtn" class="mt-4 px-4 py-2 bg-red-300 hover:bg-red-200 animate-bounce text-black rounded">
+                    Reveal Starting Grid
+                </button>
+                <p class="text-sm italic text-red-300 opacity-80 pt-6">Qualifying result is hidden<br>to prevent spoilers</p>
             </div>
         </div>
-    {{/drivers}}
+        <div id="driversGrid" class="drivers-list grayscale max-w-[400px] m-auto grid grid-cols-2 gap-2 overflow-y-auto p-2 bg-gray-100 rounded-2xl">
+            {{#drivers}}
+                <div class="{{#isOdd}}mt-4{{/isOdd}} {{^isOdd}}mb-4{{/isOdd}}">
+                    <div draggable="true" data-driver="{{name}}" data-color="{{color}}"
+                         class="driver-item w-full p-1 text-md font-bold text-center hover:scale-105 transition duration-150 cursor-move
+                            rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-300
+                            nowrap whitespace-nowrap overflow-hidden overflow-ellipsis"
+                         style="text-shadow: 0 0 8px gray;">
+                        {{name}}
+                    </div>
+                </div>
+            {{/drivers}}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('revealQualificationResultBtn').addEventListener('click', () => {
+            document.getElementById('driversGrid').classList.remove('grayscale');
+            document.getElementById('qualificationModal').classList.add('hidden');
+            localStorage.setItem("revealQualification{{race.id}}", true);
+        });
+
+        if (localStorage.getItem("revealQualification{{race.id}}")) {
+            document.getElementById('driversGrid').classList.remove('grayscale');
+            document.getElementById('qualificationModal').classList.add('hidden');
+        }
+    </script>
 </div>
