@@ -19,7 +19,11 @@
             </a>
             <nav>
                 <ul class="flex space-x-6">
-                    <li><a href="/race/1" class="hover:text-gray-200 transition duration-150">Australia</a></li>
+                    {{#races}}
+                    <li>
+                        <a href="/race/{{id}}" class="hover:text-gray-200 transition duration-150">{{nameShort}}</a>
+                    </li>
+                    {{/races}}
                 </ul>
             </nav>
         </div>

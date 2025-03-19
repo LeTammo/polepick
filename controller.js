@@ -19,6 +19,7 @@ function getRacePage(req, res) {
     try {
         const raceId = req.params.id;
         const race = raceModel.getFormattedRace(raceId);
+        const races = raceModel.getAllRaces();
 
         if (!race) {
             return res.status(404).render('error', {
@@ -33,6 +34,7 @@ function getRacePage(req, res) {
         res.render('index', {
             pageTitle: `${race.name} - Prediction`,
             race: race,
+            races: races,
             drivers: drivers,
             result: result,
             predictions: predictions,
