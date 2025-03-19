@@ -126,7 +126,7 @@
                 document.getElementById('otherPredictionsContainer').classList.remove('hidden');
             });
 
-            const driversPool = document.getElementById('driversPool');
+            const driversPool = document.getElementById('driversGrid');
             const firstSlot = document.getElementById('firstSlot');
             const secondSlot = document.getElementById('secondSlot');
             const thirdSlot = document.getElementById('thirdSlot');
@@ -244,7 +244,7 @@
                 const color = driverColors[driver];
                 const targetSlot = e.currentTarget;
 
-                if (targetSlot.id === 'driversPool') {
+                if (targetSlot.id === 'driversGrid') {
                     removeDriverFromPreviousSlot(driver);
                     return;
                 }
