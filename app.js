@@ -7,6 +7,7 @@ const mustacheExpress = require('mustache-express');
 const dataService = require('./services/dataService');
 const routes = require('./routes');
 const utils = require("./utils");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 dataService.initializeDataFiles();
 

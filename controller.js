@@ -30,6 +30,10 @@ function getRacePage(req, res) {
         const drivers = raceModel.getRaceDrivers(raceId);
         const result = resultModel.getFormattedResult(raceId);
         const predictions = predictionModel.getFormattedPredictions(raceId);
+        const username = req.cookies[`polepick-username-for-race-${raceId}`];
+
+        let userPrediction = predictions.find(p => p.username === username);
+        userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
 
         res.render('index', {
             pageTitle: `${race.name} - Prediction`,
@@ -37,7 +41,8 @@ function getRacePage(req, res) {
             races: races,
             drivers: drivers,
             result: result,
-            predictions: predictions,
+            predictions: predictions.filter(p => p.username !== username),
+            userPrediction: userPrediction,
             predictionsJson: JSON.stringify(predictions),
             hasResult: !!result
         });

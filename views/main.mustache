@@ -16,7 +16,7 @@
 
         <section class="md:col-span-6 lg:col-span-7 xl:col-span-8 bg-white rounded-lg shadow-md p-6">
             <div id="prediction" {{#race.predictionsEnded}}class="hidden"{{/race.predictionsEnded}}>
-                {{> main/prediction}}
+                {{> main/predict}}
             </div>
             <div id="predictions" {{^race.predictionsEnded}}class="hidden"{{/race.predictionsEnded}}>
                 <div>{{> partials/pointsInfo}}</div>

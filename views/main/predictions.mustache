@@ -2,53 +2,11 @@
 
 <div id="otherPredictionsContainer" class="{{^userHasPredicted}}{{^race.predictionsEnded}}hidden{{/race.predictionsEnded}}{{/userHasPredicted}}">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
+        {{#userPrediction}}
+            {{> partials/prediction}}
+        {{/userPrediction}}
         {{#predictions}}
-            <div data-username="{{username}}" class="shadow-xl rounded-lg bg-white p-2 border border-1 border-gray-100">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-lg font-bold pl-4">{{username}}</span>
-                    {{#hasResult}}<span class="predictionPoints font-semibold animate-pulse text-lg pr-2 hidden">{{points}} points</span>{{/hasResult}}
-                </div>
-                <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-2 text-xs">
-                    <div class="col-span-1 h-14 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
-                        <div class="position-number font-bold text-gray-500">2nd</div>
-                        <div class="px-3 font-bold text-center rounded-lg border-2 border-[{{second.color}}] bg-[{{second.color}}] text-white shadow-md shadow-zinc-300"
-                             style="text-shadow: 0 0 8px gray;">
-                            <span class="driver-identifier">{{second.id}}</span>
-                            <span class="driver-name hidden">{{second.name}}</span>
-                        </div>
-                    </div>
-                    <div class="col-span-1 h-16 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
-                        <div class="position-number font-bold text-gray-500">1st</div>
-                        <div class="px-3 font-bold text-center rounded-lg border-2 border-[{{first.color}}] bg-[{{first.color}}] text-white shadow-md shadow-zinc-300"
-                             style="text-shadow: 0 0 8px gray;">
-                            <span class="driver-identifier">{{first.id}}</span>
-                            <span class="driver-name hidden">{{first.name}}</span>
-                        </div>
-                    </div>
-                    <div class="col-span-1 h-12 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
-                        <div class="position-number font-bold text-gray-500">3rd</div>
-                        <div class="px-3 font-bold text-center rounded-lg border-2 border-[{{third.color}}] bg-[{{third.color}}] text-white shadow-md shadow-zinc-300"
-                             style="text-shadow: 0 0 8px gray;">
-                            <span class="driver-identifier">{{third.id}}</span>
-                            <span class="driver-name hidden">{{third.name}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="max-w-[500px] m-auto bg-gray-100 pt-2 px-2 rounded-md text-xs">
-                    <div class="position-number font-bold text-center text-gray-500 pb-1">
-                        4-10 <span class="font-normal text-gray-400">(order doesn't matter)</span>
-                    </div>
-                    <div class="gap-2 text-center">
-                        {{#others}}
-                            <div class="inline-block px-3 mb-2 font-bold text-center rounded-lg border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-300"
-                                 style="text-shadow: 0 0 8px gray;">
-                                <span class="driver-identifier">{{id}}</span>
-                                <span class="driver-name hidden">{{name}}</span>
-                            </div>
-                        {{/others}}
-                    </div>
-                </div>
-            </div>
+            {{> partials/prediction}}
         {{/predictions}}
     </div>
 

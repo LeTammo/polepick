@@ -157,6 +157,7 @@
             const allPredictions = JSON.parse(`{{{predictionsJson}}}`);
             const raceId = window.location.pathname.split('/').pop();
             let storedUsername = localStorage.getItem(`polepick-username-for-race-${raceId}`);
+            document.cookie = `polepick-username-for-race-${raceId}=${storedUsername}; path=/; max-age=31536000;`;
 
             if (storedUsername && usernameInput) {
                 usernameInput.value = storedUsername;
