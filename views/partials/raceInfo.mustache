@@ -1,0 +1,20 @@
+<div class="race-header mb-6 text-center">
+    <h2 class="text-3xl font-bold text-gray-800">{{race.name}}</h2>
+    <div class="race-info grid grid-cols-2 sm:grid-cols-4 mt-2 text-gray-600 text-center max-w-2xl mx-auto">
+        <span class="flex gap-2 justify-center">
+            {{> partials/icons/location}} {{race.nameShort}}
+        </span>
+        <span>
+            <i class="fas fa-{{race.weatherIcon}} mr-1 fill-red-900 opacity-90"></i>
+            {{race.weatherText}}, {{race.weatherTemperature}} °C
+        </span>
+        <span>
+            <i class="fas fa-calendar-day mr-1"></i>
+            {{race.formattedDate}}
+        </span>
+        <span>
+            <i class="fas fa-clock mr-1"></i>
+            {{race.formattedTime}}
+        </span>
+    </div>
+</div>
