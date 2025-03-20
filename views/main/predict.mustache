@@ -440,10 +440,14 @@
                     return;
                 }
 
+                const uniqueId = "id" + Math.random().toString(16).slice(2);
+
                 localStorage.setItem(`polepick-username-for-race-${raceId}`, username);
+                localStorage.setItem(`polepick-id-for-race-${raceId}`, uniqueId);
 
                 const formData = {
                     username: username,
+                    uniqueId: uniqueId,
                     first: firstInput.value,
                     second: secondInput.value,
                     third: thirdInput.value,

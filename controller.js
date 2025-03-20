@@ -73,11 +73,11 @@ function submitPrediction(req, res) {
             });
         }
 
-        const { username, first, second, third, others } = req.body;
+        const { username, uniqueId, first, second, third, others } = req.body;
         utils.log(`${username} made a prediction for race #${raceId}`);
 
         const success = predictionModel.createOrUpdatePrediction(raceId, {
-            username, first, second, third, others
+            username, uniqueId, first, second, third, others
         });
 
         if (!success) {

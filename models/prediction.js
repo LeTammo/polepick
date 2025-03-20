@@ -55,7 +55,7 @@ function prepareDriver(driverId) {
 
 function createOrUpdatePrediction(raceId, predictionData) {
     try {
-        const { username, first, second, third, others } = predictionData;
+        const { username, uniqueId, first, second, third, others } = predictionData;
 
         if (!username || !first || !second || !third || !others || others.length !== 7) {
             utils.error('Invalid prediction data');
@@ -67,6 +67,11 @@ function createOrUpdatePrediction(raceId, predictionData) {
             p.raceId === raceId && p.username === username
         );
 
+        if (existingPredictionIndex !== -1 && predictions[existingPredictionIndex].uniqueId !== uniqueId) {
+            utils.error('Prediction already exists for this username and unique IDs do not match');
+            return false;
+        }
+
         const firstId = driverModel.getDriverIdByName(first);
         const secondId = driverModel.getDriverIdByName(second);
         const thirdId = driverModel.getDriverIdByName(third);
@@ -77,7 +82,6 @@ function createOrUpdatePrediction(raceId, predictionData) {
         if (existingPredictionIndex !== -1) {
             predictions[existingPredictionIndex] = {
                 ...predictions[existingPredictionIndex],
-                username,
                 timestamp: new Date().toISOString(),
                 first: firstId,
                 second: secondId,
@@ -91,6 +95,7 @@ function createOrUpdatePrediction(raceId, predictionData) {
 
             predictions.push({
                 id: newId,
+                uniqueId,
                 raceId,
                 username,
                 timestamp: new Date().toISOString(),
