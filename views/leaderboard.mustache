@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+{{> partials/header }}
+
+<main class="container max-w-[700px] mx-auto px-4 py-6 flex-grow">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Leaderboard</h1>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden shadow-gray-400">
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                <tr class="bg-red-900 bg-opacity-90 text-white border-b">
+                    <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
+                        Rank
+                    </th>
+                    <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
+                        User
+                    </th>
+                    <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
+                        Total Points
+                    </th>
+                    <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
+                        Predictions
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                {{#leaderboard}}
+                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                        <td class="px-2 py-2">
+                            {{#rank}}
+                                {{#isTopThree}}
+                                    <div class="flex items-center mx-auto justify-center w-8 h-8 rounded-full {{rankBackgroundColor}} text-white font-bold">
+                                        {{rank}}
+                                    </div>
+                                {{/isTopThree}}
+                                {{^isTopThree}}
+                                    <div class="text-gray-800 text-center font-medium">{{rank}}</div>
+                                {{/isTopThree}}
+                            {{/rank}}
+                        </td>
+                        <td class="px-2 py-2">
+                            <div class="font-medium text-center text-gray-900">{{username}}</div>
+                        </td>
+                        <td class="px-2 py-2">
+                            <div class="font-bold text-gray-900 text-center">{{totalPoints}}</div>
+                        </td>
+                        <td class="px-2 py-2">
+                            <div class="text-gray-700 text-center">{{totalPredictions}}</div>
+                        </td>
+                    </tr>
+                {{/leaderboard}}
+
+                {{^leaderboard}}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                            No predictions have been made yet.
+                        </td>
+                    </tr>
+                {{/leaderboard}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{{> partials/footer }}
+
+</body>
+</html>

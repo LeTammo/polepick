@@ -1,6 +1,7 @@
 const raceModel = require('./models/race');
 const resultModel = require('./models/result');
 const predictionModel = require('./models/prediction');
+const scoreService = require('./services/scoreService');
 const utils = require('./utils');
 
 function getHomePage(req, res) {
@@ -98,8 +99,91 @@ function submitPrediction(req, res) {
     }
 }
 
+function getLeaderboardPage(req, res) {
+    try {
+        const races = raceModel.getAllRaces();
+        const results = resultModel.getAllResults();
+        const predictions = predictionModel.getAllPredictions();
+
+        const allUsers = [...new Set(predictions.map(p => p.username))];
+
+        const leaderboard = allUsers.map(username => {
+            return {
+                username,
+                totalPoints: 0,
+                racePoints: [],
+                totalPredictions: 0
+            };
+        });
+
+        results.forEach(result => {
+            const raceId = result.raceId;
+            const race = raceModel.getFormattedRace(raceId);
+            const racePredictions = predictions.filter(p => p.raceId === raceId);
+
+            racePredictions.forEach(prediction => {
+                const points = scoreService.calculatePoints(prediction, result);
+                const userIndex = leaderboard.findIndex(u => u.username === prediction.username);
+
+                if (userIndex !== -1) {
+                    leaderboard[userIndex].totalPoints += points;
+                    leaderboard[userIndex].totalPredictions += 1;
+                    leaderboard[userIndex].racePoints.push({
+                        raceId,
+                        raceName: race.name,
+                        points
+                    });
+                }
+            });
+        });
+
+        leaderboard.sort((a, b) => {
+            if (b.totalPoints !== a.totalPoints) {
+                return b.totalPoints - a.totalPoints;
+            }
+            return b.totalPredictions - a.totalPredictions;
+        });
+
+        leaderboard.forEach((entry, index) => {
+            entry.rank = index + 1;
+
+            entry.isTopThree = entry.rank <= 3;
+            if (entry.rank === 1) {
+                entry.rankBackgroundColor = 'bg-yellow-500';
+            } else if (entry.rank === 2) {
+                entry.rankBackgroundColor = 'bg-gray-400';
+            } else if (entry.rank === 3) {
+                entry.rankBackgroundColor = 'bg-amber-600';
+            }
+
+            entry.accuracy = entry.totalPredictions > 0
+                ? (entry.totalPoints / entry.totalPredictions).toFixed(1)
+                : 0;
+        });
+
+        const racesWithResults = results.map(r => r.raceId);
+        const enhancedRaces = races.map(race => ({
+            ...race,
+            formattedDate: utils.formatDate(race.date),
+            hasResult: racesWithResults.includes(race.id)
+        }));
+
+        res.render('leaderboard', {
+            pageTitle: 'Polepick - Leaderboard',
+            leaderboard,
+            races: enhancedRaces
+        });
+    } catch (error) {
+        utils.error('Error rendering leaderboard page: ', error);
+        res.status(500).render('error', {
+            message: 'An error occurred loading the leaderboard'
+        });
+    }
+}
+
 module.exports = {
     getHomePage,
     getRacePage,
-    submitPrediction
+    submitPrediction,
+    getLeaderboardPage
 };

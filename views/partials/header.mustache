@@ -9,9 +9,20 @@
                 <ul class="flex space-x-6">
                     {{#races}}
                         <li>
-                            <a href="/race/{{id}}" class="hover:text-gray-200 transition duration-150">{{nameShort}}</a>
+                            <a href="/race/{{id}}" class="hover:text-gray-200 transition duration-150">
+                                {{nameShort}}
+                            </a>
                         </li>
                     {{/races}}
+                </ul>
+            </nav>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li>
+                        <a href="/leaderboard" class="hover:text-gray-200 transition duration-150">
+                            Leaderboard
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
