@@ -450,8 +450,6 @@
                     others: predictions.others,
                 };
 
-                console.log(formData)
-
                 fetch(`/race/${raceId}/predict`, {
                     method: 'POST',
                     headers: {
@@ -459,18 +457,18 @@
                     },
                     body: JSON.stringify(formData),
                 })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.reload();
-                            } else {
-                                alert('Error submitting prediction: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Error submitting prediction. Please try again.');
-                        });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Error submitting prediction: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting prediction. Please try again.');
+                });
             });
         });
     </script>
