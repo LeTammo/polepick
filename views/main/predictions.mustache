@@ -10,11 +10,11 @@
         {{/predictions}}
     </div>
 
-    {{^predictions}}
+    {{^predictions}}{{^userPrediction}}
         <div class="m-auto flex justify-center items-center text-gray-500">
             <span>No predictions yet</span>
         </div>
-    {{/predictions}}
+    {{/userPrediction}}{{/predictions}}
 
     <script>
         if (localStorage.getItem("polepick-revealRace{{race.id}}")) {
