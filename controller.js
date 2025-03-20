@@ -137,15 +137,25 @@ function getLeaderboardPage(req, res) {
             });
         });
 
-        leaderboard.sort((a, b) => {
-            if (b.totalPoints !== a.totalPoints) {
-                return b.totalPoints - a.totalPoints;
-            }
-            return b.totalPredictions - a.totalPredictions;
-        });
+        leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
+
+        let currentRank = 1;
+        let previousPoints = -1;
+        let tieCount = 0;
 
         leaderboard.forEach((entry, index) => {
-            entry.rank = index + 1;
+            if (index > 0 && entry.totalPoints === previousPoints) {
+                entry.rank = currentRank;
+                entry.isTied = true;
+                tieCount++;
+            } else {
+                currentRank = index + 1;
+                entry.rank = currentRank;
+                entry.isTied = false;
+                tieCount = 0;
+            }
+
+            previousPoints = entry.totalPoints;
 
             entry.isTopThree = entry.rank <= 3;
             if (entry.rank === 1) {
@@ -155,10 +165,6 @@ function getLeaderboardPage(req, res) {
             } else if (entry.rank === 3) {
                 entry.rankBackgroundColor = 'bg-amber-600';
             }
-
-            entry.accuracy = entry.totalPredictions > 0
-                ? (entry.totalPoints / entry.totalPredictions).toFixed(1)
-                : 0;
         });
 
         const racesWithResults = results.map(r => r.raceId);

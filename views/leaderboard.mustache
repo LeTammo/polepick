@@ -37,7 +37,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 {{#leaderboard}}
-                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                    <tr class="hover:bg-gray-50 transition-colors duration-150 {{#isTied}}bg-gray-50{{/isTied}}">
                         <td class="px-2 py-2">
                             {{#rank}}
                                 {{#isTopThree}}
