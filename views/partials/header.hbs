@@ -3,24 +3,25 @@
         <div class="flex justify-between items-center">
             <a href="/" class="flex items-center space-x-2 text-xl font-bold">
                 <i class="fas fa-flag-checkered"></i>
-                <span>Pole Pick</span>
+                <span class="hidden md:block">Pole Pick</span>
             </a>
             <nav>
                 <ul class="flex space-x-6">
-                    {{#races}}
+                    {{#each races}}
                         <li>
                             <a href="/race/{{id}}" class="hover:text-gray-200 transition duration-150">
-                                {{nameShort}}
+                                <div>{{nameShort}}</div>
                             </a>
                         </li>
-                    {{/races}}
+                    {{/each}}
                 </ul>
             </nav>
             <nav>
                 <ul class="flex space-x-6">
                     <li>
-                        <a href="/leaderboard" class="hover:text-gray-200 transition duration-150">
-                            Leaderboard
+                        <a href="/leaderboard" class="flex items-center space-x-2 hover:text-gray-200 transition duration-150">
+                            <span class="hidden md:block">Leaderboard</span>
+                            <span class="f-white">{{> icons/leaderboard}}</span>
                         </a>
                     </li>
                 </ul>

@@ -9,3 +9,7 @@ body {
         filter: opacity(0.3);
     }
 }
+
+.f-white {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(207deg) brightness(101%) contrast(104%);
+}
