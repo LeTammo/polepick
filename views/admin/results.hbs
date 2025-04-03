@@ -5,7 +5,8 @@
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h3 class="text-lg font-semibold mb-4">Select Race</h3>
+            <h3 class="text-lg font-semibold mb-4">Race</h3>
+            <label class="hidden" for="raceSelect">Race selection</label>
             <select id="raceSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">Select a race</option>
                 {{#each races}}
@@ -25,6 +26,7 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             1st Place
                         </label>
+                        <label class="hidden" for="firstPlace">First place</label>
                         <select id="firstPlace" name="first" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             <option value="">Select Driver</option>
                         </select>
@@ -33,6 +35,7 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             2nd Place
                         </label>
+                        <label class="hidden" for="secondPlace">Second place</label>
                         <select id="secondPlace" name="second" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             <option value="">Select Driver</option>
                         </select>
@@ -41,6 +44,7 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2">
                             3rd Place
                         </label>
+                        <label class="hidden" for="thirdPlace">Third place</label>
                         <select id="thirdPlace" name="third" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             <option value="">Select Driver</option>
                         </select>
@@ -172,8 +176,7 @@
                 },
                 body: JSON.stringify(resultData)
             })
-            <!-- This continues from where your results.handlebars file cut off -->
-        .then(response => {
+            .then(response => {
                 if (response.ok) {
                     alert('Race results saved successfully!');
                     existingResult = resultData;
@@ -181,10 +184,10 @@
                     alert('Error saving race results');
                 }
             })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while saving results');
-                    });
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving results');
+            });
         });
 
         // Delete result

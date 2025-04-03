@@ -80,7 +80,8 @@
                         {{#if race.drivers}}
                             {{#each race.drivers}}
                                 <div class="driver-row flex items-center space-x-2">
-                                    <select name="drivers[]"
+                                    <label for="driver" class="hidden">Driver</label>
+                                    <select id="driver" name="drivers[]"
                                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
                                         <option value="">Select Driver</option>
                                         {{#each ../allDrivers}}
@@ -96,7 +97,8 @@
                             {{/each}}
                         {{else}}
                             <div class="driver-row flex items-center space-x-2">
-                                <select name="drivers[]"
+                                <label for="driver" class="hidden">Driver</label>
+                                <select id="driver" name="drivers[]"
                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
                                     <option value="">Select Driver</option>
                                     {{#each allDrivers}}

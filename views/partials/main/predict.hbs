@@ -234,7 +234,7 @@
                 }, 0);
             }
 
-            function handleDragEnd(e) {
+            function handleDragEnd() {
                 if (window.draggedElement) {
                     window.draggedElement.classList.remove('dragging');
                     window.draggedElement.style.opacity = '1';
@@ -301,11 +301,6 @@
                 }
 
                 checkFormValidity();
-            }
-
-            function removeFromDriversPool(id) {
-                const driverElements = driversPool.querySelectorAll(`.driver-item[data-driver="${id}"]`);
-                driverElements.forEach(el => el.remove());
             }
 
             function addToDriversPool(id) {

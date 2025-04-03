@@ -279,10 +279,7 @@
                                         // Add event listeners to edit buttons
                                         document.querySelectorAll('.edit-assignment-btn').forEach(btn => {
                                             btn.addEventListener('click', function() {
-                                                const raceId = this.getAttribute('data-race-id');
-                                                const raceName = this.getAttribute('data-race-name');
-                                                const raceDate = this.getAttribute('data-race-date');
-                                                const teamId = this.getAttribute('data-team-id');
+                                                const { raceId, raceName, raceDate, teamId } = this.dataset;
 
                                                 document.getElementById('assignmentRaceId').value = raceId;
                                                 document.getElementById('assignmentRaceInfo').textContent = `${raceName} - ${raceDate}`;
