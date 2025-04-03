@@ -1,0 +1,477 @@
+<div id="voteModal" class="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md z-50">
+    <div class="py-6 rounded-lg shadow-lg bg-red-900 bg-opacity-70 max-w-2xl mx-1 sm:mx-4 max-h-screen overflow-y-auto px-8">
+        <div class="flex justify-center space-x-4 block md:hidden mb-4">
+            <button id="dismissVoteBtn1" type="button" class="px-6 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded">
+                Skip voting
+            </button>
+        </div>
+
+        <h2 class="text-2xl text-white font-bold mb-6 text-center break-words">Vote for a Scoring System</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white text-xs border rounded-lg p-4 hover:shadow-md transition-shadow w-[190px] mx-auto">
+                <div id="raceResult" class="flex nowrap whitespace-nowrap overflow-ellipsis h-full my-auto">
+                    <div class="flex-grow grid grid-cols-1 gap-1 my-auto">
+                        <div class="text-center mb-4 text-lg font-bold">
+                            Example result
+                        </div>
+                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                            <div class="w-6 bg-yellow-500 border-2 border-yellow-500 rounded-l-lg flex items-center justify-center text-white">
+                                1
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                            border-2 border-[#ff8700] bg-[#ff8700] text-white shadow-md shadow-zinc-400">
+                                Lando Norris
+                            </div>
+                        </div>
+                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                            <div class="w-6 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
+                                2
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                            border-2 border-[#3671c6] bg-[#3671c6] text-white shadow-md shadow-zinc-400">
+                                Max Verstappen
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-2" style="text-shadow: 0 0 8px gray;">
+                            <div class="w-6 bg-amber-500 border-2 border-amber-500 rounded-l-lg flex items-center justify-center text-white">
+                                3
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                            border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400">
+                                George Russell
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                4
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                A. Kimi Antonelli
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                5
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Alexander Albon
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                6
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#229971] bg-[#229971] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Lance Stroll
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                7
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#52e252] bg-[#52e252] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Nico Hülkenberg
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                8
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#dc0000] bg-[#dc0000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Charles Leclerc
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                9
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#ff8000] bg-[#ff8000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Oscar Piastri
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-6 bg-zinc-500 border-2 border-zinc-500 rounded-l-lg flex items-center justify-center text-white">
+                                10
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                border-2 border-[#e80020] bg-[#e80020] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Lewis Hamilton
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                11
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#0093cc] bg-[#0093cc] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Pierre Gasly
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                12
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#6692ff] bg-[#6692ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Yuki Tsunoda
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                13
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#b6babd] bg-[#b6babd] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Esteban Ocon
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                14
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#b6babd] bg-[#b6babd] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Oliver Bearman
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                15
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#3671c6] bg-[#3671c6] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Liam Lawson
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                16
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#52e252] bg-[#52e252] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Gabriel Bortoleto
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                17
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#229971] bg-[#229971] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Fernando Alonso
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                18
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Carlos Sainz Jr.
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                19
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#0093cc] bg-[#0093cc] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Jack Doohan
+                            </div>
+                        </div>
+                        <div class="hidden flex items-center">
+                            <div class="w-6 bg-zinc-400 border-2 border-zinc-400 rounded-l-lg flex items-center justify-center text-white">
+                                20
+                            </div>
+                            <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
+                                                    border-2 border-[#6692ff] bg-[#6692ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                                Isack Hadjar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border rounded-lg p-4 hover:shadow-md w-[190px] mx-auto hover:scale-105 transition duration-150 ease-in-out">
+                <div class="text-center mb-4">
+                    <h3 class="font-bold text-lg">Variant 1</h3>
+                    <p class="text-gray-600 text-right pr-3">
+                        1st correct = 7 P.<br>
+                        2nd correct = 6 P.<br>
+                        3rd correct = 5 P.<br>
+                        any Top10 = 1 P.
+                    </p>
+                </div>
+
+                <div class="flex-grow grid grid-cols-1 gap-1">
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 bg-yellow-500 border-2 border-yellow-500 rounded-l-lg flex items-center justify-center text-white">
+                            1
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#ff8000] bg-[#ff8000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            PIA
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
+                            2
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#3671c6] bg-[#3671c6] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            VER
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+6</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center mb-2">
+                        <div class="w-6 bg-amber-500 border-2 border-amber-500 rounded-l-lg flex items-center justify-center text-white">
+                            3
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            RUS
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+5</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#ff8000] bg-[#ff8000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            NOR
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ALB
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#dc0000] bg-[#dc0000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            HAM
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#229971] bg-[#229971] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ALO
+                        </div>
+                        <div class="ml-4 text-white text-sm">+0</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#dc0000] bg-[#dc0000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            LEC
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            SAI
+                        </div>
+                        <div class="ml-4 text-white text-sm">+0</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ANT
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="pt-2 font-bold text-center">
+                        <div class="">Total: 17 Points</div>
+                    </div>
+                </div>
+                <button id="vote1" type="button" data-variant="1" class="vote-btn w-full mt-4 px-4 py-2 bg-opacity-80 bg-red-900 hover:bg-red-700 text-white rounded">
+                    I like this!
+                </button>
+            </div>
+
+            <div class="bg-white border rounded-lg p-4 hover:shadow-md w-[190px] mx-auto hover:scale-105 transition duration-150 ease-in-out">
+                <div class="text-center mb-4">
+                    <h3 class="font-bold text-lg">Variant 2</h3>
+                    <p class="text-gray-600 text-right pr-3">
+                        1st correct = 6 P.<br>
+                        2nd correct = 6 P.<br>
+                        3rd correct = 6 P.<br>
+                        any Top10 = 1 P.
+                    </p>
+                </div>
+
+                <div class="flex-grow grid grid-cols-1 gap-1">
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 bg-yellow-500 border-2 border-yellow-500 rounded-l-lg flex items-center justify-center text-white">
+                            1
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#ff8000] bg-[#ff8000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            PIA
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
+                            2
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#3671c6] bg-[#3671c6] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            VER
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+6</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center mb-2">
+                        <div class="w-6 bg-amber-500 border-2 border-amber-500 rounded-l-lg flex items-center justify-center text-white">
+                            3
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            RUS
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+6</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#ff8000] bg-[#ff8000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            NOR
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ALB
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#dc0000] bg-[#dc0000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            HAM
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#229971] bg-[#229971] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ALO
+                        </div>
+                        <div class="ml-4 text-white text-sm">+0</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#dc0000] bg-[#dc0000] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            LEC
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#64c4ff] bg-[#64c4ff] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            SAI
+                        </div>
+                        <div class="ml-4 text-white text-sm">+0</div>
+                    </div>
+                    <div class="flex items-center text-xs justify-center">
+                        <div class="w-6 text-white bg-white border-2 border-white rounded-l-lg flex items-center justify-center text-white">
+                            x
+                        </div>
+                        <div class="max-w-[60px] flex-grow ml-2 font-bold text-center rounded-r-lg
+                                    border-2 border-[#27f4d2] bg-[#27f4d2] text-white shadow-md shadow-zinc-400" style="text-shadow: 0 0 8px gray;">
+                            ANT
+                        </div>
+                        <div class="ml-4 text-green-600 text-sm">+1</div>
+                    </div>
+                    <div class="pt-2 font-bold text-center">
+                        <div class="">Total: 18 Points</div>
+                    </div>
+                </div>
+                <button id="vote2" type="button" data-variant="2" class="vote-btn w-full mt-4 px-4 py-2 bg-opacity-80 bg-red-900 hover:bg-red-700 text-white rounded">
+                    I like this!
+                </button>
+            </div>
+        </div>
+
+        <div class="flex justify-center space-x-4">
+            <button id="dismissVoteBtn2" type="button" class="px-6 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded">
+                Skip voting
+            </button>
+        </div>
+    </div>
+</div>
+
+<form id="voteForm" class="hidden" action="/vote" method="post">
+    <input type="hidden" id="voteInput" name="voteInput" value="">
+</form>
+
+<script>
+    document.querySelectorAll('.vote-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            setLocalStorage();
+            document.getElementById('voteInput').value = button.getAttribute('data-variant');
+            document.getElementById('voteForm').submit();
+        });
+    });
+
+    document.getElementById('dismissVoteBtn1').addEventListener('click', setLocalStorage);
+    document.getElementById('dismissVoteBtn2').addEventListener('click', setLocalStorage);
+
+    function setLocalStorage() {
+        document.getElementById('voteModal').classList.add('hidden');
+        localStorage.setItem("polepick-dismissedVote1", true);
+    }
+
+    if (localStorage.getItem("polepick-dismissedVote1")) {
+        document.getElementById('voteModal').classList.add('hidden');
+    }
+</script>

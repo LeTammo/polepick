@@ -18,6 +18,14 @@ function formatDate(dateString) {
     });
 }
 
+function formatDateShort(dateString) {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('en-GB', {
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
 function formatTime(timeString) {
     if (!timeString) return '';
     return new Date(`1970-01-01T${timeString}`).toLocaleTimeString('en-GB', {
@@ -37,6 +45,7 @@ function error(message, error) {
 
 module.exports = {
     formatDate,
+    formatDateShort,
     formatTime,
     log,
     error

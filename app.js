@@ -1,18 +1,26 @@
-require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const mustacheExpress = require('mustache-express');
+const handlebars = require('express-handlebars')
 const dataService = require('./services/dataService');
-const routes = require('./routes');
+const userRoutes = require('./routes/user');
+const adminRoutes = require('./routes/admin');
+const errorRoutes = require('./routes/error');
 const utils = require("./utils");
 const cookieParser = require('cookie-parser');
 
 const app = express();
+require('dotenv').config();
 
-app.engine('mustache', mustacheExpress());
-app.set('view engine', 'mustache');
+app.engine('.hbs', handlebars.engine({
+    extname: '.hbs',
+    defaultLayout: 'base',
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+    partialsDir: path.join(__dirname, 'views/partials'),
+    iconsDir: path.join(__dirname, 'views/partials'),
+}));
+app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static('public'));
@@ -22,7 +30,9 @@ app.use(cookieParser());
 
 dataService.initializeDataFiles();
 
-routes(app);
+userRoutes(app);
+adminRoutes(app);
+errorRoutes(app);
 
 module.exports = app;
 

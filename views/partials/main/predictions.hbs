@@ -3,11 +3,11 @@
 <div id="otherPredictionsContainer" class="{{^userHasPredicted}}{{^race.predictionsEnded}}hidden{{/race.predictionsEnded}}{{/userHasPredicted}}">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
         {{#userPrediction}}
-            {{> partials/prediction}}
+            {{> prediction}}
         {{/userPrediction}}
-        {{#predictions}}
-            {{> partials/prediction}}
-        {{/predictions}}
+        {{#each predictions}}
+            {{> prediction}}
+        {{/each}}
     </div>
 
     {{^predictions}}{{^userPrediction}}

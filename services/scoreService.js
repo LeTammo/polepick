@@ -1,35 +1,27 @@
 function calculatePoints(prediction, result) {
-    if (!prediction || !result) return 0;
-
-    const resultDrivers = [result.first, result.second, result.third, ...result.others];
     const predictionDrivers = [prediction.first, prediction.second, prediction.third, ...prediction.others];
+    const remainingResultDrivers = [...result.pointsIds];
 
     let points = 0;
-    const remainingResultDrivers = [...resultDrivers];
 
-    if (prediction.first === result.first) {
-        points += 4;
-        const index = remainingResultDrivers.indexOf(result.first);
-        if (index !== -1) remainingResultDrivers.splice(index, 1);
-    }
-
-    if (prediction.second === result.second) {
-        points += 3;
-        const index = remainingResultDrivers.indexOf(result.second);
-        if (index !== -1) remainingResultDrivers.splice(index, 1);
-    }
-
-    if (prediction.third === result.third) {
+    if (prediction.third === remainingResultDrivers[2]) {
         points += 2;
-        const index = remainingResultDrivers.indexOf(result.third);
-        if (index !== -1) remainingResultDrivers.splice(index, 1);
+        remainingResultDrivers.splice(2, 1);
+    }
+
+    if (prediction.second === remainingResultDrivers[1]) {
+        points += 3;
+        remainingResultDrivers.splice(1, 1);
+    }
+
+    if (prediction.first === remainingResultDrivers[0]) {
+        points += 4;
+        remainingResultDrivers.splice(0, 1);
     }
 
     predictionDrivers.forEach(driver => {
         if (remainingResultDrivers.includes(driver)) {
             points += 1;
-            const index = remainingResultDrivers.indexOf(driver);
-            if (index !== -1) remainingResultDrivers.splice(index, 1);
         }
     });
 

@@ -11,15 +11,16 @@ function initializeDataFiles() {
         utils.log('Data folder created.');
     }
 
-    Object.values(['drivers.json', 'races.json', 'results.json', 'predictions.json'])
-          .forEach(file => {
-              const filePath = path.join(dataPath, file);
-              if (!fs.existsSync(filePath)) {
-                  utils.log(`${file} not found. Creating ${file}`);
-                  fs.writeFileSync(filePath, '[]', 'utf8');
-                  utils.log(`${file} created.`);
-              }
-          });
+    const requiredFiles = ['drivers.json', 'races.json', 'predictions.json', 'teams.json'];
+
+    requiredFiles.forEach(file => {
+        const filePath = path.join(dataPath, file);
+        if (!fs.existsSync(filePath)) {
+            utils.log(`${file} not found. Creating ${file}`);
+            fs.writeFileSync(filePath, '[]', 'utf8');
+            utils.log(`${file} created.`);
+        }
+    });
 }
 
 function loadData(file) {

@@ -1,32 +1,33 @@
 const dataService = require('../services/dataService');
 const driverModel = require('./driver');
-const resultModel = require('./result');
+const raceModel =require('./race');
 const scoreService = require('../services/scoreService');
 const utils = require('../utils');
 
-function getAllPredictions() {
+function findAllPredictions() {
     return dataService.loadData('predictions.json');
 }
 
-function getPredictionsByRaceId(raceId) {
-    const predictions = getAllPredictions();
+function findPredictionsByRaceId(raceId) {
+    const predictions = findAllPredictions();
     return predictions.filter(prediction => prediction.raceId === raceId);
 }
 
-function getFormattedPredictions(raceId) {
-    const predictions = getPredictionsByRaceId(raceId);
-    const result = resultModel.getResultByRaceId(raceId);
+function getPreparedPredictions(raceId) {
+    const predictions = findPredictionsByRaceId(raceId);
+    const race = raceModel.getPreparedRace(raceId);
 
     return predictions.map(prediction => {
-        const points = result ? scoreService.calculatePoints(prediction, result) : 0;
+        const points = race.result ? scoreService.calculatePoints(prediction, race.result) : 0;
 
         return {
+            id: prediction.id,
             username: prediction.username,
             timestamp: prediction.timestamp,
-            first: prepareDriver(prediction.first),
-            second: prepareDriver(prediction.second),
-            third: prepareDriver(prediction.third),
-            others: prediction.others.map(driverId => prepareDriver(driverId)),
+            first: driverModel.getPreparedDriverById(prediction.first),
+            second: driverModel.getPreparedDriverById(prediction.second),
+            third: driverModel.getPreparedDriverById(prediction.third),
+            others: prediction.others.map(driverId => driverModel.getPreparedDriverById(driverId)),
             points: points
         };
     }).sort((a, b) =>
@@ -34,55 +35,27 @@ function getFormattedPredictions(raceId) {
     );
 }
 
-function prepareDriver(driverId) {
-    const driver = driverModel.getDriverById(driverId);
-    if (!driver) {
-        return {
-            id: driverId,
-            name: driverId,
-            color: '#cccccc',
-            color_dark: '#999999'
-        };
-    }
-
-    return {
-        id: driverId,
-        name: driver.name,
-        color: driver.color,
-        color_dark: driver.color_dark
-    };
-}
-
-function createOrUpdatePrediction(raceId, predictionData) {
+function createOrUpdatePrediction(raceId, { username, first, second, third, others }) {
     try {
-        const { username, first, second, third, others } = predictionData;
-
         if (!username || !first || !second || !third || !others || others.length !== 7) {
             utils.error('Invalid prediction data');
             return false;
         }
 
-        const predictions = getAllPredictions();
+        const predictions = findAllPredictions();
         const existingPredictionIndex = predictions.findIndex(p =>
             p.raceId === raceId && p.username === username
         );
-
-        const firstId = driverModel.getDriverIdByName(first);
-        const secondId = driverModel.getDriverIdByName(second);
-        const thirdId = driverModel.getDriverIdByName(third);
-        const othersIds = Array.isArray(others)
-            ? others.map(driverModel.getDriverIdByName)
-            : [];
 
         if (existingPredictionIndex !== -1) {
             predictions[existingPredictionIndex] = {
                 ...predictions[existingPredictionIndex],
                 username,
                 timestamp: new Date().toISOString(),
-                first: firstId,
-                second: secondId,
-                third: thirdId,
-                others: othersIds
+                first,
+                second,
+                third,
+                others
             };
         } else {
             const newId = predictions.length > 0
@@ -94,10 +67,10 @@ function createOrUpdatePrediction(raceId, predictionData) {
                 raceId,
                 username,
                 timestamp: new Date().toISOString(),
-                first: firstId,
-                second: secondId,
-                third: thirdId,
-                others: othersIds
+                first,
+                second,
+                third,
+                others
             });
         }
 
@@ -108,9 +81,26 @@ function createOrUpdatePrediction(raceId, predictionData) {
     }
 }
 
+function deletePrediction(predictionId) {
+    try {
+        const predictions = findAllPredictions();
+        const filteredPredictions = predictions.filter(p => p.id !== predictionId);
+
+        if (filteredPredictions.length === predictions.length) {
+            return false;
+        }
+
+        return dataService.saveData('predictions.json', filteredPredictions);
+    } catch (error) {
+        utils.error('Error deleting prediction:', error);
+        return false;
+    }
+}
+
 module.exports = {
-    getAllPredictions,
-    getPredictionsByRaceId,
-    getFormattedPredictions,
-    createOrUpdatePrediction
+    findAllPredictions,
+    findPredictionsByRaceId,
+    getPreparedPredictions,
+    createOrUpdatePrediction,
+    deletePrediction
 };

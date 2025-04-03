@@ -1,0 +1,416 @@
+<div class="flex">
+    <div class="p-6 w-max-[900px] mx-auto">
+        {{#if drivers.length}}
+            <div class="overflow-x-auto shadow-lg">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-red-900 bg-opacity-90 text-white">
+                    <tr>
+                        <th class="px-4 lg:pr-16 lg:pl-8 text-left py-1">ID</th>
+                        <th class="px-4 lg:px-16 text-left">Name</th>
+                        <th class="px-4 lg:px-16 text-center">Team</th>
+                        <th class="px-4 lg:px-16 text-center">Color</th>
+                        <th class="px-4 lg:pl-16 lg:pr-8"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each drivers}}
+                        <tr class="border-t">
+                            <td class="px-4 lg:pr-16 lg:pl-8 py-1">{{id}}</td>
+                            <td class="px-4 lg:px-16">{{name}}</td>
+                            <td class="px-4 lg:px-16 text-center">{{team}}</td>
+                            <td class="px-4 lg:px-16">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                                </div>
+                            </td>
+                            <td class="px-4 lg:pl-16 lg:pr-8">
+                                <div class="flex space-x-2 justify-end">
+                                    <button class="edit-driver-btn bg-blue-500 hover:bg-blue-600 text-white px-2 py-[1px] rounded-md text-sm" data-id="{{id}}">
+                                        Edit
+                                    </button>
+                                    <button class="delete-driver-btn bg-red-500 hover:bg-red-600 text-white px-2 py-[1px] rounded-md text-sm" data-id="{{id}}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    <tr class="border-t">
+                        <td colspan="5" class="hover:cursor-pointer hover:bg-green-50">
+                            <button id="addDriverBtn" class="w-full h-full text-left pl-3 py-1">+ New Driver</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        {{else}}
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+                No drivers found. Add your first driver using the button above.
+            </div>
+        {{/if}}
+    </div>
+</div>
+
+<!-- Driver Modal -->
+<div id="driverModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full">
+        <h3 id="modalTitle" class="text-xl font-semibold mb-4">Add New Driver</h3>
+        <form id="driverForm">
+            <input type="hidden" id="driverId" name="driverId" value="">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="driverName">
+                    Driver Name
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="driverName" name="name" type="text" placeholder="Driver Name" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="driverTeam">
+                    Default Team
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="driverTeam" name="teamId" required>
+                    <option value="">Select a Team</option>
+                    {{#each teams}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="driverColor">
+                    Primary Color (optional)
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="driverColor" name="color" type="color" value="#cccccc">
+                <p class="text-sm text-gray-500 mt-1">Only used if different from team color</p>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="driverColorDark">
+                    Secondary Color (optional)
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="driverColorDark" name="color_dark" type="color" value="#999999">
+                <p class="text-sm text-gray-500 mt-1">Only used if different from team color</p>
+            </div>
+            <div class="flex items-center justify-between">
+                <button id="saveDriverBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Save
+                </button>
+                <button id="cancelDriverBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Race Assignments Modal -->
+<div id="assignmentsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-2xl w-full">
+        <h3 id="assignmentsModalTitle" class="text-xl font-semibold mb-4">Race Team Assignments</h3>
+        <p id="driverInfo" class="mb-4"></p>
+
+        <div class="max-h-96 overflow-y-auto mb-4">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-2 px-4 text-left">Race</th>
+                    <th class="py-2 px-4 text-left">Date</th>
+                    <th class="py-2 px-4 text-left">Team</th>
+                    <th class="py-2 px-4 text-left">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="assignmentsTableBody">
+                <!-- Assignments will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <button id="closeAssignmentsBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Team Assignment Edit Modal -->
+<div id="editAssignmentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full">
+        <h3 class="text-xl font-semibold mb-4">Edit Team Assignment</h3>
+        <form id="assignmentForm">
+            <input type="hidden" id="assignmentDriverId" name="driverId" value="">
+            <input type="hidden" id="assignmentRaceId" name="raceId" value="">
+
+            <div class="mb-4">
+                <p id="assignmentRaceInfo" class="font-semibold"></p>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="assignmentTeam">
+                    Team
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="assignmentTeam" name="teamId" required>
+                    <option value="">Select a Team</option>
+                    {{#each teams}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button id="saveAssignmentBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Save
+                </button>
+                <button id="cancelAssignmentBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full">
+        <h3 class="text-xl font-semibold mb-4">Confirm Deletion</h3>
+        <p class="mb-6">Are you sure you want to delete this driver? This action cannot be undone.</p>
+        <div class="flex items-center justify-between">
+            <button id="confirmDeleteBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Delete
+            </button>
+            <button id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const driverModal = document.getElementById('driverModal');
+        const assignmentsModal = document.getElementById('assignmentsModal');
+        const editAssignmentModal = document.getElementById('editAssignmentModal');
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        const driverForm = document.getElementById('driverForm');
+        const assignmentForm = document.getElementById('assignmentForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const driverIdInput = document.getElementById('driverId');
+
+        // Add new driver
+        document.getElementById('addDriverBtn').addEventListener('click', function() {
+            modalTitle.textContent = 'Add New Driver';
+            driverForm.reset();
+            driverIdInput.value = '';
+            toggleModal(driverModal, true);
+        });
+
+        // Edit driver
+        document.querySelectorAll('.edit-driver-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const driverId = this.getAttribute('data-id');
+                modalTitle.textContent = 'Edit Driver';
+
+                fetch(`/drivers/${driverId}`)
+                        .then(response => response.json())
+                        .then(driver => {
+                            driverIdInput.value = driver.id;
+                            document.getElementById('driverName').value = driver.name;
+                            document.getElementById('driverTeam').value = driver.defaultTeamId;
+                            document.getElementById('driverColor').value = driver.color || '#cccccc';
+                            document.getElementById('driverColorDark').value = driver.color_dark || '#999999';
+                            toggleModal(driverModal, true);
+                        });
+            });
+        });
+
+        // Race assignments
+        document.querySelectorAll('.race-assignments-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const driverId = this.getAttribute('data-id');
+                document.getElementById('assignmentDriverId').value = driverId;
+
+                // Get driver details
+                fetch(`/api/drivers/${driverId}`)
+                        .then(response => response.json())
+                        .then(driver => {
+                            document.getElementById('assignmentsModalTitle').textContent = `Race Team Assignments: ${driver.name}`;
+                            document.getElementById('driverInfo').textContent = `Default Team: ${driver.team || '(Not set)'}`;
+
+                            // Get all races
+                            fetch('/api/races')
+                                    .then(response => response.json())
+                                    .then(races => {
+                                        const tableBody = document.getElementById('assignmentsTableBody');
+                                        tableBody.innerHTML = '';
+
+                                        // Sort races by date (most recent first)
+                                        races.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                                        races.forEach(race => {
+                                            // Find assignment for this race
+                                            const assignment = driver.teamAssignments && driver.teamAssignments.find(a => a.raceId === race.id);
+                                            const teamId = assignment ? assignment.teamId : driver.defaultTeamId;
+                                            const teamName = assignment ?
+                                                    document.querySelector(`#assignmentTeam option[value="${teamId}"]`).textContent :
+                                                    '(Default Team)';
+
+                                            const row = document.createElement('tr');
+                                            row.className = 'border-t';
+                                            row.innerHTML = `
+                                        <td class="py-2 px-4">${race.name}</td>
+                                        <td class="py-2 px-4">${race.formattedDate}</td>
+                                        <td class="py-2 px-4">${teamName}</td>
+                                        <td class="py-2 px-4">
+                                            <button class="edit-assignment-btn bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded text-xs"
+                                                data-race-id="${race.id}"
+                                                data-race-name="${race.name}"
+                                                data-race-date="${race.formattedDate}"
+                                                data-team-id="${teamId}">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    `;
+
+                                            tableBody.appendChild(row);
+                                        });
+
+                                        // Add event listeners to edit buttons
+                                        document.querySelectorAll('.edit-assignment-btn').forEach(btn => {
+                                            btn.addEventListener('click', function() {
+                                                const raceId = this.getAttribute('data-race-id');
+                                                const raceName = this.getAttribute('data-race-name');
+                                                const raceDate = this.getAttribute('data-race-date');
+                                                const teamId = this.getAttribute('data-team-id');
+
+                                                document.getElementById('assignmentRaceId').value = raceId;
+                                                document.getElementById('assignmentRaceInfo').textContent = `${raceName} - ${raceDate}`;
+                                                document.getElementById('assignmentTeam').value = teamId;
+
+                                                toggleModal(editAssignmentModal, true);
+                                            });
+                                        });
+
+                                        toggleModal(assignmentsModal, true);
+                                    });
+                        });
+            });
+        });
+
+        // Save team assignment
+        assignmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(assignmentForm);
+            const assignmentData = {
+                driverId: formData.get('driverId'),
+                raceId: formData.get('raceId'),
+                teamId: formData.get('teamId')
+            };
+
+            fetch('/api/drivers/assign', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(assignmentData)
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            toggleModal(editAssignmentModal, false);
+
+                            // Refresh assignments list
+                            document.querySelector(`.race-assignments-btn[data-id="${assignmentData.driverId}"]`).click();
+                        } else {
+                            alert('Error saving team assignment');
+                        }
+                    });
+        });
+
+        // Delete driver
+        let driverToDelete = null;
+        document.querySelectorAll('.delete-driver-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                driverToDelete = this.getAttribute('data-id');
+                toggleModal(deleteConfirmModal, true);
+            });
+        });
+
+        // Cancel buttons
+        document.getElementById('cancelDriverBtn').addEventListener('click', function() {
+            toggleModal(driverModal, false);
+        });
+
+        document.getElementById('closeAssignmentsBtn').addEventListener('click', function() {
+            toggleModal(assignmentsModal, false);
+        });
+
+        document.getElementById('cancelAssignmentBtn').addEventListener('click', function() {
+            toggleModal(editAssignmentModal, false);
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+            toggleModal(deleteConfirmModal, false);
+            driverToDelete = null;
+        });
+
+        // Save driver form
+        driverForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const isEdit = driverIdInput.value !== '';
+            const endpoint = isEdit ? `/api/drivers/${driverIdInput.value}` : '/api/drivers';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            const formData = new FormData(driverForm);
+            const driverData = {
+                name: formData.get('name'),
+                teamId: formData.get('teamId'),
+                color: formData.get('color'),
+                color_dark: formData.get('color_dark')
+            };
+
+            fetch(endpoint, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(driverData)
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Error saving driver');
+                        }
+                    });
+        });
+
+        // Confirm delete driver
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (driverToDelete) {
+                fetch(`/api/drivers/${driverToDelete}`, {
+                    method: 'DELETE'
+                })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Error deleting driver');
+                            }
+                        });
+            }
+        });
+
+        // Helper function to toggle modals
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+    });
+</script>

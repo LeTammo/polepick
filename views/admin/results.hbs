@@ -1,0 +1,449 @@
+<div class="flex">
+    <div class="w-full p-6">
+        <div class="mb-6">
+            <h2 class="text-2xl font-semibold">Manage Race Results</h2>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h3 class="text-lg font-semibold mb-4">Select Race</h3>
+            <select id="raceSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">Select a race</option>
+                {{#each races}}
+                    <option value="{{id}}">{{name}} - {{formattedDate}}</option>
+                {{/each}}
+            </select>
+        </div>
+
+        <div id="resultContainer" class="bg-white p-6 rounded-lg shadow-md hidden">
+            <h3 id="raceName" class="text-xl font-semibold mb-4"></h3>
+
+            <form id="resultForm">
+                <input type="hidden" id="raceId" name="raceId" value="">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            1st Place
+                        </label>
+                        <select id="firstPlace" name="first" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="">Select Driver</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            2nd Place
+                        </label>
+                        <select id="secondPlace" name="second" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="">Select Driver</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            3rd Place
+                        </label>
+                        <select id="thirdPlace" name="third" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <option value="">Select Driver</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold mb-4">Positions 4-10</h4>
+                    <div id="othersContainer" class="space-y-2"></div>
+                </div>
+
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold mb-4">Remaining Drivers (DNF/Outside Top 10)</h4>
+                    <div id="remainingContainer" class="space-y-2"></div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Save Results
+                    </button>
+                    <button type="button" id="deleteResultBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Delete Results
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full">
+        <h3 class="text-xl font-semibold mb-4">Confirm Deletion</h3>
+        <p class="mb-6">Are you sure you want to delete this race result? This action cannot be undone.</p>
+        <div class="flex items-center justify-between">
+            <button id="confirmDeleteBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Delete
+            </button>
+            <button id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const raceSelect = document.getElementById('raceSelect');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultForm = document.getElementById('resultForm');
+        const raceId = document.getElementById('raceId');
+        const raceName = document.getElementById('raceName');
+        const firstPlace = document.getElementById('firstPlace');
+        const secondPlace = document.getElementById('secondPlace');
+        const thirdPlace = document.getElementById('thirdPlace');
+        const othersContainer = document.getElementById('othersContainer');
+        const remainingContainer = document.getElementById('remainingContainer');
+        const deleteResultBtn = document.getElementById('deleteResultBtn');
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+
+        let drivers = [];
+        let selectedDrivers = new Set();
+        let existingResult = null;
+
+        // Race Selection
+        raceSelect.addEventListener('change', function() {
+            const selectedRaceId = this.value;
+
+            if (!selectedRaceId) {
+                resultContainer.classList.add('hidden');
+                return;
+            }
+
+            // Fetch race drivers
+            fetch(`/api/races/${selectedRaceId}/drivers`)
+                    .then(response => response.json())
+                    .then(data => {
+                        drivers = data;
+                        raceId.value = selectedRaceId;
+
+                        // Get race details
+                        fetch(`/api/races/${selectedRaceId}`)
+                                .then(response => response.json())
+                                .then(race => {
+                                    raceName.textContent = `${race.name} - ${race.formattedDate}`;
+                                });
+
+                        // Check if result exists
+                        fetch(`/api/results/${selectedRaceId}`)
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    }
+                                    return null;
+                                })
+                                .then(result => {
+                                    existingResult = result;
+                                    resetForm();
+
+                                    if (result) {
+                                        populateForm(result);
+                                    } else {
+                                        populateEmptyForm();
+                                    }
+
+                                    resultContainer.classList.remove('hidden');
+                                });
+                    });
+        });
+
+        // Form submission
+        resultForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(resultForm);
+            const resultData = {
+                raceId: formData.get('raceId'),
+                first: formData.get('first'),
+                second: formData.get('second'),
+                third: formData.get('third'),
+                others: Array.from(formData.getAll('others[]')).filter(id => id),
+                remaining: Array.from(formData.getAll('remaining[]')).filter(id => id)
+            };
+
+            fetch('/api/results', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resultData)
+            })
+            <!-- This continues from where your results.handlebars file cut off -->
+        .then(response => {
+                if (response.ok) {
+                    alert('Race results saved successfully!');
+                    existingResult = resultData;
+                } else {
+                    alert('Error saving race results');
+                }
+            })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while saving results');
+                    });
+        });
+
+        // Delete result
+        deleteResultBtn.addEventListener('click', function() {
+            if (!raceId.value) return;
+
+            toggleModal(deleteConfirmModal, true);
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (!raceId.value) return;
+
+            fetch(`/api/results/${raceId.value}`, {
+                method: 'DELETE'
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Race results deleted successfully!');
+                            resetForm();
+                            raceSelect.value = '';
+                            resultContainer.classList.add('hidden');
+                            toggleModal(deleteConfirmModal, false);
+                        } else {
+                            alert('Error deleting race results');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting results');
+                    });
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+            toggleModal(deleteConfirmModal, false);
+        });
+
+        // Helper Functions
+        function resetForm() {
+            resultForm.reset();
+            firstPlace.innerHTML = '<option value="">Select Driver</option>';
+            secondPlace.innerHTML = '<option value="">Select Driver</option>';
+            thirdPlace.innerHTML = '<option value="">Select Driver</option>';
+            othersContainer.innerHTML = '';
+            remainingContainer.innerHTML = '';
+            selectedDrivers = new Set();
+        }
+
+        function populateForm(result) {
+            // Set podium positions
+            selectedDrivers.add(result.first);
+            selectedDrivers.add(result.second);
+            selectedDrivers.add(result.third);
+
+            populateDriverSelect(firstPlace, result.first);
+            populateDriverSelect(secondPlace, result.second);
+            populateDriverSelect(thirdPlace, result.third);
+
+            // Populate other positions (4-10)
+            if (result.others && result.others.length > 0) {
+                result.others.forEach((driverId, index) => {
+                    selectedDrivers.add(driverId);
+                    addDriverPositionRow(othersContainer, index + 4, driverId, 'others[]');
+                });
+            }
+
+            // Add empty slots up to position 10 if needed
+            for (let i = (result.others ? result.others.length : 0); i < 7; i++) {
+                addDriverPositionRow(othersContainer, i + 4, '', 'others[]');
+            }
+
+            // Populate remaining drivers
+            if (result.remaining && result.remaining.length > 0) {
+                result.remaining.forEach(driverId => {
+                    selectedDrivers.add(driverId);
+                    addDriverRow(remainingContainer, driverId, 'remaining[]');
+                });
+            }
+
+            // Add empty slot for remaining drivers
+            addDriverRow(remainingContainer, '', 'remaining[]');
+
+            // Show delete button for existing results
+            deleteResultBtn.classList.remove('hidden');
+        }
+
+        function populateEmptyForm() {
+            // Add empty podium positions
+            populateDriverSelect(firstPlace, '');
+            populateDriverSelect(secondPlace, '');
+            populateDriverSelect(thirdPlace, '');
+
+            // Add empty slots for positions 4-10
+            for (let i = 0; i < 7; i++) {
+                addDriverPositionRow(othersContainer, i + 4, '', 'others[]');
+            }
+
+            // Add empty slot for remaining drivers
+            addDriverRow(remainingContainer, '', 'remaining[]');
+
+            // Hide delete button for new results
+            deleteResultBtn.classList.add('hidden');
+        }
+
+        function populateDriverSelect(selectElement, selectedId) {
+            selectElement.innerHTML = '<option value="">Select Driver</option>';
+
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver.id;
+                option.textContent = `${driver.name} (${driver.team})`;
+
+                if (driver.id === selectedId) {
+                    option.selected = true;
+                }
+
+                selectElement.appendChild(option);
+            });
+
+            // Add change event listener to update selectedDrivers
+            selectElement.addEventListener('change', function() {
+                updateSelectedDrivers();
+            });
+        }
+
+        function addDriverPositionRow(container, position, selectedId, name) {
+            const row = document.createElement('div');
+            row.className = 'flex items-center space-x-2 mb-2';
+
+            row.innerHTML = `
+                <div class="w-12 font-semibold text-right">${position}.</div>
+                <select name="${name}" class="driver-select shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select Driver</option>
+                </select>
+            `;
+
+            const select = row.querySelector('select');
+
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver.id;
+                option.textContent = `${driver.name} (${driver.team})`;
+
+                if (driver.id === selectedId) {
+                    option.selected = true;
+                }
+
+                select.appendChild(option);
+            });
+
+            // Add change event listener to update selectedDrivers
+            select.addEventListener('change', function() {
+                updateSelectedDrivers();
+
+                // Add a new row if this is the last remaining row and a driver is selected
+                if (name === 'remaining[]' && this.value && this.parentElement === container.lastChild) {
+                    addDriverRow(remainingContainer, '', 'remaining[]');
+                }
+            });
+
+            container.appendChild(row);
+        }
+
+        function addDriverRow(container, selectedId, name) {
+            const row = document.createElement('div');
+            row.className = 'flex items-center space-x-2 mb-2';
+
+            row.innerHTML = `
+                <select name="${name}" class="driver-select shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select Driver</option>
+                </select>
+                <button type="button" class="remove-driver-btn bg-red-500 hover:bg-red-600 text-white p-2 rounded">
+                    &times;
+                </button>
+            `;
+
+            const select = row.querySelector('select');
+
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver.id;
+                option.textContent = `${driver.name} (${driver.team})`;
+
+                if (driver.id === selectedId) {
+                    option.selected = true;
+                }
+
+                select.appendChild(option);
+            });
+
+            // Add change event listener to update selectedDrivers
+            select.addEventListener('change', function() {
+                updateSelectedDrivers();
+
+                // Add a new row if this is the last row and a driver is selected
+                if (this.value && this.parentElement === container.lastChild) {
+                    addDriverRow(container, '', name);
+                }
+            });
+
+            // Remove row when button is clicked
+            row.querySelector('.remove-driver-btn').addEventListener('click', function() {
+                // Don't remove if it's the only row left
+                if (container.childElementCount > 1) {
+                    container.removeChild(row);
+                    updateSelectedDrivers();
+                } else {
+                    // Just clear the selection
+                    select.value = '';
+                    updateSelectedDrivers();
+                }
+            });
+
+            container.appendChild(row);
+        }
+
+        function updateSelectedDrivers() {
+            selectedDrivers = new Set();
+
+            // Add podium positions
+            if (firstPlace.value) selectedDrivers.add(firstPlace.value);
+            if (secondPlace.value) selectedDrivers.add(secondPlace.value);
+            if (thirdPlace.value) selectedDrivers.add(thirdPlace.value);
+
+            // Add other positions
+            document.querySelectorAll('select[name="others[]"]').forEach(select => {
+                if (select.value) selectedDrivers.add(select.value);
+            });
+
+            // Add remaining drivers
+            document.querySelectorAll('select[name="remaining[]"]').forEach(select => {
+                if (select.value) selectedDrivers.add(select.value);
+            });
+
+            // Update all selects to disable selected options
+            updateSelectOptions();
+        }
+
+        function updateSelectOptions() {
+            document.querySelectorAll('.driver-select').forEach(select => {
+                const currentValue = select.value;
+
+                Array.from(select.options).forEach(option => {
+                    if (option.value && option.value !== currentValue) {
+                        option.disabled = selectedDrivers.has(option.value);
+                    } else {
+                        option.disabled = false;
+                    }
+                });
+            });
+        }
+
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+    });
+</script>

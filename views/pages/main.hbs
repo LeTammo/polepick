@@ -1,0 +1,29 @@
+<div class="px-4 py-6">
+    {{#if race.name}}
+        {{#> layout}}
+            {{#*inline "pageTitle"}}{{race.name}}{{/inline}}
+        {{/layout}}
+    {{/if}}
+
+    {{> raceInfo}}
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <section class="md:col-span-6 lg:col-span-5 xl:col-span-4 bg-white rounded-lg shadow-md p-6">
+            {{#if hasResult}}
+                {{> main/result}}
+            {{else}}
+                {{> main/grid}}
+            {{/if}}
+        </section>
+
+        <section class="md:col-span-6 lg:col-span-7 xl:col-span-8 bg-white rounded-lg shadow-md p-6">
+            <div id="prediction" class="{{#if race.predictionsEnded}}hidden{{/if}}">
+                {{> main/predict}}
+            </div>
+            <div id="predictions" class="{{#unless race.predictionsEnded}}hidden{{/unless}}">
+                <div>{{> pointsInfo}}</div>
+                {{> main/predictions}}
+            </div>
+        </section>
+    </div>
+</div>

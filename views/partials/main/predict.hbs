@@ -222,7 +222,10 @@
             });
 
             function handleDragStart(e) {
-                e.dataTransfer.setData('text/plain', e.target.dataset.driver);
+                e.dataTransfer.setData('id', e.target.dataset.driver);
+                e.dataTransfer.setData('name', e.target.dataset.name);
+                e.dataTransfer.setData('color', e.target.dataset.color);
+                e.dataTransfer.setData('label', e.target.dataset.label);
                 e.dataTransfer.effectAllowed = 'move';
                 window.draggedElement = e.target;
                 setTimeout(() => {
@@ -251,98 +254,101 @@
             function handleDrop(e) {
                 e.preventDefault();
                 e.currentTarget.classList.remove('border-red-500');
-
-                const driver = e.dataTransfer.getData('text/plain');
-                const color = driverColors[driver];
+                const driver = {
+                    id: e.dataTransfer.getData('id'),
+                    name: e.dataTransfer.getData('name'),
+                    color: e.dataTransfer.getData('color'),
+                    label: e.dataTransfer.getData('label'),
+                }
                 const targetSlot = e.currentTarget;
 
                 if (targetSlot.id === 'driversGrid') {
-                    removeDriverFromPreviousSlot(driver);
+                    removeDriverFromPreviousSlot(driver.id);
                     return;
                 }
 
-                removeDriverFromPreviousSlot(driver);
+                removeDriverFromPreviousSlot(driver.id);
 
                 let existingDriver = null;
 
                 if (targetSlot.id === 'firstSlot' || targetSlot.dataset.position === 'first') {
                     existingDriver = predictions.first;
-                    predictions.first = driver;
-                    firstInput.value = driver;
-                    renderPodiumSlot(firstSlot, driver, color, 'first');
+                    predictions.first = driver.id;
+                    firstInput.value = driver.id;
+                    renderPodiumSlot(firstSlot, driver, 'first');
 
                 } else if (targetSlot.id === 'secondSlot' || targetSlot.dataset.position === 'second') {
                     existingDriver = predictions.second;
-                    predictions.second = driver;
-                    secondInput.value = driver;
-                    renderPodiumSlot(secondSlot, driver, color, 'second');
+                    predictions.second = driver.id;
+                    secondInput.value = driver.id;
+                    renderPodiumSlot(secondSlot, driver, 'second');
 
                 } else if (targetSlot.id === 'thirdSlot' || targetSlot.dataset.position === 'third') {
                     existingDriver = predictions.third;
-                    predictions.third = driver;
-                    thirdInput.value = driver;
-                    renderPodiumSlot(thirdSlot, driver, color, 'third');
+                    predictions.third = driver.id;
+                    thirdInput.value = driver.id;
+                    renderPodiumSlot(thirdSlot, driver, 'third');
 
                 } else if (targetSlot.id === 'othersSlot' || targetSlot.id === 'othersContainer') {
                     if (predictions.others.length < 7) {
-                        predictions.others.push(driver);
-                        addDriverToOthers(driver, color);
+                        predictions.others.push(driver.id);
+                        addDriverToOthers(driver);
                     }
                 }
 
-                if (existingDriver && existingDriver !== driver) {
+                if (existingDriver && existingDriver !== driver.id) {
                     addToDriversPool(existingDriver);
                 }
 
                 checkFormValidity();
             }
 
-            function removeFromDriversPool(driverName) {
-                const driverElements = driversPool.querySelectorAll(`.driver-item[data-driver="${driverName}"]`);
+            function removeFromDriversPool(id) {
+                const driverElements = driversPool.querySelectorAll(`.driver-item[data-driver="${id}"]`);
                 driverElements.forEach(el => el.remove());
             }
 
-            function addToDriversPool(driverName) {
-                const existing = driversPool.querySelector(`.driver-item[data-driver="${driverName}"]`);
+            function addToDriversPool(id) {
+                const existing = driversPool.querySelector(`.driver-item[data-driver="${id}"]`);
                 if (!existing) {
-                    const color = driverColors[driverName];
+                    const color = driverColors[id];
                     const driverEl = document.createElement('div');
                     driverEl.className = "driver-item p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
-                    driverEl.textContent = driverName;
+                    driverEl.textContent = existing.name;
                     driverEl.draggable = true;
                     driverEl.setAttribute('data-color', color);
-                    driverEl.setAttribute('data-driver', driverName);
+                    driverEl.setAttribute('data-driver', id);
                     driverEl.addEventListener('dragstart', handleDragStart);
                     driverEl.addEventListener('dragend', handleDragEnd);
                     driversPool.appendChild(driverEl);
                 }
             }
 
-            function removeDriverFromPreviousSlot(driver) {
-                if (predictions.first === driver) {
+            function removeDriverFromPreviousSlot(id) {
+                if (predictions.first === id) {
                     predictions.first = null;
                     firstInput.value = '';
-                    renderPodiumSlot(firstSlot, null, null, 'first');
-                    addToDriversPool(driver);
-                } else if (predictions.second === driver) {
+                    renderPodiumSlot(firstSlot, null, 'first');
+                    addToDriversPool(id);
+                } else if (predictions.second === id) {
                     predictions.second = null;
                     secondInput.value = '';
-                    renderPodiumSlot(secondSlot, null, null, 'second');
-                    addToDriversPool(driver);
-                } else if (predictions.third === driver) {
+                    renderPodiumSlot(secondSlot, null, 'second');
+                    addToDriversPool(id);
+                } else if (predictions.third === id) {
                     predictions.third = null;
                     thirdInput.value = '';
-                    renderPodiumSlot(thirdSlot, null, null, 'third');
-                    addToDriversPool(driver);
+                    renderPodiumSlot(thirdSlot, null, 'third');
+                    addToDriversPool(id);
                 } else {
-                    const index = predictions.others.indexOf(driver);
+                    const index = predictions.others.indexOf(id);
                     if (index !== -1) {
-                        const driverElement = othersContainer.querySelector(`.driver-item[data-driver="${driver}"]`);
+                        const driverElement = othersContainer.querySelector(`.driver-item[data-driver="${id}"]`);
                         if (driverElement) {
                             driverElement.remove();
                         }
 
-                        const input = othersInputs.querySelector(`input[value="${driver}"]`);
+                        const input = othersInputs.querySelector(`input[value="${id}"]`);
                         if (input) {
                             input.remove();
                         }
@@ -351,12 +357,12 @@
 
                         updateOthersCounter();
 
-                        addToDriversPool(driver);
+                        addToDriversPool(id);
                     }
                 }
             }
 
-            function renderPodiumSlot(slot, driver, color, position) {
+            function renderPodiumSlot(slot, driver, position) {
                 const hiddenInput = slot.querySelector('input[type="hidden"]');
 
                 const positionAttr = slot.getAttribute('data-position');
@@ -372,24 +378,28 @@
 
                 if (driver) {
                     const driverEl = document.createElement('div');
-                    driverEl.className = "w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
-                    driverEl.textContent = driver;
+                    driverEl.className = "w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + driver.color + "] bg-[" + driver.color + "] text-white shadow-sm cursor-move";
+                    driverEl.textContent = driver.name;
                     driverEl.draggable = true;
-                    driverEl.setAttribute('data-color', color);
-                    driverEl.setAttribute('data-driver', driver);
+                    driverEl.setAttribute('data-driver', driver.id);
+                    driverEl.setAttribute('data-name', driver.name);
+                    driverEl.setAttribute('data-label', driver.label);
+                    driverEl.setAttribute('data-color', driver.color);
                     driverEl.addEventListener('dragstart', handleDragStart);
                     driverEl.addEventListener('dragend', handleDragEnd);
                     slot.appendChild(driverEl);
                 }
             }
 
-            function addDriverToOthers(driver, color) {
+            function addDriverToOthers(driver) {
                 const driverEl = document.createElement('div');
-                driverEl.className = "driver-item w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + color + "] bg-[" + color + "] text-white shadow-sm cursor-move";
-                driverEl.textContent = driver;
+                driverEl.className = "driver-item w-full p-1 mb-2 text-md font-bold text-center rounded-lg border-2 border-[" + driver.color + "] bg-[" + driver.color + "] text-white shadow-sm cursor-move";
+                driverEl.textContent = driver.name;
                 driverEl.draggable = true;
-                driverEl.setAttribute('data-color', color);
-                driverEl.setAttribute('data-driver', driver);
+                driverEl.setAttribute('data-driver', driver.id);
+                driverEl.setAttribute('data-name', driver.name);
+                driverEl.setAttribute('data-label', driver.label);
+                driverEl.setAttribute('data-color', driver.color);
                 driverEl.addEventListener('dragstart', handleDragStart);
                 driverEl.addEventListener('dragend', handleDragEnd);
 
@@ -400,11 +410,11 @@
                     othersContainer.appendChild(driverEl);
                 }
 
-                const index = predictions.others.indexOf(driver);
+                const index = predictions.others.indexOf(driver.id);
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = `others[${index}]`;
-                input.value = driver;
+                input.value = driver.id;
                 othersInputs.appendChild(input);
 
                 updateOthersCounter();

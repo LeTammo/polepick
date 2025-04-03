@@ -1,0 +1,148 @@
+<div class="flex">
+    <div class="w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">Manage Races</h2>
+            <a href="/admin/races/new" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                Add New Race
+            </a>
+        </div>
+
+        {{#if races.length}}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
+                    <tr>
+                        <th class="py-3 px-4 text-left">ID</th>
+                        <th class="py-3 px-4 text-left">Name</th>
+                        <th class="py-3 px-4 text-left">Location</th>
+                        <th class="py-3 px-4 text-left">Date</th>
+                        <th class="py-3 px-4 text-left">Status</th>
+                        <th class="py-3 px-4 text-left">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each races}}
+                        <tr class="border-t">
+                            <td class="py-3 px-4">{{id}}</td>
+                            <td class="py-3 px-4">{{name}}</td>
+                            <td class="py-3 px-4">{{location}}</td>
+                            <td class="py-3 px-4">{{formattedDate}}</td>
+                            <td class="py-3 px-4">
+                                {{#if predictionsEnded}}
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">Closed</span>
+                                {{else}}
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Open</span>
+                                {{/if}}
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <a href="/admin/races/{{id}}" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
+                                        Edit
+                                    </a>
+                                    <button class="toggle-predictions-btn bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded text-sm"
+                                            data-id="{{id}}"
+                                            data-status="{{predictionsEnded}}">
+                                        {{#if predictionsEnded}}
+                                            Open Predictions
+                                        {{else}}
+                                            Close Predictions
+                                        {{/if}}
+                                    </button>
+                                    <button class="delete-race-btn bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-sm" data-id="{{id}}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{else}}
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+                No races found. Add your first race using the button above.
+            </div>
+        {{/if}}
+    </div>
+</div>
+
+<div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full">
+        <h3 class="text-xl font-semibold mb-4">Confirm Deletion</h3>
+        <p class="mb-6">Are you sure you want to delete this race? This action cannot be undone and will also remove all predictions and results for this race.</p>
+        <div class="flex items-center justify-between">
+            <button id="confirmDeleteBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Delete
+            </button>
+            <button id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+
+        document.querySelectorAll('.toggle-predictions-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const raceId = this.getAttribute('data-id');
+                const currentStatus = this.getAttribute('data-status') === 'true';
+
+                fetch(`/api/races/${raceId}/toggle-predictions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ predictionsEnded: !currentStatus })
+                })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Error updating prediction status');
+                            }
+                        });
+            });
+        });
+
+        let raceToDelete = null;
+        document.querySelectorAll('.delete-race-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                raceToDelete = this.getAttribute('data-id');
+                toggleModal(deleteConfirmModal, true);
+            });
+        });
+
+        document.getElementById('cancelDeleteBtn').addEventListener('click', function() {
+            toggleModal(deleteConfirmModal, false);
+            raceToDelete = null;
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (raceToDelete) {
+                fetch(`/api/races/${raceToDelete}`, {
+                    method: 'DELETE'
+                })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Error deleting race');
+                            }
+                        });
+            }
+        });
+
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+    });
+</script>

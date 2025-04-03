@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{pageTitle}}{{^pageTitle}}F1 Prediction League{{/pageTitle}}</title>
+    <title>{{#pageTitle}}{{.}}{{/pageTitle}}PolePick</title>
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
+{{#if useAdminHeader}}
+    {{> admin/header }}
+{{else}}
+    {{> header }}
+{{/if}}
 
-{{> main}}
+<main class="container max-w-[1400px] mx-auto flex-grow">
+    {{{body}}}
+</main>
 
+{{> footer}}
 </body>
 </html>

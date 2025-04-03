@@ -1,15 +1,8 @@
-const controller = require('./controller');
 const express = require("express");
+const utils = require("../utils");
 
 module.exports = function (app) {
     const router = express.Router();
-
-    router.get('/', controller.getHomePage);
-    router.get('/leaderboard', controller.getLeaderboardPage);
-    router.get('/race/:id', controller.getRacePage);
-    router.post('/race/:id/predict', controller.submitPrediction);
-
-    app.use('/', router);
 
     app.use((req, res) => {
         res.status(404).render('error', {
@@ -18,9 +11,11 @@ module.exports = function (app) {
     });
 
     app.use((err, req, res, next) => {
-        console.error(err.stack);
+        utils.error('Unhandled error:', err.stack || err);
         res.status(500).render('error', {
             message: 'Something went wrong!'
         });
     });
+
+    app.use('/', router);
 };

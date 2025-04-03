@@ -1,0 +1,78 @@
+<div class="w-full p-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div>
+            <a href="/admin/teams">
+                <div class="bg-white p-4 rounded shadow-lg flex justify-center gap-4 items-center mb-8 hover:bg-blue-50 hover:scale-95 transition">
+                    <p class="text-3xl font-bold">{{teams.length}}</p>
+                    <h3 class="text-xl font-semibold text-gray-700">Teams</h3>
+                </div>
+            </a>
+            <div>
+                <a href="/admin/team/new" class="text-sm text-gray-600">
+                    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mb-6">
+                        + Add New Team
+                    </div>
+                </a>
+                {{#each teams}}
+                    <a href="/admin/team/{{id}}" class="text-sm text-gray-600">
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
+                            <div class="flex justify-center items-center space-x-2">
+                                <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                            </div>
+                            {{name}}
+                        </div>
+                    </a>
+                {{/each}}
+            </div>
+        </div>
+        <div>
+            <a href="/admin/drivers">
+                <div class="bg-white p-4 rounded shadow-lg flex justify-center gap-4 items-center mb-8 hover:bg-blue-50 hover:scale-95 transition">
+                    <p class="text-3xl font-bold">{{drivers.length}}</p>
+                    <h3 class="text-xl font-semibold text-gray-700">Drivers</h3>
+                </div>
+            </a>
+            <div>
+                <a href="/admin/driver/new" class="text-sm text-gray-600">
+                    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mb-6">
+                        + Add New Driver
+                    </div>
+                </a>
+                {{#each drivers}}
+                    <a href="/admin/driver/{{id}}" class="text-sm text-gray-600">
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
+                            <div class="flex justify-center items-center space-x-2">
+                                <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                            </div>
+                            {{name}}
+                        </div>
+                    </a>
+                {{/each}}
+            </div>
+        </div>
+        <div>
+            <a href="/admin/races">
+                <div class="bg-white p-4 rounded shadow-lg flex justify-center gap-4 items-center mb-8 hover:bg-blue-50 hover:scale-95 transition">
+                    <p class="text-3xl font-bold">{{races.length}}</p>
+                    <h3 class="text-xl font-semibold text-gray-700">Races</h3>
+                </div>
+            </a>
+            <div>
+                <a href="/admin/races/new" class="text-sm text-gray-600">
+                    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mb-6">
+                        + Add New Race
+                    </div>
+                </a>
+                {{#each races}}
+                    <a href="/admin/race/{{id}}" class="text-sm text-gray-600">
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
+                            <div>{{formattedDate}}</div>
+                            <img src="flags/{{flag}}" class="inline h-5">
+                            <div>{{name}}</div>
+                        </div>
+                    </a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

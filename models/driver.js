@@ -1,45 +1,102 @@
 const dataService = require('../services/dataService');
+const teamModel = require('./team');
+const utils = require('../utils');
 
-function getAllDrivers() {
+function findAllDrivers() {
     return dataService.loadData('drivers.json');
 }
 
-function getDriverById(driverId) {
-    const drivers = getAllDrivers();
-    return drivers.find(driver => driver.id === driverId) || null;
+function findDriverById(id) {
+    return findAllDrivers().find(driver => driver.id === id) || null;
 }
 
-function getDriverNameById(driverId) {
-    const driver = getDriverById(driverId);
-    return driver ? driver.name : driverId;
+function findDriverByLabelAndTeam(label, team) {
+    return findAllDrivers().find(d => d.label === label && d.team === team) || null;
 }
 
-function getDriverIdByName(driverName) {
-    const drivers = getAllDrivers();
-    const driver = drivers.find(d =>
-        d.name === driverName ||
-        d.customId === driverName
-    );
-    return driver ? driver.id : driverName;
+function getPreparedDriversByIds(drivers, startIndex = 0) {
+    return drivers.map((id, index) => {
+        return {
+            position: startIndex + index + 1,
+            isOdd: (startIndex + index) % 2 !== 0,
+            ...getPreparedDriverById(id),
+        }
+    });
 }
 
-function getPreparedDriver(driverId) {
-    const driver = getDriverById(driverId);
-    if (!driver) return null;
+function getPreparedDriverById(id) {
+    const driver = findDriverById(id);
+    const team = teamModel.getTeamById(driver.team);
 
     return {
-        id: driver.id,
-        name: driver.name,
-        color: driver.color,
-        color_dark: driver.color_dark,
-        team: driver.team
+        ...driver,
+        team: team.name,
+        teamLong: team.nameLong,
+        color: team.color,
+        teamId: team.id,
     };
 }
 
+function createDriver(driverData) {
+    try {
+        const drivers = findAllDrivers();
+        const uniqueDrivers = Array.from(new Set(drivers.map(d => d.label)))
+            .map(label => drivers.find(d => d.label === label));
+
+        const newDriver = {
+            id: 1 + 5 * uniqueDrivers.length,
+            ...driverData
+        };
+
+        drivers.push(newDriver);
+        return dataService.saveData('drivers.json', drivers) ? newDriver : null;
+    } catch (error) {
+        utils.error('Error creating driver:', error);
+        return null;
+    }
+}
+
+function updateDriver(driver) {
+    try {
+        const drivers = findAllDrivers();
+
+        drivers[driver.id] = {
+            ...drivers[driver.id],
+            name: driver.name || drivers[driver.id].name,
+            team: driver.team || drivers[driver.id].team,
+            color: driver.color || drivers[driver.id].color,
+        };
+
+        return dataService.saveData('drivers.json', drivers);
+    } catch (error) {
+        utils.error('Error updating driver:', error);
+        return false;
+    }
+}
+
+function deleteDriver(id) {
+    try {
+        const drivers = findAllDrivers();
+        const filteredDrivers = drivers.filter(d => d.id !== id);
+
+        if (filteredDrivers.length === drivers.length) {
+            return false;
+        }
+
+        return dataService.saveData('drivers.json', filteredDrivers);
+    } catch (error) {
+        utils.error('Error deleting driver:', error);
+        return false;
+    }
+}
+
 module.exports = {
-    getAllDrivers,
-    getDriverById,
-    getDriverNameById,
-    getDriverIdByName,
-    getPreparedDriver
+    findAllDrivers,
+    findDriverById,
+    findDriverByLabelAndTeam,
+    getPreparedDriversByIds,
+    getPreparedDriverById,
+    createDriver,
+    updateDriver,
+    deleteDriver
 };

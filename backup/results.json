@@ -1,0 +1,56 @@
+[
+  {
+    "raceId": "1",
+    "first": "NOR",
+    "second": "VER",
+    "third": "RUS",
+    "others": [
+      "ANT",
+      "ALB",
+      "STR",
+      "HUL",
+      "LEC",
+      "PIA",
+      "HAM"
+    ],
+    "remaining": [
+      "GAS",
+      "TSU",
+      "OCO",
+      "BEA",
+      "LAW",
+      "BOR",
+      "ALO",
+      "SAI",
+      "DOO",
+      "HAD"
+    ]
+  },
+  {
+    "raceId": "2",
+    "first": "PIA",
+    "second": "NOR",
+    "third": "RUS",
+    "others": [
+      "VER",
+      "OCO",
+      "ANT",
+      "ALB",
+      "BEA",
+      "STR",
+      "SAI"
+    ],
+    "remaining": [
+      "HAD",
+      "DOO",
+      "LAW",
+      "BOR",
+      "HUL",
+      "TSU",
+      "ALO",
+      "LEC",
+      "HAM",
+      "GAS"
+    ]
+  }
+]

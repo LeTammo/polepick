@@ -1,8 +1,7 @@
-const raceModel = require('./models/race');
-const resultModel = require('./models/result');
-const predictionModel = require('./models/prediction');
-const scoreService = require('./services/scoreService');
-const utils = require('./utils');
+const raceModel = require('../models/race');
+const predictionModel = require('../models/prediction');
+const scoreService = require('../services/scoreService');
+const utils = require('../utils');
 
 function getHomePage(req, res) {
     const latestRace = raceModel.getLatestRace();
@@ -19,8 +18,8 @@ function getHomePage(req, res) {
 function getRacePage(req, res) {
     try {
         const raceId = req.params.id;
-        const race = raceModel.getFormattedRace(raceId);
-        const races = raceModel.getAllRaces();
+        const race = raceModel.getPreparedRace(raceId);
+        const races = raceModel.findAllRaces();
 
         if (!race) {
             return res.status(404).render('error', {
@@ -28,24 +27,20 @@ function getRacePage(req, res) {
             });
         }
 
-        const drivers = raceModel.getRaceDrivers(raceId);
-        const result = resultModel.getFormattedResult(raceId);
-        const predictions = predictionModel.getFormattedPredictions(raceId);
+
+        const predictions = predictionModel.getPreparedPredictions(raceId);
         const username = req.cookies[`polepick-username-for-race-${raceId}`];
 
         let userPrediction = predictions.find(p => p.username === username);
         userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
 
-        res.render('index', {
-            pageTitle: `${race.name} - Prediction`,
+        res.render('pages/main', {
             race: race,
             races: races,
-            drivers: drivers,
-            result: result,
             predictions: predictions.filter(p => p.username !== username),
             userPrediction: userPrediction,
             predictionsJson: JSON.stringify(predictions),
-            hasResult: !!result
+            hasResult: !!race.result,
         });
     } catch (error) {
         utils.error('Error rendering race page: ', error);
@@ -58,7 +53,7 @@ function getRacePage(req, res) {
 function submitPrediction(req, res) {
     try {
         const raceId = req.params.id;
-        const race = raceModel.getRaceById(raceId);
+        const race = raceModel.findRaceById(raceId);
 
         if (!race) {
             return res.status(400).json({
@@ -101,9 +96,8 @@ function submitPrediction(req, res) {
 
 function getLeaderboardPage(req, res) {
     try {
-        const races = raceModel.getAllRaces();
-        const results = resultModel.getAllResults();
-        const predictions = predictionModel.getAllPredictions();
+        const races = raceModel.findAllRaces();
+        const predictions = predictionModel.findAllPredictions();
 
         const allUsers = [...new Set(predictions.map(p => p.username))];
 
@@ -116,20 +110,22 @@ function getLeaderboardPage(req, res) {
             };
         });
 
-        results.forEach(result => {
-            const raceId = result.raceId;
-            const race = raceModel.getFormattedRace(raceId);
-            const racePredictions = predictions.filter(p => p.raceId === raceId);
+        races.forEach(r => {
+            if (!r.predictionsEnded) {
+                return;
+            }
+            const racePredictions = predictions.filter(p => p.raceId === r.id);
+            const race = raceModel.getPreparedRace(r.id);
 
             racePredictions.forEach(prediction => {
-                const points = scoreService.calculatePoints(prediction, result);
+                const points = scoreService.calculatePoints(prediction, race.result);
                 const userIndex = leaderboard.findIndex(u => u.username === prediction.username);
 
                 if (userIndex !== -1) {
                     leaderboard[userIndex].totalPoints += points;
                     leaderboard[userIndex].totalPredictions += 1;
                     leaderboard[userIndex].racePoints.push({
-                        raceId,
+                        raceId: race.id,
                         raceName: race.name,
                         points
                     });
@@ -166,18 +162,12 @@ function getLeaderboardPage(req, res) {
                 entry.rankBackgroundColor = 'bg-amber-600';
             }
         });
-
-        const racesWithResults = results.map(r => r.raceId);
-        const enhancedRaces = races.map(race => ({
-            ...race,
-            formattedDate: utils.formatDate(race.date),
-            hasResult: racesWithResults.includes(race.id)
-        }));
+        console.log(leaderboard);
 
         res.render('leaderboard', {
             pageTitle: 'Polepick - Leaderboard',
             leaderboard,
-            races: enhancedRaces
+            races: races,
         });
     } catch (error) {
         utils.error('Error rendering leaderboard page: ', error);

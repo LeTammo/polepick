@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard</title>
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-
-{{> partials/header }}
-
 <main class="container max-w-[700px] mx-auto px-4 py-6 flex-grow">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Leaderboard</h1>
 
@@ -37,18 +22,15 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 {{#leaderboard}}
-                    <tr class="hover:bg-gray-50 transition-colors duration-150 {{#isTied}}bg-gray-50{{/isTied}}">
+                    <tr class="hover:bg-gray-50 transition-colors duration-150 {{#if isTied}}bg-gray-50{{/if}}">
                         <td class="px-2 py-2">
-                            {{#rank}}
-                                {{#isTopThree}}
-                                    <div class="flex items-center mx-auto justify-center w-8 h-8 rounded-full {{rankBackgroundColor}} text-white font-bold">
-                                        {{rank}}
-                                    </div>
-                                {{/isTopThree}}
-                                {{^isTopThree}}
-                                    <div class="text-gray-800 text-center font-medium">{{rank}}</div>
-                                {{/isTopThree}}
-                            {{/rank}}
+                            {{#if isTopThree}}
+                                <div class="flex items-center mx-auto justify-center w-8 h-8 rounded-full {{rankBackgroundColor}} text-white font-bold">
+                                    {{rank}}
+                                </div>
+                            {{else}}
+                                <div class="text-gray-800 text-center font-medium">{{rank}}</div>
+                            {{/if}}
                         </td>
                         <td class="px-2 py-2">
                             <div class="font-medium text-center text-gray-900">{{username}}</div>
@@ -74,8 +56,3 @@
         </div>
     </div>
 </main>
-
-{{> partials/footer }}
-
-</body>
-</html>

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "nameLong": "Scuderia Ferrari HP",
+    "name": "Ferrari",
+    "color": "#dc0000"
+  },
+  {
+    "id": "2",
+    "nameLong": "McLaren F1 Team",
+    "name": "McLaren",
+    "color": "#ff8000"
+  },
+  {
+    "id": "3",
+    "nameLong": "Oracle Red Bull Racing",
+    "name": "Red Bull Racing",
+    "color": "#3671c6"
+  },
+  {
+    "id": "4",
+    "nameLong": "Mercedes-AMG Petronas Formula One Team",
+    "name": "Mercedes",
+    "color": "#27f4d2"
+  },
+  {
+    "id": "5",
+    "nameLong": "Visa Cash App RB F1 Team",
+    "name": "Racing Bulls",
+    "color": "#6692ff"
+  },
+  {
+    "id": "6",
+    "nameLong": "Stake F1 Team Kick Sauber",
+    "name": "Kick Sauber",
+    "color": "#52e252"
+  },
+  {
+    "id": "7",
+    "nameLong": "Williams Racing",
+    "name": "Williams",
+    "color": "#64c4ff"
+  },
+  {
+    "id": "8",
+    "nameLong": "Aston Martin Aramco Cognizant F1 Team",
+    "name": "Aston Martin",
+    "color": "#229971"
+  },
+  {
+    "id": "9",
+    "nameLong": "BWT Alpine F1 Team",
+    "name": "Alpine",
+    "color": "#0093cc"
+  },
+  {
+    "id": "10",
+    "nameLong": "Haas F1 Team",
+    "name": "Haas",
+    "color": "#b6babd"
+  }
+]

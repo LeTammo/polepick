@@ -1,0 +1,31 @@
+<header class="bg-red-900 bg-opacity-90 text-white shadow-md shadow-gray-400">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2 text-xl font-bold">
+                <i class="fas fa-flag-checkered"></i>
+                <span>Pole Pick</span>
+            </a>
+            <nav>
+                <ul class="flex space-x-6">
+                    {{#each adminRoutes}}
+                        <li>
+                            <a href="{{path}}" class="hover:text-gray-200 transition duration-150">
+                                {{name}}
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </nav>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li class="mr-4">
+                        <a href="/" class="hover:text-gray-200 transition duration-150">Back to Website</a>
+                    </li>
+                    <li>
+                        <a href="/admin/logout" class="hover:text-gray-200 transition duration-150">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
