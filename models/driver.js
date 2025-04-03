@@ -14,6 +14,20 @@ function findDriverByLabelAndTeam(label, team) {
     return findAllDrivers().find(d => d.label === label && d.team === team) || null;
 }
 
+function getPreparedDrivers() {
+    return findAllDrivers().map((driver) => {
+        const team = teamModel.getTeamById(driver.team);
+
+        return {
+            ...driver,
+            team: team.name,
+            teamLong: team.nameLong,
+            color: team.color,
+            teamId: team.id,
+        }
+    });
+}
+
 function getPreparedDriversByIds(drivers, startIndex = 0) {
     return drivers.map((id, index) => {
         return {
@@ -94,6 +108,7 @@ module.exports = {
     findAllDrivers,
     findDriverById,
     findDriverByLabelAndTeam,
+    getPreparedDrivers,
     getPreparedDriversByIds,
     getPreparedDriverById,
     createDriver,

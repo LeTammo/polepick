@@ -1,5 +1,4 @@
 const raceModel = require('../models/race');
-const resultModel = require('../models/result');
 const driverModel = require('../models/driver');
 const teamModel = require('../models/team');
 const utils = require('../utils');
@@ -21,17 +20,15 @@ function render(res, view, options) {
 
 function getDashboard(req, res) {
     try {
-        const races = raceModel.getAllRaces();
-        const drivers = driverModel.getAllDrivers();
+        const races = raceModel.findAllRaces();
+        const drivers = driverModel.getPreparedDrivers();
         const teams = teamModel.getAllTeams();
-        const results = resultModel.getAllResults();
 
         render(res, 'admin/dashboard', {
             pageTitle: 'Admin Dashboard',
             races,
             drivers,
-            teams,
-            results
+            teams
         });
     } catch (error) {
         utils.error('Error rendering admin dashboard:', error);
@@ -315,11 +312,10 @@ function deleteDriver(req, res) {
 
 function getRaces(req, res) {
     try {
-        const races = raceModel.getAllRaces();
-        const results = resultModel.getAllResults();
+        const races = raceModel.findAllRaces();
 
         const enhancedRaces = races.map(race => {
-            const hasResult = results.some(r => r.raceId === race.id);
+            const hasResult = race.result.some(r => r.raceId === race.id);
             return {
                 ...race,
                 formattedDate: utils.formatDate(race.date),
@@ -345,12 +341,12 @@ function getRaceForm(req, res) {
     try {
         const raceId = req.params.id;
         let race = null;
-        let allDrivers = driverModel.getAllDrivers();
+        let allDrivers = driverModel.findAllDrivers();
         let teams = teamModel.getAllTeams();
         let selectedDrivers = [];
 
         if (raceId !== 'new') {
-            race = raceModel.getRaceById(raceId);
+            race = raceModel.findRaceById(raceId);
             if (!race) {
                 return res.status(404).render('error', {
                     message: 'Race not found'
@@ -461,10 +457,9 @@ function deleteRace(req, res) {
 
 function getResults(req, res) {
     try {
-        const results = resultModel.getAllResults();
-        const races = raceModel.getAllRaces();
+        const races = raceModel.findAllRaces();
 
-        const enhancedResults = results.map(result => {
+        const enhancedResults = races.result.map(result => {
             const race = races.find(r => r.id === result.raceId);
             return {
                 ...result,
@@ -489,7 +484,7 @@ function getResults(req, res) {
 function getResultForm(req, res) {
     try {
         const raceId = req.params.id;
-        const race = raceModel.getRaceById(raceId);
+        const race = raceModel.findRaceById(raceId);
 
         if (!race) {
             return res.status(404).render('error', {
@@ -497,23 +492,22 @@ function getResultForm(req, res) {
             });
         }
 
-        const existingResult = resultModel.getResultByRaceId(raceId);
         const drivers = raceModel.getRaceDrivers(raceId);
 
-        if (existingResult) {
+        if (race.result) {
             drivers.forEach(driver => {
-                if (driver.id === existingResult.first) {
+                if (driver.id === race.result.first) {
                     driver.isFirst = true;
-                } else if (driver.id === existingResult.second) {
+                } else if (driver.id === race.result.second) {
                     driver.isSecond = true;
-                } else if (driver.id === existingResult.third) {
+                } else if (driver.id === race.result.third) {
                     driver.isThird = true;
-                } else if (existingResult.others && existingResult.others.includes(driver.id)) {
+                } else if (race.result.others && race.result.others.includes(driver.id)) {
                     driver.isOther = true;
-                    driver.otherPosition = existingResult.others.indexOf(driver.id) + 4;
-                } else if (existingResult.remaining && existingResult.remaining.includes(driver.id)) {
+                    driver.otherPosition = race.result.others.indexOf(driver.id) + 4;
+                } else if (race.result.remaining && race.result.remaining.includes(driver.id)) {
                     driver.isRemaining = true;
-                    driver.remainingPosition = existingResult.remaining.indexOf(driver.id) + 1;
+                    driver.remainingPosition = race.result.remaining.indexOf(driver.id) + 1;
                 }
             });
         }
@@ -521,9 +515,9 @@ function getResultForm(req, res) {
         render(res, 'admin/result-form', {
             pageTitle: `Race Result: ${race.name}`,
             race,
-            result: existingResult,
+            result: race.result,
             drivers,
-            isEdit: !!existingResult
+            isEdit: !!race.result
         });
     } catch (error) {
         utils.error('Error rendering result form:', error);

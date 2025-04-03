@@ -15,11 +15,14 @@
                 </a>
                 {{#each teams}}
                     <a href="/admin/team/{{id}}" class="text-sm text-gray-600">
-                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
-                            <div class="flex justify-center items-center space-x-2">
-                                <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex justify-between items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                                </div>
+                                <div class="font-bold text-nowrap">{{name}}</div>
                             </div>
-                            {{name}}
+                            <div class="overflow-hidden whitespace-nowrap text-ellipsis">{{nameLong}}</div>
                         </div>
                     </a>
                 {{/each}}
@@ -40,11 +43,14 @@
                 </a>
                 {{#each drivers}}
                     <a href="/admin/driver/{{id}}" class="text-sm text-gray-600">
-                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
-                            <div class="flex justify-center items-center space-x-2">
-                                <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex justify-between items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <div class="w-4 h-4 rounded" style="background-color: {{color}}"></div>
+                                </div>
+                                <div class="font-bold text-nowrap">{{name}}</div>
                             </div>
-                            {{name}}
+                            <div class="overflow-hidden whitespace-nowrap text-ellipsis">{{team}}</div>
                         </div>
                     </a>
                 {{/each}}
@@ -65,10 +71,12 @@
                 </a>
                 {{#each races}}
                     <a href="/admin/race/{{id}}" class="text-sm text-gray-600">
-                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex items-center gap-2">
-                            <div>{{formattedDate}}</div>
-                            <img src="flags/{{flag}}" class="inline h-5" alt="flag={{flag}}">
-                            <div>{{name}}</div>
+                        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow p-2 rounded mt-2 flex justify-between items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <img src="flags/{{flag}}" class="inline h-5" alt="flag={{flag}}">
+                                <div class="font-bold text-nowrap">{{name}}</div>
+                            </div>
+                            <div class="overflow-hidden whitespace-nowrap text-ellipsis">{{formattedDate}}.</div>
                         </div>
                     </a>
                 {{/each}}
