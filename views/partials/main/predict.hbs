@@ -534,9 +534,6 @@
             }
 
             function removeDriverFromPreviousSlot(id) {
-                let driverWasInPodium = false;
-                let removedDriverData = null;
-
                 const findDriverData = (driverId) => {
                     for (const slot of [firstSlot, secondSlot, thirdSlot, othersContainer]) {
                         const el = slot?.querySelector(`.driver-item[data-driver="${driverId}"]`);
@@ -558,32 +555,28 @@
                             label: poolEl.dataset.label || ''
                         };
                     }
-                    return { id: driverId, name: driverId, color: driverColors[driverId] || '#666666', label: '' };
                 };
 
 
                 if (predictions.first === id) {
-                    removedDriverData = findDriverData(id);
+                    findDriverData(id);
                     predictions.first = null;
                     firstInput.value = '';
                     renderPodiumSlot(firstSlot, null, 'first');
-                    driverWasInPodium = true;
                 } else if (predictions.second === id) {
-                    removedDriverData = findDriverData(id);
+                    findDriverData(id);
                     predictions.second = null;
                     secondInput.value = '';
                     renderPodiumSlot(secondSlot, null, 'second');
-                    driverWasInPodium = true;
                 } else if (predictions.third === id) {
-                    removedDriverData = findDriverData(id);
+                    findDriverData(id);
                     predictions.third = null;
                     thirdInput.value = '';
                     renderPodiumSlot(thirdSlot, null, 'third');
-                    driverWasInPodium = true;
                 } else {
                     const index = predictions.others.indexOf(id);
                     if (index !== -1) {
-                        removedDriverData = findDriverData(id);
+                        findDriverData(id);
                         const driverElement = othersContainer.querySelector(`.driver-item[data-driver="${id}"]`);
                         if (driverElement) {
                             driverElement.remove();
