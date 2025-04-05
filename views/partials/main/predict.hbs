@@ -84,14 +84,29 @@
                         <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-6">
                             <div class="prediction-slot col-span-1 h-32 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="secondSlot" data-position="second">
                                 <div class="position-number text-2xl font-bold text-gray-500">2</div>
+                                <div class="text-sm text-center">
+                                    <span class="points-instructions text-gray-500 animate-pulse">Click here</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse md:hidden">to make a prediction</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse hidden md:inline">or drag a driver</span>
+                                </div>
                                 <input type="hidden" name="second" id="secondInput">
                             </div>
                             <div class="prediction-slot col-span-1 h-40 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="firstSlot" data-position="first">
                                 <div class="position-number text-3xl font-bold text-gray-500">1</div>
+                                <div class="text-sm text-center">
+                                    <span class="points-instructions text-gray-500 animate-pulse">Click here</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse md:hidden">to make a prediction</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse hidden md:inline">or drag a driver</span>
+                                </div>
                                 <input type="hidden" name="first" id="firstInput">
                             </div>
                             <div class="prediction-slot col-span-1 h-28 flex flex-col items-center justify-center p-2 bg-gray-100 rounded-md border-2 border-dashed border-gray-300" id="thirdSlot" data-position="third">
                                 <div class="position-number text-xl font-bold text-gray-500">3</div>
+                                <div class="text-sm text-center">
+                                    <span class="points-instructions text-gray-500 animate-pulse">Click here</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse md:hidden">to make a prediction</span>
+                                    <span class="points-instructions text-gray-500 animate-pulse hidden md:inline">or drag a driver</span>
+                                </div>
                                 <input type="hidden" name="third" id="thirdInput">
                             </div>
                         </div>
@@ -101,7 +116,11 @@
                         <div id="othersSlot" class="points-slots bg-gray-100 p-3 rounded-md min-h-40 border-2 border-dashed border-gray-300">
                         <div class="position-number text-xl text-center font-bold text-gray-500 pt-4">4-10</div>
                         <div class="position-label text-sm text-gray-400 text-center pb-4">(order doesn't matter)</div>
-                        <div class="points-instructions text-gray-500 text-center py-4 animate-pulse">Drag drivers on the cards for your prediction</div>
+                            <div class="text-sm text-center">
+                                <span class="points-instructions text-gray-500 animate-pulse">Click here</span>
+                                <span class="points-instructions text-gray-500 animate-pulse md:hidden">to make a prediction</span>
+                                <span class="points-instructions text-gray-500 animate-pulse hidden md:inline">or drag a driver</span>
+                            </div>
                         <div id="othersContainer" class="others-container grid grid-cols-2 flex-wrap gap-2 justify-items-center"></div>
                         <div id="othersInputs"></div>
                     </div>
