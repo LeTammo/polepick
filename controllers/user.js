@@ -162,7 +162,6 @@ function getLeaderboardPage(req, res) {
                 entry.rankBackgroundColor = 'bg-amber-600';
             }
         });
-        console.log(leaderboard);
 
         res.render('leaderboard', {
             pageTitle: 'Polepick - Leaderboard',
