@@ -1,11 +1,10 @@
 <div id="toast-default" role="alert"
-     class="hidden mb-4 mx-auto flex items-center w-full max-w-md p-2 text-gray-500 bg-white rounded-xl shadow-lg
+     class="mb-4 mx-auto flex items-center w-full max-w-[324px] p-2 text-gray-500 bg-white rounded-xl shadow-lg
                 shadow-red-200">
     <div class="ms-3 text-sm font-normal">
-        Results will be published after I've watched the race 🙇‍♂️<br>
-        I expect that around 11 a.m. (GMT+1, Europe/Paris).<br>
-        Hopefully, I can automate this process in the future!
-        <span class="nowrap whitespace-nowrap">
+        Mobile support is almost done (90%) 🎉<br>
+        Feel free to try it — I hope nothing breaks!
+        <span class="hidden nowrap whitespace-nowrap">
                 <span class="text-3xl">🏎️</span>·—̳͟͞*
             </span>
     </div>
@@ -23,10 +22,10 @@
         dismissInfoBtn.addEventListener('click', () => {
             const target = dismissInfoBtn.getAttribute('data-dismiss-target');
             document.querySelector(target).classList.add('hidden');
-            localStorage.setItem("polepick-dismissedInfo1", true);
+            localStorage.setItem("polepick-dismissedInfo2", true);
         });
 
-        if (localStorage.getItem("polepick-dismissedInfo1")) {
+        if (localStorage.getItem("polepick-dismissedInfo2")) {
             document.getElementById('toast-default').classList.add('hidden');
         }
     </script>
