@@ -1,0 +1,35 @@
+- Qualifying result, sprint result, sprint qualifying result
+- DNF (who? / how many?)
+- Who will crash? Is there a safety car?
+- Who will make the most places next race?
+- "Best of the rest"
+- What weather do you wish for next race?
+- Some funny questions about radios like:
+  "How often will there be an radio: 'Leave me alone, I know what I’m doing'."
+- How many annoyed radio messages?
+- Which driver do you like
+- If there are changes: "Do you like x better than y."
+- Biggest surprise elimination in Q1 and biggest surprise driver in Q3
+- Which driver pairing works best together (on and off track)?
+- Most underrated driver on the grid right now
+- Championship winner predictions, constructors prediction
+- Best car/livery this season
+- Predicting some post-race interview answers
+- Should there be a point for "Fastest Lap"?
+- Most important factor for success at the upcoming zrack? (Driver Skill / Car Performance / Strategy / Tyre Management / Luck)
+- If you could change one rule in F1, what would it be?
+- What's your favourite corner on the upcoming track circuit?
+- Some questions about new and older drivers that never raced, like "Would x win against y"
+- Best race so far this season
+- Will there be swear words on the radio?
+- Which team will mess up a pit stop / who has the best pit stop
+- Some funny questions about commentator and what they are saying
+- "...and Max Verstappen wins the xy grand prix!"
+- Who has improved the most in the last time
+- Favourite tracks
+- With or without DRS?
+- Banning team orders?
+- Meme caption this photo (and a from last race)
+- Best meme moment of the last race
+- Your all time dream podium
+- The best overtake at the last race
