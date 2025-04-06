@@ -27,7 +27,7 @@
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                id="location" name="location" type="text" placeholder="Location" required
-                               value="{{#if race}}{{race.location}}{{/if}}">
+                               value="{{#if race}}{{race.nameShort}}{{/if}}">
                     </div>
 
                     <div>
@@ -77,8 +77,8 @@
                     <h3 class="text-lg font-semibold mb-4">Driver Lineup</h3>
 
                     <div id="driversContainer" class="space-y-2">
-                        {{#if race.drivers}}
-                            {{#each race.drivers}}
+                        {{#if race.grid}}
+                            {{#each race.grid}}
                                 <div class="driver-row flex items-center space-x-2">
                                     <label for="driver" class="hidden">Driver</label>
                                     <select id="driver" name="drivers[]"
@@ -112,11 +112,6 @@
                             </div>
                         {{/if}}
                     </div>
-
-                    <button type="button" id="addDriverBtn"
-                            class="mt-3 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
-                        Add Driver
-                    </button>
                 </div>
 
                 <div class="mt-8 flex justify-between">
@@ -137,34 +132,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const driversContainer = document.getElementById('driversContainer');
-        const addDriverBtn = document.getElementById('addDriverBtn');
         const raceForm = document.getElementById('raceForm');
-
-        addDriverBtn.addEventListener('click', function () {
-            const driverRow = document.createElement('div');
-            driverRow.className = 'driver-row flex items-center space-x-2';
-
-            const driverSelect = document.createElement('select');
-            driverSelect.name = 'drivers[]';
-            driverSelect.className = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select';
-
-            const firstSelect = document.querySelector('.driver-select');
-            firstSelect.querySelectorAll('option').forEach(opt => {
-                const option = document.createElement('option');
-                option.value = opt.value;
-                option.textContent = opt.textContent;
-                driverSelect.appendChild(option);
-            });
-
-            const removeBtn = document.createElement('button');
-            removeBtn.type = 'button';
-            removeBtn.className = 'remove-driver bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded';
-            removeBtn.textContent = 'X';
-
-            driverRow.appendChild(driverSelect);
-            driverRow.appendChild(removeBtn);
-            driversContainer.appendChild(driverRow);
-        });
 
         driversContainer.addEventListener('click', function (e) {
             if (e.target.classList.contains('remove-driver')) {
