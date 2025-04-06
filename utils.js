@@ -55,10 +55,22 @@ function error(message, error) {
     console.error(error);
 }
 
+function getAdminRoutes() {
+    return [
+        {'name': 'Dashboard', 'path': '/admin'},
+        {'name': 'Teams', 'path': '/admin/teams'},
+        {'name': 'Drivers', 'path': '/admin/drivers'},
+        {'name': 'Races', 'path': '/admin/races'},
+        //{'name': 'Results', 'path': '/admin/results'},
+        //{'name': 'Predictions', 'path': '/admin/predictions'}
+    ]
+}
+
 module.exports = {
     formatDate,
     formatDateShort,
     formatTime,
     log,
-    error
+    error,
+    getAdminRoutes,
 };

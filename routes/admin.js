@@ -1,5 +1,5 @@
 const express = require('express');
-const controller = require('../controllers/admin');
+const controller = require('../controllers/admin/index');
 
 module.exports = function(app) {
     const router = express.Router();
