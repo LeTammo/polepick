@@ -18,7 +18,6 @@ app.engine('.hbs', handlebars.engine({
     defaultLayout: 'base',
     layoutsDir: path.join(__dirname, 'views/layouts'),
     partialsDir: path.join(__dirname, 'views/partials'),
-    iconsDir: path.join(__dirname, 'views/partials'),
 }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
