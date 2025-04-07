@@ -1,5 +1,4 @@
 const driverModel = require('../../models/driver');
-const teamModel = require('../../models/team');
 const utils = require('../../utils');
 
 function getDrivers(req, res) {
@@ -30,19 +29,16 @@ function getDrivers(req, res) {
 
 function createDriver(req, res) {
     try {
-        const { name, teamId } = req.body;
+        const { label, name, team } = req.body;
 
-        if (!name || !teamId) {
+        if (!name || !label || !team) {
             return res.status(400).json({
                 success: false,
-                message: 'Driver name and team ID are required'
+                message: 'Driver name, label, and team are required'
             });
         }
 
-        const newDriver = driverModel.createDriver({
-            name,
-            teamId
-        });
+        const newDriver = driverModel.createDriver({ label, name, team });
 
         if (!newDriver) {
             return res.status(500).json({
@@ -66,19 +62,17 @@ function createDriver(req, res) {
 
 function updateDriver(req, res) {
     try {
-        const driverId = req.params.id;
-        const { name, teamId } = req.body;
+        const id = req.params.id;
+        const { label, name, team } = req.body;
 
-        if (!driverId || !name || !teamId) {
+        if (!id || !label || !name || !team) {
             return res.status(400).json({
                 success: false,
-                message: 'Driver ID, name, and team ID are required'
+                message: 'Driver ID, label, name, and team ID are required'
             });
         }
 
-        const success = driverModel.updateDriver(driverId, {
-            name, teamId
-        });
+        const success = driverModel.updateDriver(id, { label, name, team });
 
         if (!success) {
             return res.status(500).json({
@@ -97,49 +91,18 @@ function updateDriver(req, res) {
     }
 }
 
-function assignDriverTeam(req, res) {
-    try {
-        const driverId = req.params.id;
-        const { raceId, teamId } = req.body;
-
-        if (!driverId || !raceId || !teamId) {
-            return res.status(400).json({
-                success: false,
-                message: 'Driver ID, race ID, and team ID are required'
-            });
-        }
-
-        const success = driverModel.assignDriverToTeam(driverId, raceId, teamId);
-
-        if (!success) {
-            return res.status(500).json({
-                success: false,
-                message: 'Failed to assign driver to team for this race'
-            });
-        }
-
-        res.json({ success: true });
-    } catch (error) {
-        utils.error('Error assigning driver to team:', error);
-        res.status(500).json({
-            success: false,
-            message: 'An error occurred while assigning the driver to a team'
-        });
-    }
-}
-
 function deleteDriver(req, res) {
     try {
-        const driverId = req.params.id;
+        const id = req.params.id;
 
-        if (!driverId) {
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: 'Driver ID is required'
             });
         }
 
-        const success = driverModel.deleteDriver(driverId);
+        const success = driverModel.deleteDriver(id);
 
         if (!success) {
             return res.status(404).json({
@@ -162,6 +125,5 @@ module.exports = {
     getDrivers,
     createDriver,
     updateDriver,
-    assignDriverTeam,
     deleteDriver
 };

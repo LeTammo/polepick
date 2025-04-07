@@ -20,7 +20,6 @@ module.exports = function(app) {
     router.get('/drivers', controller.getDrivers);
     router.post('/drivers', controller.createDriver);
     router.put('/drivers/:id', controller.updateDriver);
-    router.post('/drivers/:id/assign-team', controller.assignDriverTeam);
     router.delete('/drivers/:id', controller.deleteDriver);
 
     router.get('/races', controller.getRaces);

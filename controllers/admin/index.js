@@ -83,7 +83,6 @@ module.exports = {
     getDrivers : driverController.getDrivers,
     createDriver : driverController.createDriver,
     updateDriver : driverController.updateDriver,
-    assignDriverTeam : driverController.assignDriverTeam,
     deleteDriver : driverController.deleteDriver,
 
     getRaces : racesController.getRaces,

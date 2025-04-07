@@ -58,7 +58,7 @@ function createDriver(driverData) {
             .map(label => drivers.find(d => d.label === label));
 
         const newDriver = {
-            id: 1 + 5 * uniqueDrivers.length,
+            id: (1 + 5 * uniqueDrivers.length).toString(),
             ...driverData
         };
 
@@ -77,8 +77,8 @@ function updateDriver(driver) {
         drivers[driver.id] = {
             ...drivers[driver.id],
             name: driver.name || drivers[driver.id].name,
+            label: driver.label || drivers[driver.id].label,
             team: driver.team || drivers[driver.id].team,
-            color: driver.color || drivers[driver.id].color,
         };
 
         return dataService.saveData('drivers.json', drivers);
