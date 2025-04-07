@@ -85,16 +85,16 @@ function updateTeam(req, res) {
 
 function deleteTeam(req, res) {
     try {
-        const teamId = req.params.id;
+        const id = req.params.id;
 
-        if (!teamId) {
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: 'Team ID is required'
             });
         }
 
-        const success = teamModel.deleteTeam(teamId);
+        const success = teamModel.deleteTeam(id);
 
         if (!success) {
             return res.status(404).json({
