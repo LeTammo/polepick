@@ -21,7 +21,7 @@ function getTeams(req, res) {
 
 function createTeam(req, res) {
     try {
-        const { name, color, color_dark } = req.body;
+        const { name, nameLong, color } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -30,11 +30,7 @@ function createTeam(req, res) {
             });
         }
 
-        const newTeam = teamModel.createTeam({
-            name,
-            color: color || '#cccccc',
-            color_dark: color_dark || '#999999'
-        });
+        const newTeam = teamModel.createTeam({ name, nameLong, color });
 
         if (!newTeam) {
             return res.status(500).json({
@@ -58,19 +54,17 @@ function createTeam(req, res) {
 
 function updateTeam(req, res) {
     try {
-        const teamId = req.params.id;
-        const { name, color, color_dark } = req.body;
+        const id = req.params.id;
+        const { name, nameLong, color } = req.body;
 
-        if (!teamId || !name) {
+        if (!id || !name) {
             return res.status(400).json({
                 success: false,
                 message: 'Team ID and name are required'
             });
         }
 
-        const success = teamModel.updateTeam(teamId, {
-            name, color, color_dark
-        });
+        const success = teamModel.updateTeam(id, { name, nameLong, color });
 
         if (!success) {
             return res.status(500).json({

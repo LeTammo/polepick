@@ -10,24 +10,14 @@ function getTeamById(teamId) {
     return teams.find(team => team.id === teamId) || null;
 }
 
-function getTeamNameById(teamId) {
-    const team = getTeamById(teamId);
-    return team ? team.name : 'Unknown Team';
-}
-
-function createTeam(teamData) {
+function createTeam({ name, nameLong, color }) {
     try {
         const teams = getAllTeams();
-        const newId = teams.length > 0
+        const id = teams.length > 0
             ? (parseInt(teams[teams.length - 1].id) + 1).toString()
             : "1";
 
-        const newTeam = {
-            id: newId,
-            name: teamData.name,
-            color: teamData.color || '#cccccc',
-            color_dark: teamData.color_dark || '#999999'
-        };
+        const newTeam = { id, name, nameLong, color };
 
         teams.push(newTeam);
         return dataService.saveData('teams.json', teams) ? newTeam : null;
@@ -37,18 +27,18 @@ function createTeam(teamData) {
     }
 }
 
-function updateTeam(teamId, teamData) {
+function updateTeam(id, data) {
     try {
         const teams = getAllTeams();
-        const index = teams.findIndex(t => t.id === teamId);
+        const index = teams.findIndex(t => t.id === id);
 
         if (index === -1) return false;
 
         teams[index] = {
             ...teams[index],
-            name: teamData.name,
-            color: teamData.color || teams[index].color,
-            color_dark: teamData.color_dark || teams[index].color_dark
+            name: data.name || teams[index].name,
+            nameLong: data.nameLong || teams[index].nameLong,
+            color: data.color || teams[index].color,
         };
 
         return dataService.saveData('teams.json', teams);
@@ -58,13 +48,13 @@ function updateTeam(teamId, teamData) {
     }
 }
 
-function deleteTeam(teamId) {
+function deleteTeam(id) {
     try {
         const teams = getAllTeams();
-        const filteredTeams = teams.filter(t => t.id !== teamId);
+        const filteredTeams = teams.filter(t => t.id !== id);
 
         if (filteredTeams.length === teams.length) {
-            return false; // No team was removed
+            return false;
         }
 
         return dataService.saveData('teams.json', filteredTeams);
@@ -77,7 +67,6 @@ function deleteTeam(teamId) {
 module.exports = {
     getAllTeams,
     getTeamById,
-    getTeamNameById,
     createTeam,
     updateTeam,
     deleteTeam

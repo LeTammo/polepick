@@ -13,11 +13,18 @@ const cookieParser = require('cookie-parser');
 const app = express();
 require('dotenv').config();
 
+const hbsHelpers = {
+    json: function (context) {
+        return JSON.stringify(context);
+    }
+};
+
 app.engine('.hbs', handlebars.engine({
     extname: '.hbs',
     defaultLayout: 'base',
     layoutsDir: path.join(__dirname, 'views/layouts'),
     partialsDir: path.join(__dirname, 'views/partials'),
+    helpers: hbsHelpers
 }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
