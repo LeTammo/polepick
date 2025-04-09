@@ -10,7 +10,7 @@ const predictionController = require('./prediction');
 
 function getDashboard(req, res) {
     try {
-        const races = raceModel.findAllRaces();
+        const races = raceModel.getPreparedRaces();
         const drivers = driverModel.getPreparedDrivers();
         const teams = teamModel.getAllTeams();
 
@@ -86,7 +86,6 @@ module.exports = {
     deleteDriver : driverController.deleteDriver,
 
     getRaces : racesController.getRaces,
-    getRaceForm : racesController.getRaceForm,
     createOrUpdateRace : racesController.createOrUpdateRace,
     deleteRace : racesController.deleteRace,
 

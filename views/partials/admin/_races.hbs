@@ -1,0 +1,282 @@
+<div class="bg-white p-4 rounded shadow-lg flex justify-center gap-4 items-center mb-8">
+    <p class="text-3xl font-bold">{{races.length}}</p>
+    <h3 class="text-xl font-semibold text-gray-700">Races</h3>
+</div>
+<div class="text-sm">
+    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow mb-6 cursor-pointer" onclick="document.getElementById('raceModal-new').classList.remove('hidden')">
+        + Add New Race
+    </div>
+    {{#each races}}
+        <div class="bg-white hover:bg-red-50 hover:scale-105 transition p-2 rounded shadow mt-2 flex justify-between items-center gap-4 cursor-pointer"
+             onclick="document.getElementById('raceModal-{{id}}').classList.remove('hidden')">
+            <div class="flex items-center gap-2">
+                <img src="../flags/{{flag}}" class="inline h-5" alt="flag={{flag}}">
+                <div class="font-bold text-nowrap">{{name}}</div>
+            </div>
+            <div class="overflow-hidden whitespace-nowrap text-ellipsis">{{formattedDate}}</div>
+        </div>
+
+        <div id="raceModal-{{id}}" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded shadow-xl w-full max-w-6xl space-y-4 overflow-y-auto max-h-[95vh]">
+                <h2 class="text-xl font-bold">Edit Race</h2>
+                <form method="POST" action="/admin/races/{{id}}" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <label class="block text-sm">Race Name</label>
+                            <input type="text" name="name" class="w-full border p-2 rounded" value="{{name}}">
+
+                            <label class="block text-sm">Location</label>
+                            <input type="text" name="nameShort" class="w-full border p-2 rounded" value="{{nameShort}}">
+
+                            <label class="block text-sm">Flag</label>
+                            <input type="text" name="flag" class="w-full border p-2 rounded" value="{{flag}}">
+
+                            <div class="flex gap-4">
+                                <input type="date" name="date" class="w-full border p-2 rounded" value="{{date}}">
+                                <input type="time" name="time" class="w-full border p-2 rounded" value="{{time}}">
+                            </div>
+
+                            <label class="block text-sm">Weather</label>
+                            <input type="text" name="weatherText" class="w-full border p-2 rounded" value="{{weatherText}}">
+
+                            <label class="block text-sm">Temperature (°C)</label>
+                            <input type="number" name="weatherTemperature" class="w-full border p-2 rounded" value="{{weatherTemperature}}">
+
+                            <label class="block text-sm">Track Image URL</label>
+                            <input type="url" name="track_img" class="w-full border p-2 rounded" value="{{track_img}}">
+
+                            <label class="block text-sm">Predictions</label>
+                            <div class="flex gap-4 text-sm">
+                                Started:
+                                <label><input type="radio" name="predictionsStarted" value="true" {{#if predictionsStarted}}checked{{/if}}> Yes</label>
+                                <label><input type="radio" name="predictionsStarted" value="false" {{#unless predictionsStarted}}checked{{/unless}}> No</label>
+                            </div>
+                            <div class="flex gap-4 text-sm">
+                                Ended:
+                                <label><input type="radio" name="predictionsEnded" value="true" {{#if predictionsEnded}}checked{{/if}}> Yes</label>
+                                <label><input type="radio" name="predictionsEnded" value="false" {{#unless predictionsEnded}}checked{{/unless}}> No</label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <label class="block mb-1 font-medium">Drivers Grid</label>
+                                <div class="space-y-1">
+                                    {{#each gridArray}}
+                                        <div class="flex items-center">
+                                            <span class="mr-2 w-5 text-center font-bold">{{position}}</span>
+                                            <select name="drivers[]" class="w-full border p-1 rounded driver-select">
+                                                <option value="">--</option>
+                                                {{#each ../../drivers}}
+                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
+                                                            {{#if (eq id ../driver.id)}}selected{{/if}}
+                                                            data-team-color="{{color}}">
+                                                        {{name}} - {{team}}
+                                                    </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 font-medium">Race Result</label>
+                                <div class="space-y-1">
+                                    {{#each resultArray}}
+                                        <div class="flex items-center">
+                                            <span class="mr-2 w-5 text-center font-bold">{{position}}</span>
+                                            <select name="result[]" class="w-full border p-1 rounded driver-select">
+                                                <option value="">--</option>
+                                                {{#each ../../drivers}}
+                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
+                                                            {{#if (eq id ../driver.id)}}selected{{/if}}
+                                                            data-team-color="{{color}}">
+                                                        {{name}} - {{team}}
+                                                    </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-6">
+                        <button type="button" onclick="this.closest('.fixed').classList.add('hidden')" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="raceModal-new" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded shadow-xl w-full max-w-6xl space-y-4 overflow-y-auto max-h-[95vh]">
+                <h2 class="text-xl font-bold">Add New Race</h2>
+                <form method="POST" action="/admin/races" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <input type="hidden" name="id" value="new">
+                            <label class="block text-sm">Race Name</label>
+                            <input type="text" name="name" class="w-full border p-2 rounded" value="">
+
+                            <label class="block text-sm">Location</label>
+                            <input type="text" name="nameShort" class="w-full border p-2 rounded" value="">
+
+                            <label class="block text-sm">Flag</label>
+                            <input type="text" name="flag" class="w-full border p-2 rounded" value="">
+
+                            <div class="flex gap-4">
+                                <input type="date" name="date" class="w-full border p-2 rounded" value="">
+                                <input type="time" name="time" class="w-full border p-2 rounded" value="">
+                            </div>
+
+                            <label class="block text-sm">Weather</label>
+                            <input type="text" name="weatherText" class="w-full border p-2 rounded" value="">
+
+                            <label class="block text-sm">Temperature (°C)</label>
+                            <input type="number" name="weatherTemperature" class="w-full border p-2 rounded" value="">
+
+                            <label class="block text-sm">Track Image URL</label>
+                            <input type="url" name="track_img" class="w-full border p-2 rounded" value="">
+
+                            <label class="block text-sm">Predictions</label>
+                            <div class="flex gap-4 text-sm">
+                                Started:
+                                <label><input type="radio" name="predictionsStarted" value="true"> Yes</label>
+                                <label><input type="radio" name="predictionsStarted" value="false" checked> No</label>
+                            </div>
+                            <div class="flex gap-4 text-sm">
+                                Ended:
+                                <label><input type="radio" name="predictionsEnded" value="true"> Yes</label>
+                                <label><input type="radio" name="predictionsEnded" value="false" checked> No</label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <label class="block mb-1 font-medium">Drivers Grid</label>
+                                <div class="space-y-1">
+                                    {{#each (range 1 20)}}
+                                        <div class="flex items-center">
+                                            <span class="mr-2 w-5 text-center font-bold">{{this}}</span>
+                                            <select name="drivers[]" class="w-full border p-1 rounded driver-select">
+                                                <option value="">--</option>
+                                                {{#each ../drivers}}
+                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
+                                                            data-team-color="{{color}}">
+                                                        {{name}} - {{team}}
+                                                    </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 font-medium">Race Result</label>
+                                <div class="space-y-1">
+                                    {{#each (range 1 20)}}
+                                        <div class="flex items-center">
+                                            <span class="mr-2 w-5 text-center font-bold">{{this}}</span>
+                                            <select name="result[]" class="w-full border p-1 rounded driver-select">
+                                                <option value="">--</option>
+                                                {{#each ../drivers}}
+                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
+                                                            data-team-color="{{color}}">
+                                                        {{name}} - {{team}}
+                                                    </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-6">
+                        <button type="button" onclick="this.closest('.fixed').classList.add('hidden')" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const styleSelectOptions = () => {
+            document.querySelectorAll('.driver-select').forEach(select => {
+                Array.from(select.options).forEach(option => {
+                    if (option.dataset.teamColor) {
+                        option.style.backgroundColor = option.dataset.teamColor;
+                        option.style.color = getContrastColor(option.dataset.teamColor);
+                    }
+                });
+            });
+        };
+
+        function getContrastColor(hexColor) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+            return brightness > 128 ? '#000000' : '#FFFFFF';
+        }
+
+        styleSelectOptions();
+
+        const observer = new MutationObserver(styleSelectOptions);
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+
+    document.querySelectorAll('form[action^="/admin/races/"]').forEach(form => {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+
+            formData.forEach((value, key) => {
+                if (key === 'drivers[]') {
+                    if (!data.drivers) data.drivers = [];
+                    data.drivers.push(value);
+                } else if (key === 'result[]') {
+                    if (!data.result) data.result = [];
+                    data.result.push(value);
+                } else if (key === 'predictionsStarted' || key === 'predictionsEnded') {
+                    data[key] = value === 'true';
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            if (data.drivers) {
+                data.drivers = data.drivers.filter(id => id !== '');
+            }
+            if (data.result) {
+                data.result = data.result.filter(id => id !== '');
+            }
+
+            const id = form.querySelector('input[name="id"]')?.value;
+            const method = 'POST';
+            const url = id ? `/admin/races/${id}` : '/admin/races';
+
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert('Error saving race');
+            }
+        });
+    });
+</script>

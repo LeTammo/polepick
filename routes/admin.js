@@ -23,7 +23,7 @@ module.exports = function(app) {
     router.delete('/drivers/:id', controller.deleteDriver);
 
     router.get('/races', controller.getRaces);
-    router.get('/races/:id', controller.getRaceForm);
+    router.post('/races', controller.createOrUpdateRace);
     router.post('/races/:id', controller.createOrUpdateRace);
     router.delete('/races/:id', controller.deleteRace);
 

@@ -3,9 +3,16 @@ const driverModel = require('./driver');
 const utils = require('../utils');
 
 function findAllRaces() {
-    let races = dataService.loadData('races.json');
+    return dataService.loadData('races.json');
+}
 
-    return races.map(race => {
+function findRaceById(id) {
+    const races = getAllRaces();
+    return races.find(race => race.id === id) || null;
+}
+
+function getAllRaces() {
+    return findAllRaces().map(race => {
         return {
             ...race,
             formattedDate: utils.formatDateShort(race.date),
@@ -13,13 +20,8 @@ function findAllRaces() {
     });
 }
 
-function findRaceById(id) {
-    const races = findAllRaces();
-    return races.find(race => race.id === id) || null;
-}
-
 function getLatestRace() {
-    const races = findAllRaces();
+    const races = getAllRaces();
     if (races.length === 0) return null;
 
     const sortedRaces = [...races].sort((a, b) => {
@@ -57,6 +59,43 @@ function getPreparedRace(id) {
     };
 }
 
+function getPreparedRaces() {
+    const races = getAllRaces();
+    const allDrivers = driverModel.getPreparedDrivers();
+
+    return races.map(race => {
+        const gridArray = Array(20).fill(null).map((_, index) => {
+            const driverId = race.drivers[index];
+            if (!driverId) return { position: index + 1, driver: null };
+
+            const driver = allDrivers.find(d => d.id === driverId);
+            return {
+                position: index + 1,
+                driver: driver || null
+            };
+        });
+
+        const resultArray = Array(20).fill(null).map((_, index) => {
+            const driverId = race.result[index];
+            if (!driverId) return { position: index + 1, driver: null };
+
+            const driver = allDrivers.find(d => d.id === driverId);
+            return {
+                position: index + 1,
+                driver: driver || null
+            };
+        });
+
+        return {
+            ...race,
+            formattedDate: utils.formatDate(race.date),
+            formattedTime: utils.formatTime(race.time),
+            gridArray: gridArray,
+            resultArray: resultArray
+        };
+    });
+}
+
 function getRaceDrivers(id) {
     const race = findRaceById(id);
     if (!race) return [];
@@ -76,22 +115,46 @@ function getRaceDrivers(id) {
     }).filter(driver => driver !== null);
 }
 
-function createRace(raceData) {
+function createRace({
+    name,
+    nameShort,
+    flag,
+    date,
+    time,
+    weatherText,
+    weatherTemperature,
+    track_img,
+    predictionsStarted,
+    predictionsEnded,
+    drivers,
+    result
+}) {
     try {
         const races = findAllRaces();
-        const newId = races.length > 0
+        const id = races.length > 0
             ? (parseInt(races[races.length - 1].id) + 1).toString()
             : "1";
 
         const newRace = {
-            id: newId,
-            name: raceData.name,
-            location: raceData.location,
-            date: raceData.date,
-            time: raceData.time || '00:00:00',
-            predictionsEnded: false,
-            drivers: raceData.drivers || []
+            id,
+            name,
+            nameShort,
+            flag,
+            date,
+            time,
+            weatherText,
+            weatherTemperature,
+            track_img,
+            predictionsStarted,
+            predictionsEnded,
         };
+
+        if (drivers) {
+            newRace.drivers = drivers;
+        }
+        if (result) {
+            newRace.result = result;
+        }
 
         races.push(newRace);
         return dataService.saveData('races.json', races) ? newRace : null;
@@ -101,26 +164,45 @@ function createRace(raceData) {
     }
 }
 
-function updateRace(raceId, raceData) {
+function updateRace(id, {
+    name,
+    nameShort,
+    flag,
+    date,
+    time,
+    weatherText,
+    weatherTemperature,
+    track_img,
+    predictionsStarted,
+    predictionsEnded,
+    drivers,
+    result
+}) {
     try {
         const races = findAllRaces();
-        const index = races.findIndex(r => r.id === raceId);
+        const index = races.findIndex(r => r.id === id);
 
         if (index === -1) return false;
 
         races[index] = {
-            ...races[index],
-            name: raceData.name || races[index].name,
-            location: raceData.location || races[index].location,
-            date: raceData.date || races[index].date,
-            time: raceData.time || races[index].time,
-            predictionsEnded: raceData.predictionsEnded !== undefined
-                ? raceData.predictionsEnded
-                : races[index].predictionsEnded
+            id,
+            name,
+            nameShort,
+            flag,
+            date,
+            time,
+            weatherText,
+            weatherTemperature,
+            track_img,
+            predictionsStarted,
+            predictionsEnded
         };
 
-        if (raceData.drivers) {
-            races[index].drivers = raceData.drivers;
+        if (drivers) {
+            races[index].drivers = drivers;
+        }
+        if (result) {
+            races[index].result = result;
         }
 
         return dataService.saveData('races.json', races);
@@ -149,9 +231,11 @@ function deleteRace(raceId) {
 module.exports = {
     findAllRaces,
     findRaceById,
+    getAllRaces,
     getLatestRace,
     getRaceDrivers,
     getPreparedRace,
+    getPreparedRaces,
     createRace,
     updateRace,
     deleteRace

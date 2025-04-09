@@ -19,7 +19,7 @@ function getRacePage(req, res) {
     try {
         const raceId = req.params.id;
         const race = raceModel.getPreparedRace(raceId);
-        const races = raceModel.findAllRaces();
+        const races = raceModel.getAllRaces();
 
         if (!race) {
             return res.status(404).render('error', {
@@ -96,7 +96,7 @@ function submitPrediction(req, res) {
 
 function getLeaderboardPage(req, res) {
     try {
-        const races = raceModel.findAllRaces();
+        const races = raceModel.getAllRaces();
         const predictions = predictionModel.findAllPredictions();
 
         const allUsers = [...new Set(predictions.map(p => p.username))];

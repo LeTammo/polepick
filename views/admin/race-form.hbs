@@ -1,19 +1,14 @@
 <div class="flex">
     <div class="w-full p-6">
-        <div class="mb-6">
-            <h2 class="text-2xl font-semibold">{{#if race}}Edit Race{{else}}Create New Race{{/if}}</h2>
-            <a href="/admin/races" class="text-blue-500 hover:underline">← Back to Races</a>
-        </div>
-
         <div class="bg-white p-6 rounded-lg shadow-md">
             <form id="raceForm" method="POST" action="{{#if race}}/api/races/{{race.id}}{{else}}/api/races{{/if}}">
                 {{#if race}}
                     <input type="hidden" name="_method" value="PUT">
                 {{/if}}
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                        <label class="block text-gray-700 text-sm font-bold" for="name">
                             Race Name
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -22,7 +17,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="location">
+                        <label class="block text-gray-700 text-sm font-bold" for="location">
                             Location
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -31,7 +26,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
+                        <label class="block text-gray-700 text-sm font-bold" for="date">
                             Date
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -40,7 +35,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="time">
+                        <label class="block text-gray-700 text-sm font-bold" for="time">
                             Time
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -50,10 +45,10 @@
 
                     {{#if race}}
                         <div class="md:col-span-2">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                            <label class="block text-gray-700 text-sm font-bold">
                                 Predictions Status
                             </label>
-                            <div class="flex items-center mt-2">
+                            <div class="flex items-center">
                                 <input id="predictionsOpen" name="predictionsEnded" type="radio" value="false"
                                        {{#unless race.predictionsEnded}}checked{{/unless}}
                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500">
@@ -61,7 +56,7 @@
                                     Open for Predictions
                                 </label>
                             </div>
-                            <div class="flex items-center mt-1">
+                            <div class="flex items-center">
                                 <input id="predictionsClosed" name="predictionsEnded" type="radio" value="true"
                                        {{#if race.predictionsEnded}}checked{{/if}}
                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500">
@@ -73,42 +68,34 @@
                     {{/if}}
                 </div>
 
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold mb-4">Driver Lineup</h3>
+                <div class="mt-2">
+                    <label class="block text-gray-700 text-sm font-bold" for="">Qualification Result</label>
 
-                    <div id="driversContainer" class="space-y-2">
+                    <div class="text-sm space-y-1">
                         {{#if race.grid}}
                             {{#each race.grid}}
-                                <div class="driver-row flex items-center space-x-2">
+                                <div class="driver-row flex items-center">
                                     <label for="driver" class="hidden">Driver</label>
                                     <select id="driver" name="drivers[]"
-                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
+                                            class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
                                         <option value="">Select Driver</option>
                                         {{#each ../allDrivers}}
                                             <option value="{{id}}"
                                                     {{#if (eq id ../this)}}selected{{/if}}>{{name}}</option>
                                         {{/each}}
                                     </select>
-                                    <button type="button"
-                                            class="remove-driver bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
-                                        X
-                                    </button>
                                 </div>
                             {{/each}}
                         {{else}}
-                            <div class="driver-row flex items-center space-x-2">
+                            <div class="driver-row flex items-center">
                                 <label for="driver" class="hidden">Driver</label>
                                 <select id="driver" name="drivers[]"
-                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
+                                        class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline driver-select">
                                     <option value="">Select Driver</option>
                                     {{#each allDrivers}}
                                         <option value="{{id}}">{{name}}</option>
                                     {{/each}}
                                 </select>
-                                <button type="button"
-                                        class="remove-driver bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
-                                    X
-                                </button>
                             </div>
                         {{/if}}
                     </div>
@@ -131,16 +118,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const driversContainer = document.getElementById('driversContainer');
         const raceForm = document.getElementById('raceForm');
-
-        driversContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-driver')) {
-                if (document.querySelectorAll('.driver-row').length > 1) {
-                    e.target.closest('.driver-row').remove();
-                }
-            }
-        });
 
         raceForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -168,17 +146,17 @@
                 },
                 body: JSON.stringify(raceData)
             })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.href = '/admin/races';
-                        } else {
-                            response.json().then(data => {
-                                alert(data.message || 'Error saving race data');
-                            }).catch(() => {
-                                alert('Error saving race data');
-                            });
-                        }
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/admin/races';
+                } else {
+                    response.json().then(data => {
+                        alert(data.message || 'Error saving race data');
+                    }).catch(() => {
+                        alert('Error saving race data');
                     });
+                }
+            });
         });
     });
 </script>

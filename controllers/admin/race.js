@@ -1,11 +1,9 @@
 const raceModel = require('../../models/race');
-const driverModel = require('../../models/driver');
-const teamModel = require('../../models/team');
 const utils = require('../../utils');
 
 function getRaces(req, res) {
     try {
-        const races = raceModel.findAllRaces();
+        const races = raceModel.getAllRaces();
 
         const enhancedRaces = races.map(race => {
             const hasResult = race.result.some(r => r.raceId === race.id);
@@ -32,103 +30,72 @@ function getRaces(req, res) {
     }
 }
 
-function getRaceForm(req, res) {
-    try {
-        const raceId = req.params.id;
-        let race = null;
-        let allDrivers = driverModel.getPreparedDrivers();
-        let teams = teamModel.getAllTeams();
-        let selectedDrivers = [];
-
-        if (raceId !== 'new') {
-            race = raceModel.getPreparedRace(raceId);
-            selectedDrivers = race.drivers;
-        }
-
-        const availableDrivers = allDrivers.map(driver => {
-            const team = teams.find(t => t.id === driver.defaultTeamId);
-            return {
-                ...driver,
-                teamName: team ? team.name : 'Unknown Team',
-                selected: selectedDrivers.includes(driver.id)
-            };
-        });
-
-        res.render('admin/race-form', {
-            useAdminHeader: true,
-            adminRoutes: utils.getAdminRoutes(),
-            pageTitle: race ? `Edit Race: ${race.name}` : 'Create New Race',
-            race,
-            drivers: availableDrivers,
-            isEdit: !!race
-        });
-    } catch (error) {
-        utils.error('Error rendering race form:', error);
-        res.status(500).render('error', {
-            message: 'An error occurred loading the race form'
-        });
-    }
-}
-
 function createOrUpdateRace(req, res) {
     try {
-        const raceId = req.params.id;
-        const { name, location, date, time, predictionsEnded, drivers } = req.body;
+        const id = req.params.id;
+        const {
+            name,
+            nameShort,
+            flag,
+            date,
+            time,
+            weatherText,
+            weatherTemperature,
+            track_img,
+            predictionsStarted,
+            predictionsEnded,
+            drivers,
+            result
+        } = req.body;
 
-        if (!name || !location || !date) {
-            return res.status(400).json({
-                success: false,
-                message: 'Race name, location, and date are required'
-            });
+        if (!name || !nameShort || !flag || !date || !time) {
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
         }
 
         const raceData = {
             name,
-            location,
+            nameShort,
+            flag,
             date,
-            time: time || '00:00:00',
-            predictionsEnded: predictionsEnded === 'true',
-            drivers: Array.isArray(drivers) ? drivers : []
+            time,
+            weatherText: weatherText || '',
+            weatherTemperature: weatherTemperature || '',
+            weatherIcon: 'cloud-rain',
+            track_img: track_img || '',
+            predictionsStarted,
+            predictionsEnded,
+            drivers: Array.isArray(drivers) ? drivers : [],
+            result: Array.isArray(result) ? result : []
         };
 
         let success;
-
-        if (raceId === 'new') {
-            const newRace = raceModel.createRace(raceData);
-            success = !!newRace;
+        if (!id) {
+            success = raceModel.createRace(raceData);
         } else {
-            success = raceModel.updateRace(raceId, raceData);
+            success = raceModel.updateRace(id, raceData);
         }
 
-        if (!success) {
-            return res.status(500).json({
-                success: false,
-                message: 'Failed to save race'
-            });
-        }
-
+        if (!success) return res.status(500).json({ success: false, message: 'Could not save race' });
         res.json({ success: true });
     } catch (error) {
         utils.error('Error saving race:', error);
-        res.status(500).json({
-            success: false,
-            message: 'An error occurred while saving the race'
-        });
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
+
 function deleteRace(req, res) {
     try {
-        const raceId = req.params.id;
+        const id = req.params.id;
 
-        if (!raceId) {
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: 'Race ID is required'
             });
         }
 
-        const success = raceModel.deleteRace(raceId);
+        const success = raceModel.deleteRace(id);
 
         if (!success) {
             return res.status(404).json({
@@ -149,7 +116,6 @@ function deleteRace(req, res) {
 
 module.exports = {
     getRaces,
-    getRaceForm,
     createOrUpdateRace,
     deleteRace
 };
