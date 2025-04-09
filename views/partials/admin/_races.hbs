@@ -240,11 +240,9 @@
 
         styleSelectOptions();
 
-        const observer = new MutationObserver(styleSelectOptions);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        document.querySelectorAll('form[action^="/admin/races/"]').forEach(form => {
+        document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', async function(e) {
+                console.log(e)
                 e.preventDefault();
 
                 const existingError = form.querySelector('.form-error-message');
