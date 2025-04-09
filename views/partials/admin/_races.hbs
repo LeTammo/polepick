@@ -23,45 +23,48 @@
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <input type="hidden" name="id" value="{{id}}">
-                            <label class="block text-sm">Race Name</label>
-                            <input type="text" name="name" class="w-full border p-2 rounded" value="{{name}}">
+                            <label class="block mb-1 font-medium text-xs">Race Name</label>
+                            <input type="text" name="name" class="w-full border px-2 py-1 rounded" value="{{name}}" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Location</label>
-                            <input type="text" name="nameShort" class="w-full border p-2 rounded" value="{{nameShort}}">
+                            <label class="block font-medium text-xs">Location</label>
+                            <input type="text" name="nameShort" class="w-full border px-2 py-1 rounded" value="{{nameShort}}" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Flag</label>
-                            <input type="text" name="flag" class="w-full border p-2 rounded" value="{{flag}}">
+                            <label class="block font-medium text-xs">Flag</label>
+                            <input type="text" name="flag" class="w-full border px-2 py-1 rounded" value="{{flag}}" style="margin-top: 2px!important;">
 
                             <div class="flex gap-4">
-                                <input type="date" name="date" class="w-full border p-2 rounded" value="{{date}}">
-                                <input type="time" name="time" class="w-full border p-2 rounded" value="{{time}}">
+                                <input type="date" name="date" class="w-full border px-2 py-1 rounded" value="{{date}}" style="margin-top: 2px!important;">
+                                <input type="time" name="time" class="w-full border px-2 py-1 rounded" value="{{time}}">
                             </div>
 
-                            <label class="block text-sm">Weather</label>
-                            <input type="text" name="weatherText" class="w-full border p-2 rounded" value="{{weatherText}}">
+                            <label class="block mb-1 font-medium text-xs">Weather</label>
+                            <input type="text" name="weatherText" class="w-full border px-2 py-1 rounded" value="{{weatherText}}" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Temperature (°C)</label>
-                            <input type="number" name="weatherTemperature" class="w-full border p-2 rounded" value="{{weatherTemperature}}">
+                            <label class="block mb-1 font-medium text-xs">Temperature (°C)</label>
+                            <input type="number" name="weatherTemperature" class="w-full border px-2 py-1 rounded" value="{{weatherTemperature}}" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Track Image URL</label>
-                            <input type="url" name="track_img" class="w-full border p-2 rounded" value="{{track_img}}">
+                            <label class="block mb-1 font-medium text-xs">Track Image URL</label>
+                            <input type="url" name="track_img" class="w-full border px-2 py-1 rounded" value="{{track_img}}" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Predictions</label>
                             <div class="flex gap-4 text-sm">
-                                Started:
-                                <label><input type="radio" name="predictionsStarted" value="true" {{#if predictionsStarted}}checked{{/if}}> Yes</label>
-                                <label><input type="radio" name="predictionsStarted" value="false" {{#unless predictionsStarted}}checked{{/unless}}> No</label>
+                                Predictions started:
+                                <label><input type="radio" name="predictionsStarted" value="true" {{#if predictionsStarted}}checked{{/if}} style="margin-top: 2px!important;">
+                                    Yes
+                                </label>
+                                <label><input type="radio" name="predictionsStarted" value="false" {{#unless predictionsStarted}}checked{{/unless}} style="margin-top: 2px!important;">
+                                    No
+                                </label>
                             </div>
                             <div class="flex gap-4 text-sm">
-                                Ended:
+                                Predictions ended:
                                 <label><input type="radio" name="predictionsEnded" value="true" {{#if predictionsEnded}}checked{{/if}}> Yes</label>
                                 <label><input type="radio" name="predictionsEnded" value="false" {{#unless predictionsEnded}}checked{{/unless}}> No</label>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                             <div>
-                                <label class="block mb-1 font-medium">Drivers Grid</label>
+                                <label class="block mb-1 font-medium text-xs">Drivers Grid</label>
                                 <div class="space-y-1">
                                     {{#each gridArray}}
                                         <div class="flex items-center">
@@ -81,7 +84,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block mb-1 font-medium">Race Result</label>
+                                <label class="block mb-1 font-medium text-xs">Race Result</label>
                                 <div class="space-y-1">
                                     {{#each resultArray}}
                                         <div class="flex items-center">
@@ -118,30 +121,30 @@
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <input type="hidden" name="id" value="new">
-                            <label class="block text-sm">Race Name</label>
-                            <input type="text" name="name" class="w-full border p-2 rounded" value="">
+                            <label class="block mb-1 font-medium text-xs">Race Name</label>
+                            <input type="text" name="name" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Location</label>
-                            <input type="text" name="nameShort" class="w-full border p-2 rounded" value="">
+                            <label class="block mb-1 font-medium text-xs">Location</label>
+                            <input type="text" name="nameShort" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Flag</label>
-                            <input type="text" name="flag" class="w-full border p-2 rounded" value="">
+                            <label class="block mb-1 font-medium text-xs">Flag</label>
+                            <input type="text" name="flag" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
                             <div class="flex gap-4">
-                                <input type="date" name="date" class="w-full border p-2 rounded" value="">
-                                <input type="time" name="time" class="w-full border p-2 rounded" value="">
+                                <input type="date" name="date" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
+                                <input type="time" name="time" class="w-full border px-2 py-1 rounded"  value="">
                             </div>
 
-                            <label class="block text-sm">Weather</label>
-                            <input type="text" name="weatherText" class="w-full border p-2 rounded" value="">
+                            <label class="block mb-1 font-medium text-xs">Weather</label>
+                            <input type="text" name="weatherText" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Temperature (°C)</label>
-                            <input type="number" name="weatherTemperature" class="w-full border p-2 rounded" value="">
+                            <label class="block font-medium text-xs">Temperature (°C)</label>
+                            <input type="number" name="weatherTemperature" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Track Image URL</label>
-                            <input type="url" name="track_img" class="w-full border p-2 rounded" value="">
+                            <label class="block font-medium text-xs">Track Image URL</label>
+                            <input type="url" name="track_img" class="w-full border px-2 py-1 rounded"  value="" style="margin-top: 2px!important;">
 
-                            <label class="block text-sm">Predictions</label>
+                            <label class="block mb-1 font-medium text-xs">Predictions</label>
                             <div class="flex gap-4 text-sm">
                                 Started:
                                 <label><input type="radio" name="predictionsStarted" value="true"> Yes</label>
@@ -154,9 +157,9 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                             <div>
-                                <label class="block mb-1 font-medium">Drivers Grid</label>
+                                <label class="block mb-1 font-medium text-xs">Drivers Grid</label>
                                 <div class="space-y-1">
                                     {{#each (range 1 20)}}
                                         <div class="flex items-center">
@@ -175,7 +178,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block mb-1 font-medium">Race Result</label>
+                                <label class="block mb-1 font-medium text-xs">Race Result</label>
                                 <div class="space-y-1">
                                     {{#each (range 1 20)}}
                                         <div class="flex items-center">
@@ -233,50 +236,84 @@
 
         const observer = new MutationObserver(styleSelectOptions);
         observer.observe(document.body, { childList: true, subtree: true });
-    });
 
-    document.querySelectorAll('form[action^="/admin/races/"]').forEach(form => {
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const data = {};
+        document.querySelectorAll('form[action^="/admin/races/"]').forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
 
-            formData.forEach((value, key) => {
-                if (key === 'drivers[]') {
-                    if (!data.drivers) data.drivers = [];
-                    data.drivers.push(value);
-                } else if (key === 'result[]') {
-                    if (!data.result) data.result = [];
-                    data.result.push(value);
-                } else if (key === 'predictionsStarted' || key === 'predictionsEnded') {
-                    data[key] = value === 'true';
-                } else {
-                    data[key] = value;
+                const existingError = form.querySelector('.form-error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+
+                const errorContainer = document.createElement('div');
+                errorContainer.className = 'form-error-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 hidden';
+                form.insertBefore(errorContainer, form.firstChild);
+
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Saving...';
+
+                const formData = new FormData(form);
+                const data = {};
+
+                let drivers = [];
+                let results = [];
+
+                formData.forEach((value, key) => {
+                    if (key === 'drivers[]') {
+                        if (value) drivers.push(value);
+                    } else if (key === 'result[]') {
+                        if (value) results.push(value);
+                    } else if (key === 'predictionsStarted' || key === 'predictionsEnded') {
+                        data[key] = value === 'true';
+                    } else {
+                        data[key] = value;
+                    }
+                });
+
+                data.drivers = drivers;
+                data.result = results;
+
+                const id = form.querySelector('input[name="id"]')?.value;
+                const url = id && id !== 'new' ? `/admin/races/${id}` : '/admin/races';
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cache-Control': 'no-cache'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        errorContainer.className = 'form-success-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4';
+                        errorContainer.textContent = 'Race saved successfully!';
+                        errorContainer.classList.remove('hidden');
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    } else {
+                        errorContainer.textContent = result.message || 'Error saving race';
+                        errorContainer.classList.remove('hidden');
+
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = originalButtonText;
+                    }
+                } catch (error) {
+                    errorContainer.textContent = 'Network error occurred. Please try again.';
+                    errorContainer.classList.remove('hidden');
+
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
                 }
             });
-
-            if (data.drivers) {
-                data.drivers = data.drivers.filter(id => id !== '');
-            }
-            if (data.result) {
-                data.result = data.result.filter(id => id !== '');
-            }
-
-            const id = form.querySelector('input[name="id"]')?.value;
-            const method = 'POST';
-            const url = id ? `/admin/races/${id}` : '/admin/races';
-
-            const res = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-
-            if (res.ok) {
-                location.reload();
-            } else {
-                alert('Error saving race');
-            }
         });
     });
 </script>
