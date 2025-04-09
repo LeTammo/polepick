@@ -57,10 +57,10 @@ function error(message, error) {
 
 function getAdminRoutes() {
     return [
-        {'name': 'Dashboard', 'path': '/admin'},
-        {'name': 'Teams', 'path': '/admin/teams'},
-        {'name': 'Drivers', 'path': '/admin/drivers'},
-        {'name': 'Races', 'path': '/admin/races'},
+        //{'name': 'Dashboard', 'path': '/admin'},
+        //{'name': 'Teams', 'path': '/admin/teams'},
+        //{'name': 'Drivers', 'path': '/admin/drivers'},
+        //{'name': 'Races', 'path': '/admin/races'},
         //{'name': 'Results', 'path': '/admin/results'},
         //{'name': 'Predictions', 'path': '/admin/predictions'}
     ]
