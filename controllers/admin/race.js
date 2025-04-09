@@ -48,8 +48,18 @@ function createOrUpdateRace(req, res) {
             result
         } = req.body;
 
-        if (!name || !nameShort || !flag || !date || !time) {
-            return res.status(400).json({ success: false, message: 'Missing required fields' });
+        const missingFields = [];
+        if (!name) missingFields.push('Race Name');
+        if (!nameShort) missingFields.push('Location');
+        if (!flag) missingFields.push('Flag');
+        if (!date) missingFields.push('Date');
+        if (!time) missingFields.push('Time');
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Missing required fields: ${missingFields.join(', ')}`
+            });
         }
 
         const raceData = {
@@ -76,10 +86,11 @@ function createOrUpdateRace(req, res) {
         }
 
         if (!success) return res.status(500).json({ success: false, message: 'Could not save race' });
-        res.json({ success: true });
+        res.json({ success: true, message: 'Race saved successfully' });
+
     } catch (error) {
         utils.error('Error saving race:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ success: false, message: 'Server error occurred while saving the race' });
     }
 }
 
