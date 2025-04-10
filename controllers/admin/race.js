@@ -83,7 +83,6 @@ function createOrUpdateRace(req, res) {
         if (!id) {
             success = raceModel.createRace(raceData);
         } else {
-            console.log(raceData)
             success = raceModel.updateRace(id, raceData);
         }
 

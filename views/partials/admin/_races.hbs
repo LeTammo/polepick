@@ -300,7 +300,6 @@
 
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', async function(e) {
-                console.log(e)
                 e.preventDefault();
 
                 const existingError = form.querySelector('.form-error-message');
