@@ -73,8 +73,8 @@ function createOrUpdateRace(req, res) {
             weatherTemperature: weatherTemperature || '',
             weatherIcon: weatherIcon || '',
             track_img: track_img || '',
-            predictionsStarted,
-            predictionsEnded,
+            predictionsStarted: predictionsStarted ?? false,
+            predictionsEnded: predictionsEnded ?? false,
             drivers: Array.isArray(drivers) ? drivers : [],
             result: Array.isArray(result) ? result : []
         };
@@ -83,6 +83,7 @@ function createOrUpdateRace(req, res) {
         if (!id) {
             success = raceModel.createRace(raceData);
         } else {
+            console.log(raceData)
             success = raceModel.updateRace(id, raceData);
         }
 
