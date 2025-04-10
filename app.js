@@ -29,7 +29,10 @@ const hbsHelpers = {
     },
     subtract: function (a, b) {
         return a - b;
-    }
+    },
+    log: function (m) {
+        console.log(m);
+    },
 };
 
 app.engine('.hbs', handlebars.engine({
