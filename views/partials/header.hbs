@@ -1,29 +1,37 @@
 <header class="bg-red-900 bg-opacity-90 text-white shadow-md shadow-gray-400">
     <div class="container mx-auto px-4 py-3">
-        <div class="flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-2 text-xl font-bold">
+        <div class="relative top-[-2px]">
+            <a href="/" class="absolute flex items-center space-x-2 text-xl font-bold">
                 <i class="fas fa-flag-checkered"></i>
                 <span class="hidden md:block">PolePick</span>
             </a>
+        </div>
+        <div class="flex justify-center items-center">
             <nav>
-                <ul class="flex space-x-8">
-                    {{#each races}}
-                        <li>
-                            <a href="/race/{{id}}" class="flex items-center hover:text-gray-200 transition duration-150">
-                                <img src="../flags/{{flag}}" class="black-border inline h-6" alt="flag={{flag}}">
-                                <div class="hidden md:block ml-2">{{nameShort}}</div>
-                            </a>
-                        </li>
-                    {{/each}}
+                <ul class="flex space-x-8 sm:space-x-16">
+                    <li>
+                        <a href="/" class="flex items-center space-x-2 hover:text-gray-200 transition duration-150">
+                            <span class="f-white">{{> icons/calendar}}</span>
+                            <span>Race Calendar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/leaderboard" class="flex items-center space-x-2 hover:text-gray-200 transition duration-150">
+                            <span class="f-white">{{> icons/next}}</span>
+                            <span class="hidden md:block">Next Race</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/leaderboard" class="flex items-center space-x-2 hover:text-gray-200 transition duration-150">
+                            <span class="f-white">{{> icons/leaderboard}}</span>
+                            <span class="hidden md:block">Leaderboard</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <nav>
                 <ul class="flex space-x-6">
                     <li>
-                        <a href="/leaderboard" class="flex items-center space-x-2 hover:text-gray-200 transition duration-150">
-                            <span class="hidden md:block">Leaderboard</span>
-                            <span class="f-white">{{> icons/leaderboard}}</span>
-                        </a>
                     </li>
                 </ul>
             </nav>
