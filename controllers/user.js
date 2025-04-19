@@ -9,6 +9,15 @@ function getHomePage(req, res) {
     return res.render('pages/home', { races })
 }
 
+function getNextRace(req, res) {
+    const latestRace = raceModel.getLatestRace();
+    if (!latestRace) {
+        return res.status(404).render('error', { message: 'No races found' });
+    }
+
+    return res.redirect(`/race/${latestRace.id}`);
+}
+
 function getRacePage(req, res) {
     try {
         const raceId = req.params.id;
@@ -172,6 +181,7 @@ function getLeaderboardPage(req, res) {
 
 module.exports = {
     getHomePage,
+    getNextRace,
     getRacePage,
     submitPrediction,
     getLeaderboardPage
