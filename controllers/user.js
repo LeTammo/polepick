@@ -4,15 +4,9 @@ const scoreService = require('../services/scoreService');
 const utils = require('../utils');
 
 function getHomePage(req, res) {
-    const latestRace = raceModel.getLatestRace();
+    const races = raceModel.getPreparedRaces();
 
-    if (!latestRace) {
-        return res.status(404).render('error', {
-            message: 'No races found'
-        });
-    }
-
-    return res.redirect(`/race/${latestRace.id}`);
+    return res.render('pages/home', { races })
 }
 
 function getRacePage(req, res) {
