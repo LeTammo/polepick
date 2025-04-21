@@ -3,7 +3,8 @@
     <h3 class="text-xl font-semibold text-gray-700">Races</h3>
 </div>
 <div class="text-sm">
-    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow mb-6 cursor-pointer" onclick="document.getElementById('raceModal-new').classList.remove('hidden')">
+    <div class="bg-white hover:bg-green-50 hover:scale-105 transition p-2 rounded shadow mb-6 cursor-pointer"
+         onclick="document.getElementById('raceModal-new').classList.remove('hidden')">
         + Add New Race
     </div>
     {{#each races}}
@@ -16,7 +17,8 @@
             <div class="overflow-hidden whitespace-nowrap text-ellipsis">{{formattedDate}}</div>
         </div>
 
-        <div id="raceModal-{{id}}" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div id="raceModal-{{id}}" data-race-id="{{id}}"
+             class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 race-modal">
             <div class="bg-white p-6 rounded shadow-xl w-full max-w-6xl space-y-4 overflow-y-auto max-h-[95vh]">
                 <h2 class="text-xl font-bold">Edit Race</h2>
                 <form method="POST" action="/admin/races/{{id}}" class="space-y-4">
@@ -56,18 +58,24 @@
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div class="w-full">
-                                    <label for="weatherText-{{id}}" class="block mb-1 font-medium text-xs">Weather</label>
-                                    <input type="text" id="weatherText-{{id}}" name="weatherText" value="{{weatherText}}"
+                                    <label for="weatherText-{{id}}"
+                                           class="block mb-1 font-medium text-xs">Weather</label>
+                                    <input type="text" id="weatherText-{{id}}" name="weatherText"
+                                           value="{{weatherText}}"
                                            class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                                 </div>
                                 <div class="w-full">
-                                    <label for="weatherIcon-{{id}}" class="block mb-1 font-medium text-xs">Weather Icon</label>
-                                    <input type="text" id="weatherIcon-{{id}}" name="weatherIcon" value="{{weatherIcon}}"
+                                    <label for="weatherIcon-{{id}}" class="block mb-1 font-medium text-xs">Weather
+                                        Icon</label>
+                                    <input type="text" id="weatherIcon-{{id}}" name="weatherIcon"
+                                           value="{{weatherIcon}}"
                                            class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                                 </div>
                                 <div class="w-full">
-                                    <label for="weatherTemperature-{{id}}" class="block mb-1 font-medium text-xs">Temperature (°C)</label>
-                                    <input type="number" id="weatherTemperature-{{id}}" name="weatherTemperature" value="{{weatherTemperature}}"
+                                    <label for="weatherTemperature-{{id}}" class="block mb-1 font-medium text-xs">Temperature
+                                        (°C)</label>
+                                    <input type="number" id="weatherTemperature-{{id}}" name="weatherTemperature"
+                                           value="{{weatherTemperature}}"
                                            class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                                 </div>
                             </div>
@@ -81,7 +89,8 @@
                                     <label class="cursor-pointer">
                                         <span class="font-medium text-xs">Predictions Started</span>
                                         <span class="relative block">
-                                            <input type="checkbox" name="predictionsStarted" id="predictionsStarted" class="sr-only peer"
+                                            <input type="checkbox" name="predictionsStarted"
+                                                   id="predictionsStarted{{id}}" class="sr-only peer"
                                                    onchange="this.value = this.checked ? 'true' : 'false';"
                                                    value="{{#if predictionsStarted}}true{{else}}false{{/if}}"
                                                    {{#if predictionsStarted}}checked{{/if}}>
@@ -93,7 +102,8 @@
                                     <label class="cursor-pointer">
                                         <span class="font-medium text-xs">Predictions Ended</span>
                                         <span class="relative block">
-                                            <input type="checkbox" name="predictionsEnded" id="predictionsEnded" class="sr-only peer"
+                                            <input type="checkbox" name="predictionsEnded" id="predictionsEnded{{id}}"
+                                                   class="sr-only peer"
                                                    onchange="this.value = this.checked ? 'true' : 'false';"
                                                    value="{{#if predictionsEnded}}true{{else}}false{{/if}}"
                                                    {{#if predictionsEnded}}checked{{/if}}>
@@ -102,45 +112,73 @@
                                     </label>
                                 </div>
                             </div>
+
+                            <div class="driver-pool bg-gray-50 p-2 rounded mb-4">
+                                <div class="text-xs text-gray-500 mb-2">Driver Pool — Drag to Quali and/or Race grids
+                                </div>
+                                <div id="driver-pool-{{id}}" class="grid grid-cols-2 gap-1 driver-pool-items" data-pool>
+                                    {{#each ../drivers}}
+                                        <div class="driver-item flex items-center p-1 cursor-move rounded"
+                                             style="background-color: {{color}}; color: white;"
+                                             data-driver-id="{{id}}" draggable="true">
+                                            <span class="text-xs truncate">{{name}}</span>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
                         </div>
 
                         <div class="md:col-span-4 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                             <div>
-                                <label for="drivers-{{id}}" class="block mb-1 font-medium text-xs">Qualification Result</label>
-                                <div class="space-y-1">
+                                <label class="block mb-1 font-medium text-xs">Qualification Result</label>
+                                <div id="quali-grid-{{id}}">
                                     {{#each gridArray}}
-                                        <div class="flex items-center">
+                                        <div class="grid-position flex items-center mb-2" data-position="{{position}}">
                                             <span class="mr-2 w-5 text-center font-bold">{{position}}</span>
-                                            <select id="drivers-{{id}}" name="drivers[]" class="w-full border p-1 rounded driver-select">
-                                                <option value="">--</option>
-                                                {{#each ../../drivers}}
-                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
-                                                            {{#if (eq id ../driver.id)}}selected{{/if}}
-                                                            data-team-color="{{color}}">
-                                                        {{name}} - {{team}}
-                                                    </option>
-                                                {{/each}}
-                                            </select>
+                                            <div class="position-slot flex-1 min-h-6 border border-gray-200 rounded bg-white"
+                                                 data-slot-type="quali" data-slot-index="{{@index}}"
+                                                 data-driver-id="{{#if driver}}{{driver.id}}{{/if}}">
+                                                {{#if driver}}
+                                                    <div class="driver-item flex items-center p-1 cursor-move rounded w-full"
+                                                         style="background-color: {{driver.color}}; color: white;"
+                                                         data-driver-id="{{driver.id}}" draggable="true">
+                                                        <span class="text-xs">{{driver.name}} - {{driver.team}}</span>
+                                                        <input type="hidden" name="drivers[]" value="{{driver.id}}">
+                                                    </div>
+                                                {{else}}
+                                                    <div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                                        <input type="hidden" name="drivers[]" value="">
+                                                        Drop driver here
+                                                    </div>
+                                                {{/if}}
+                                            </div>
                                         </div>
                                     {{/each}}
                                 </div>
                             </div>
                             <div>
-                                <label for="result-{{id}}" class="block mb-1 font-medium text-xs">Race Result</label>
-                                <div class="space-y-1">
+                                <label class="block mb-1 font-medium text-xs">Race Result</label>
+                                <div id="race-grid-{{id}}">
                                     {{#each resultArray}}
-                                        <div class="flex items-center">
+                                        <div class="grid-position flex items-center mb-2" data-position="{{position}}">
                                             <span class="mr-2 w-5 text-center font-bold">{{position}}</span>
-                                            <select id="result-{{id}}" name="result[]" class="w-full border p-1 rounded driver-select">
-                                                <option value="">--</option>
-                                                {{#each ../../drivers}}
-                                                    <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
-                                                            {{#if (eq id ../driver.id)}}selected{{/if}}
-                                                            data-team-color="{{color}}">
-                                                        {{name}} - {{team}}
-                                                    </option>
-                                                {{/each}}
-                                            </select>
+                                            <div class="position-slot flex-1 min-h-6 border border-gray-200 rounded bg-white"
+                                                 data-slot-type="race" data-slot-index="{{@index}}"
+                                                 data-driver-id="{{#if driver}}{{driver.id}}{{/if}}">
+                                                {{#if driver}}
+                                                    <div class="driver-item flex items-center p-1 cursor-move rounded w-full"
+                                                         style="background-color: {{driver.color}}; color: white;"
+                                                         data-driver-id="{{driver.id}}" draggable="true">
+                                                        <span class="text-xs">{{driver.name}} - {{driver.team}}</span>
+                                                        <input type="hidden" name="result[]" value="{{driver.id}}">
+                                                    </div>
+                                                {{else}}
+                                                    <div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                                        <input type="hidden" name="result[]" value="">
+                                                        Drop driver here
+                                                    </div>
+                                                {{/if}}
+                                            </div>
                                         </div>
                                     {{/each}}
                                 </div>
@@ -149,19 +187,35 @@
                     </div>
 
                     <div class="flex justify-between mt-6">
-                        <button type="button" onclick="this.closest('.fixed').classList.add('hidden')" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                        <button type="button" onclick="this.closest('.fixed').classList.add('hidden')"
+                                class="bg-gray-300 px-4 py-2 rounded">Cancel
+                        </button>
                         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     {{/each}}
-    <div id="raceModal-new" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+    <div id="raceModal-new" data-race-id="new"
+         class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 race-modal">
         <div class="bg-white p-6 rounded shadow-xl w-full max-w-6xl space-y-4 overflow-y-auto max-h-[95vh]">
             <h2 class="text-xl font-bold">Add New Race</h2>
             <form method="POST" action="/admin/races" class="space-y-4">
                 <div class="grid md:grid-cols-6 gap-6">
                     <div class="md:col-span-2 lg:col-span-3 space-y-2">
+                        <div class="driver-pool bg-gray-50 p-2 rounded mb-4">
+                            <div class="text-xs text-gray-500 mb-2">Driver Pool - Drag to Quali and/or Race grids</div>
+                            <div id="driver-pool-new" class="grid grid-cols-2 gap-1 driver-pool-items" data-pool>
+                                {{#each drivers}}
+                                    <div class="driver-item flex items-center p-1 cursor-move rounded"
+                                         style="background-color: {{color}}; color: white;"
+                                         data-driver-id="{{id}}" draggable="true">
+                                        <span class="text-xs truncate">{{name}}</span>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
                         <input type="hidden" name="id" value="new">
 
                         <label for="name-new" class="block mb-1 font-medium text-xs">Race Name</label>
@@ -206,7 +260,8 @@
                                        class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                             </div>
                             <div class="w-full">
-                                <label for="weatherTemperature-new" class="block font-medium text-xs">Temperature (°C)</label>
+                                <label for="weatherTemperature-new" class="block font-medium text-xs">Temperature
+                                    (°C)</label>
                                 <input type="number" id="weatherTemperature-new" name="weatherTemperature" value=""
                                        class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                             </div>
@@ -221,7 +276,8 @@
                                 <label class="cursor-pointer">
                                     <span class="font-medium text-xs">Predictions Started</span>
                                     <span class="relative block">
-                                        <input type="checkbox" name="predictionsStarted" id="predictionsStarted" class="sr-only peer"
+                                        <input type="checkbox" name="predictionsStarted" id="predictionsStarted-new"
+                                               class="sr-only peer"
                                                onchange="this.value = this.checked ? 'true' : 'false';" value="false">
                                         <span class="block w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></span>
                                     </span>
@@ -231,7 +287,8 @@
                                 <label class="cursor-pointer">
                                     <span class="font-medium text-xs">Predictions Ended</span>
                                     <span class="relative block">
-                                        <input type="checkbox" name="predictionsEnded" id="predictionsEnded" class="sr-only peer"
+                                        <input type="checkbox" name="predictionsEnded" id="predictionsEnded-new"
+                                               class="sr-only peer"
                                                onchange="this.value = this.checked ? 'true' : 'false';" value="false">
                                         <span class="block w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></span>
                                     </span>
@@ -242,39 +299,35 @@
 
                     <div class="md:col-span-4 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <div>
-                            <label for="drivers-new" class="block mb-1 font-medium text-xs">Qualification Result</label>
-                            <div class="space-y-1">
+                            <label class="block mb-1 font-medium text-xs">Qualification Result</label>
+                            <div id="quali-grid-new">
                                 {{#each (range 1 20)}}
-                                    <div class="flex items-center">
+                                    <div class="grid-position flex items-center mb-2" data-position="{{this}}">
                                         <span class="mr-2 w-5 text-center font-bold">{{this}}</span>
-                                        <select id="drivers-new" name="drivers[]" class="w-full border p-1 rounded driver-select">
-                                            <option value="">--</option>
-                                            {{#each ../drivers}}
-                                                <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
-                                                        data-team-color="{{color}}">
-                                                    {{name}} - {{team}}
-                                                </option>
-                                            {{/each}}
-                                        </select>
+                                        <div class="position-slot flex-1 min-h-6 border border-gray-200 rounded bg-white"
+                                             data-slot-type="quali" data-slot-index="{{@index}}">
+                                            <div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                                <input type="hidden" name="drivers[]" value="">
+                                                Drop driver here
+                                            </div>
+                                        </div>
                                     </div>
                                 {{/each}}
                             </div>
                         </div>
                         <div>
-                            <label for="result-new" class="block mb-1 font-medium text-xs">Race Result</label>
-                            <div class="space-y-1">
+                            <label class="block mb-1 font-medium text-xs">Race Result</label>
+                            <div id="race-grid-new">
                                 {{#each (range 1 20)}}
-                                    <div class="flex items-center">
+                                    <div class="grid-position flex items-center mb-2" data-position="{{this}}">
                                         <span class="mr-2 w-5 text-center font-bold">{{this}}</span>
-                                        <select id="result-new" name="result[]" class="w-full border p-1 rounded driver-select">
-                                            <option value="">--</option>
-                                            {{#each ../drivers}}
-                                                <option value="{{id}}" class="text-white bg-[{{color}}] bg-hover-white m-1"
-                                                        data-team-color="{{color}}">
-                                                    {{name}} - {{team}}
-                                                </option>
-                                            {{/each}}
-                                        </select>
+                                        <div class="position-slot flex-1 min-h-6 border border-gray-200 rounded bg-white"
+                                             data-slot-type="race" data-slot-index="{{@index}}">
+                                            <div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                                <input type="hidden" name="result[]" value="">
+                                                Drop driver here
+                                            </div>
+                                        </div>
                                     </div>
                                 {{/each}}
                             </div>
@@ -283,7 +336,9 @@
                 </div>
 
                 <div class="flex justify-between mt-6">
-                    <button type="button" onclick="this.closest('.fixed').classList.add('hidden')" class="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                    <button type="button" onclick="this.closest('.fixed').classList.add('hidden')"
+                            class="bg-gray-300 px-4 py-2 rounded">Cancel
+                    </button>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
                 </div>
             </form>
@@ -292,107 +347,162 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const styleSelectOptions = () => {
-            document.querySelectorAll('.driver-select').forEach(select => {
-                Array.from(select.options).forEach(option => {
-                    if (option.dataset.teamColor) {
-                        option.style.backgroundColor = option.dataset.teamColor;
-                        option.style.color = getContrastColor(option.dataset.teamColor);
-                    }
-                });
-            });
+    document.addEventListener('DOMContentLoaded', function () {
+        let dragData = {
+            sourceType: null,      // "pool" or "slot"
+            sourceGrid: null,      //
+            sourceSlot: null,      // .position-slot
+            driverItem: null,      // .driver-item
+            slotType: null         // "quali" or "race"
         };
 
-        function getContrastColor(hexColor) {
-            const r = parseInt(hexColor.substr(1, 2), 16);
-            const g = parseInt(hexColor.substr(3, 2), 16);
-            const b = parseInt(hexColor.substr(5, 2), 16);
+        // Drag start
+        document.body.addEventListener('dragstart', function (ev) {
+            if (!ev.target.classList.contains('driver-item')) return;
+            dragData.driverItem = ev.target;
+            let slot = ev.target.closest('.position-slot');
+            if (slot) {
+                dragData.sourceType = "slot";
+                dragData.sourceSlot = slot;
+                dragData.slotType = slot.getAttribute('data-slot-type') || slot.parentNode.getAttribute('data-slot-type');
+                dragData.sourceGrid = slot.closest('.quali-grid, .race-grid') || slot.closest('[id^="quali-grid-"], [id^="race-grid-"]');
+            } else if (ev.target.closest('.driver-pool')) {
+                dragData.sourceType = "pool";
+                dragData.sourceSlot = null;
+                dragData.slotType = null;
+                dragData.sourceGrid = null;
+            }
+            setTimeout(() => dragData.driverItem.classList.add('opacity-40'), 1);
+        });
 
-            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // Drag end
+        document.body.addEventListener('dragend', function (ev) {
+            if (dragData.driverItem) dragData.driverItem.classList.remove('opacity-40');
+            dragData = {sourceType: null, sourceGrid: null, sourceSlot: null, driverItem: null, slotType: null};
+            document.querySelectorAll('.position-slot').forEach(el => el.classList.remove('ring', 'ring-blue-400'));
+        });
 
-            return brightness > 128 ? '#000000' : '#FFFFFF';
-        }
+        // Slot listener
+        function setupGridDnD(gridId, slotType, inputName) {
+            document.querySelectorAll('[id^="' + gridId + '"]').forEach(function (grid) {
+                grid.classList.add(slotType + '-grid');
 
-        styleSelectOptions();
-
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const existingError = form.querySelector('.form-error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
-
-                const errorContainer = document.createElement('div');
-                errorContainer.className = 'form-error-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4 hidden';
-                form.insertBefore(errorContainer, form.firstChild);
-
-                const submitButton = form.querySelector('button[type="submit"]');
-                const originalButtonText = submitButton.innerHTML;
-                submitButton.disabled = true;
-                submitButton.innerHTML = 'Saving...';
-
-                const formData = new FormData(form);
-                const data = {};
-
-                let drivers = [];
-                let results = [];
-
-                formData.forEach((value, key) => {
-                    if (key === 'drivers[]') {
-                        if (value) drivers.push(value);
-                    } else if (key === 'result[]') {
-                        if (value) results.push(value);
-                    } else if (key === 'predictionsStarted' || key === 'predictionsEnded') {
-                        data[key] = value === 'true';
-                    } else {
-                        data[key] = value;
-                    }
-                });
-
-                data.drivers = drivers;
-                data.result = results;
-
-                const id = form.querySelector('input[name="id"]')?.value;
-                const url = id && id !== 'new' ? `/admin/races/${id}` : '/admin/races';
-
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Cache-Control': 'no-cache'
-                        },
-                        body: JSON.stringify(data)
+                grid.querySelectorAll('.position-slot').forEach(function (slot) {
+                    slot.setAttribute('data-slot-type', slotType);
+                    slot.addEventListener('dragover', function (ev) {
+                        ev.preventDefault();
+                        slot.classList.add('ring', 'ring-blue-400');
+                    });
+                    slot.addEventListener('dragleave', function (ev) {
+                        slot.classList.remove('ring', 'ring-blue-400');
                     });
 
-                    const result = await response.json();
+                    slot.addEventListener('drop', function (ev) {
+                        ev.preventDefault();
+                        slot.classList.remove('ring', 'ring-blue-400');
+                        if (!dragData.driverItem) return;
 
-                    if (response.ok) {
-                        errorContainer.className = 'form-success-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4';
-                        errorContainer.textContent = 'Race saved successfully!';
-                        errorContainer.classList.remove('hidden');
+                        // Is this driver already in this grid?
+                        const gridSlots = Array.from(grid.querySelectorAll('.position-slot'));
+                        const draggedDriverId = dragData.driverItem.getAttribute('data-driver-id');
+                        if (gridSlots.some(s => {
+                            let d = s.querySelector('.driver-item');
+                            return d && d.getAttribute('data-driver-id') === draggedDriverId;
+                        })) {
+                            if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
+                            } else {
+                                slot.classList.add('bg-red-100');
+                                setTimeout(() => slot.classList.remove('bg-red-100'), 500);
+                                return;
+                            }
+                        }
 
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 500);
-                    } else {
-                        errorContainer.textContent = result.message || 'Error saving race';
-                        errorContainer.classList.remove('hidden');
+                        // Either dragging from pool to slot (insert) or from slot to slot (reorder)
+                        if (dragData.sourceType === "pool") {
+                            let current = slot.querySelector('.driver-item');
+                            if (current) current.remove();
+                            let empty = slot.querySelector('.empty-slot');
+                            if (empty) empty.remove();
 
-                        submitButton.disabled = false;
-                        submitButton.innerHTML = originalButtonText;
-                    }
-                } catch (error) {
-                    errorContainer.textContent = 'Network error occurred. Please try again.';
-                    errorContainer.classList.remove('hidden');
+                            let clone = dragData.driverItem.cloneNode(true);
+                            clone.classList.remove('opacity-40');
 
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = originalButtonText;
-                }
+                            Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
+                            let newInput = document.createElement('input');
+                            newInput.type = 'hidden';
+                            newInput.name = inputName;
+                            newInput.value = clone.getAttribute('data-driver-id');
+                            clone.appendChild(newInput);
+                            slot.appendChild(clone);
+                        } else if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
+                            const slots = Array.from(grid.querySelectorAll('.position-slot'));
+                            const fromIdx = slots.indexOf(dragData.sourceSlot);
+                            const toIdx = slots.indexOf(slot);
+
+                            let drivers = slots.map(s => s.querySelector('.driver-item') || null);
+
+                            const moved = drivers[fromIdx];
+                            drivers.splice(fromIdx, 1);
+                            drivers.splice(toIdx, 0, moved);
+
+                            slots.forEach((slotNode, i) => {
+                                let d = slotNode.querySelector('.driver-item');
+                                if (d) d.remove();
+                                let e = slotNode.querySelector('.empty-slot');
+                                if (e) e.remove();
+                                if (drivers[i]) {
+                                    slotNode.appendChild(drivers[i]);
+                                    let inp = drivers[i].querySelector('input[type="hidden"]');
+                                    if (inp) {
+                                        inp.name = inputName;
+                                        inp.value = drivers[i].getAttribute('data-driver-id');
+                                    } else {
+                                        inp = document.createElement('input');
+                                        inp.type = "hidden";
+                                        inp.name = inputName;
+                                        inp.value = drivers[i].getAttribute('data-driver-id');
+                                        drivers[i].appendChild(inp);
+                                    }
+                                } else {
+                                    slotNode.innerHTML = `<div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                    <input type="hidden" name="${inputName}" value="">
+                                    Drop driver here
+                                </div>`;
+                                }
+                            });
+                        } else if (dragData.sourceType === "slot") {
+                            let current = slot.querySelector('.driver-item');
+                            if (current) current.remove();
+                            let empty = slot.querySelector('.empty-slot');
+                            if (empty) empty.remove();
+
+                            let clone = dragData.driverItem.cloneNode(true);
+                            clone.classList.remove('opacity-40');
+                            Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
+                            let newInput = document.createElement('input');
+                            newInput.type = 'hidden';
+                            newInput.name = inputName;
+                            newInput.value = clone.getAttribute('data-driver-id');
+                            clone.appendChild(newInput);
+                            slot.appendChild(clone);
+                        }
+                    });
+                });
             });
+        }
+
+        setupGridDnD("race-grid", "race", "result[]");
+        setupGridDnD("quali-grid", "quali", "drivers[]");
+
+        document.body.addEventListener('dblclick', function (e) {
+            const slot = e.target.closest('.position-slot');
+            if (slot) {
+                const slotType = slot.getAttribute('data-slot-type');
+                slot.innerHTML = `<div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                <input type="hidden" name="${slotType === 'quali' ? 'drivers[]' : 'result[]'}" value="">
+                Drop driver here
+            </div>`;
+            }
         });
     });
 </script>
