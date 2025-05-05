@@ -73,8 +73,8 @@ function createOrUpdateRace(req, res) {
             weatherTemperature: weatherTemperature || '',
             weatherIcon: weatherIcon || '',
             track_img: track_img || '',
-            predictionsStarted: predictionsStarted ?? false,
-            predictionsEnded: predictionsEnded ?? false,
+            predictionsStarted: predictionsStarted === "true",
+            predictionsEnded: predictionsEnded === "true",
             drivers: Array.isArray(drivers) ? drivers : [],
             result: Array.isArray(result) ? result : []
         };
