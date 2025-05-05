@@ -55,8 +55,14 @@ function getPreparedRace(id) {
         formattedDate: utils.formatDate(race.date),
         formattedTime: utils.formatTime(race.time),
         grid: driverModel.getPreparedDriversByIds(race.drivers),
-        result: result
+        gridCompleted: race.predictionsStarted && isCompleted(race.drivers),
+        result: result,
+        renderResult: race.predictionsEnded && isCompleted(race.result),
     };
+}
+
+function isCompleted(driversList) {
+    return driversList.every(driver => driver !== "");
 }
 
 function getPreparedRaces() {
