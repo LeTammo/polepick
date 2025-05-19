@@ -25,3 +25,7 @@ body {
     drop-shadow(1px -1px 0 black)
     drop-shadow(-1px -1px 0 black);
 }
+
+.text-shadow {
+    filter: drop-shadow(0px 0px 4px #666666);
+}

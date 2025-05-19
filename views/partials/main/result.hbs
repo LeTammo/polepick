@@ -12,50 +12,45 @@
             </div>
         </div>
         <div id="raceResult" class="nowrap whitespace-nowrap overflow-hidden overflow-ellipsis grayscale">
-            <!-- Podium -->
             <div class="podium-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
-                <!-- 1st Place -->
                 <div class="flex">
                     <div class="w-2 transform -rotate-90 origin-top-left translate-y-[86px] -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
                         Podium
                     </div>
                     <div class="flex-grow grid grid-cols-1 gap-3">
-                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                        <div class="flex items-center">
                             <div class="ml-4 w-16 bg-yellow-500 border-2 border-yellow-500 rounded-l-lg flex items-center justify-center text-white">
                                 1
                             </div>
                             <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{race.result.first.color}}] bg-[{{race.result.first.color}}] text-white shadow-md shadow-zinc-400">
-                                {{race.result.first.name}}
+                                <span class="text-shadow">{{race.result.first.name}}</span>
                             </div>
                         </div>
 
-                        <!-- 2nd Place -->
-                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                        <div class="flex items-center">
                             <div class="ml-4 w-16 bg-gray-400 border-2 border-gray-400 rounded-l-lg flex items-center justify-center text-white">
                                 2
                             </div>
                             <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{race.result.second.color}}] bg-[{{race.result.second.color}}] text-white shadow-md shadow-zinc-400">
-                                {{race.result.second.name}}
+                                <span class="text-shadow">{{race.result.second.name}}</span>
                             </div>
                         </div>
 
-                        <!-- 3rd Place -->
-                        <div class="flex items-center" style="text-shadow: 0 0 8px gray;">
+                        <div class="flex items-center">
                             <div class="ml-4 w-16 bg-amber-600 border-2 border-amber-600 rounded-l-lg flex items-center justify-center text-white">
                                 3
                             </div>
                             <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
                                     border-2 border-[{{race.result.third.color}}] bg-[{{race.result.third.color}}] text-white shadow-md shadow-zinc-400">
-                                {{race.result.third.name}}
+                                <span class="text-shadow">{{race.result.third.name}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Remaining top 10 -->
             <div class="top-10-section mb-4 bg-gray-100 rounded-lg p-4 shadow-sm">
                 <div class="flex">
                     <div class="w-2 transform -rotate-90 origin-top-left translate-y-[152px] -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
@@ -68,9 +63,8 @@
                                     {{position}}
                                 </div>
                                 <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg overflow-hidden whitespace-nowrap text-ellipsis
-                                        border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400"
-                                     style="text-shadow: 0 0 8px gray;">
-                                    {{name}}
+                                        border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400">
+                                    <span class="text-shadow">{{name}}</span>
                                 </div>
                             </div>
                         {{/race.result.points}}
@@ -78,7 +72,6 @@
                 </div>
             </div>
 
-            <!-- Remaining drivers -->
             <div class="remaining-section bg-gray-100 rounded-lg p-4 shadow-sm">
                 <div class="flex">
                     <div class="w-2 transform -rotate-90 origin-top-left translate-y-[214px] -translate-x-3 text-lg font-bold text-gray-300 whitespace-nowrap">
@@ -91,9 +84,8 @@
                                     {{position}}
                                 </div>
                                 <div class="flex-grow px-3 ml-2 font-bold text-center rounded-r-lg
-                                        border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400"
-                                     style="text-shadow: 0 0 8px gray;">
-                                    {{name}}
+                                        border-2 border-[{{color}}] bg-[{{color}}] text-white shadow-md shadow-zinc-400">
+                                    <span class="text-shadow">{{name}}</span>
                                 </div>
                             </div>
                         {{/race.result.remaining}}

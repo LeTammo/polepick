@@ -24,9 +24,8 @@
                         <div draggable="true" data-driver="{{id}}" data-color="{{color}}" data-team="{{team}}" data-name="{{name}}" data-label="{{label}}"
                              class="driver-item w-full p-1 text-xs sm:text-base font-bold text-center hover:scale-105 transition duration-150 cursor-move
                             rounded-lg bg-[{{color}}] text-white shadow-md shadow-zinc-300
-                            nowrap whitespace-nowrap overflow-hidden overflow-ellipsis"
-                             style="text-shadow: 0 0 8px gray;">
-                            {{name}}
+                            nowrap whitespace-nowrap overflow-hidden overflow-ellipsis">
+                            <div class="text-shadow">{{name}}</div class="text-shadow">
                         </div>
                     </div>
                 {{/race.grid}}
