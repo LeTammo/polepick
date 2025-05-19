@@ -30,6 +30,8 @@ function getPreparedDrivers() {
 
 function getPreparedDriversByIds(drivers, startIndex = 0) {
     return drivers.map((id, index) => {
+        if (!id) return {};
+
         return {
             position: startIndex + index + 1,
             isOdd: (startIndex + index) % 2 !== 0,
@@ -39,6 +41,8 @@ function getPreparedDriversByIds(drivers, startIndex = 0) {
 }
 
 function getPreparedDriverById(id) {
+    if (!id) return {};
+
     const driver = findDriverById(id);
     const team = teamModel.getTeamById(driver.team);
 
