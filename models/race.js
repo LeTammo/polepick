@@ -97,9 +97,19 @@ function getPreparedRaces() {
             formattedDate: utils.formatDate(race.date),
             formattedTime: utils.formatTime(race.time),
             gridArray: gridArray,
-            resultArray: resultArray
+            resultArray: resultArray,
+            daysUntilRace: getDaysUntilRace(race.date) >= 0 ? getDaysUntilRace(race.date) : null,
+            hasResult: race.predictionsEnded && isCompleted(race.result),
         };
     });
+}
+
+function getDaysUntilRace(date) {
+    const raceDate = new Date(date);
+    const today = new Date();
+    const diffTime = raceDate - today;
+
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
 function getRaceDrivers(id) {
@@ -236,6 +246,16 @@ function deleteRace(raceId) {
         utils.error('Error deleting race:', error);
         return false;
     }
+}
+
+function validateDrivers(drivers) {
+    for (const driver of drivers) {
+        if (Number.isInteger(driver.id)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 module.exports = {

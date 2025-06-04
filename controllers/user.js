@@ -4,7 +4,7 @@ const scoreService = require('../services/scoreService');
 const utils = require('../utils');
 
 function getHomePage(req, res) {
-    const races = raceModel.getPreparedRaces();
+    const races = raceModel.getPreparedRaces().reverse();
 
     return res.render('pages/home', { races })
 }
