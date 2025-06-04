@@ -6,8 +6,6 @@ const utils = require('../utils');
 function getHomePage(req, res) {
     const races = raceModel.getPreparedRaces().reverse();
 
-    console.log(races)
-
     return res.render('pages/home', { races })
 }
 
