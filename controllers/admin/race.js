@@ -87,7 +87,7 @@ function createOrUpdateRace(req, res) {
         }
 
         if (!success) return res.status(500).json({ success: false, message: 'Could not save race' });
-        res.json({ success: true, message: 'Race saved successfully' });
+        res.redirect('/admin');
 
     } catch (error) {
         utils.error('Error saving race:', error);
