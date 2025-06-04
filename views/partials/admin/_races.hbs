@@ -105,9 +105,17 @@
                                 </div>
                             </div>
 
-                            <label for="track_img-{{id}}" class="block mb-1 font-medium text-xs">Track Image</label>
-                            <input type="text" id="track_img-{{id}}" name="track_img" value="{{track_img}}"
-                                   class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                            <div class="w-full">
+                                <label for="track_img-{{id}}" class="block font-medium text-xs">Track Image</label>
+                                <select id="track_img-{{id}}" name="track_img" class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                                    <option value="">Select a circuit...</option>
+                                    {{#each ../circuits}}
+                                        <option value="{{this}}" {{#if (eq this ../track_img)}}selected{{/if}}>
+                                            {{upperCase (removeExtension this)}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
 
                             <div class="flex gap-4">
                                 <div class="w-full">
@@ -298,9 +306,17 @@
                             </div>
                         </div>
 
-                        <label for="track_img-new" class="block font-medium text-xs">Track Image</label>
-                        <input type="text" id="track_img-new" name="track_img" value=""
-                               class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                        <div class="w-full">
+                            <label for="track_img-new" class="block font-medium text-xs">Track Image</label>
+                            <select id="track_img-new" name="track_img" class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                                <option value="">Select a circuit...</option>
+                                {{#each circuits}}
+                                    <option value="{{this}}">
+                                        {{upperCase (removeExtension this)}}
+                                    </option>
+                                {{/each}}
+                            </select>
+                        </div>
 
                         <div class="flex gap-4">
                             <div class="w-full">

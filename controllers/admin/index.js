@@ -21,7 +21,8 @@ function getDashboard(req, res) {
             races,
             drivers,
             teams,
-            flags: require('fs').readdirSync('public/flags')
+            flags: require('fs').readdirSync('public/flags'),
+            circuits: require('fs').readdirSync('public/circuits'),
         });
     } catch (error) {
         utils.error('Error rendering admin dashboard:', error);
