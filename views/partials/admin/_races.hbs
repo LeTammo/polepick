@@ -36,10 +36,35 @@
                                     <input type="text" id="nameShort-{{id}}" name="nameShort" value="{{nameShort}}"
                                            class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                                 </div>
-                                <div class="w-full">
+                                <div class="w-full relative">
                                     <label for="flag-{{id}}" class="block font-medium text-xs">Flag</label>
-                                    <input type="text" id="flag-{{id}}" name="flag" value="{{flag}}"
-                                           class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                                    <div class="flag-dropdown-container">
+                                        <button type="button" class="flag-dropdown-toggle w-full border px-2 py-1 rounded text-left flex items-center justify-between" style="margin-top: 2px!important;">
+                                            <span class="flag-selected-text">
+                                                {{#if flag}}
+                                                    <img src="/flags/{{flag}}" alt="{{flag}}" class="w-6 h-4 mr-2 object-cover inline">
+                                                    {{upperCase (removeExtension flag)}}
+                                                {{else}}
+                                                    Select a flag...
+                                                {{/if}}
+                                            </span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <div class="flag-dropdown-menu absolute top-full left-0 w-full bg-white border border-gray-300 rounded shadow-lg z-10 max-h-60 overflow-y-auto" style="display: none;">
+                                            <div class="flag-option p-2 hover:bg-gray-100 cursor-pointer flex items-center {{#unless flag}}selected{{/unless}}" data-value="">
+                                                <span>Select a flag...</span>
+                                            </div>
+                                            {{#each ../flags}}
+                                                <div class="flag-option p-2 hover:bg-gray-100 cursor-pointer flex items-center {{#if (eq this ../flag)}}selected bg-gray-100{{/if}}" data-value="{{this}}">
+                                                    <img src="/flags/{{this}}" alt="{{this}}" class="w-6 h-4 mr-2 object-cover">
+                                                    <span>{{upperCase (removeExtension this)}}</span>
+                                                </div>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="flag-{{id}}" name="flag" value="{{flag}}">
                                 </div>
                             </div>
 
@@ -216,10 +241,28 @@
                                 <input type="text" id="nameShort-new" name="nameShort" value=""
                                        class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
                             </div>
-                            <div class="w-full">
+                            <div class="w-full relative">
                                 <label for="flag-new" class="block font-medium text-xs">Flag</label>
-                                <input type="text" id="flag-new" name="flag" value=""
-                                       class="w-full border px-2 py-1 rounded" style="margin-top: 2px!important;">
+                                <div class="flag-dropdown-container">
+                                    <button type="button" class="flag-dropdown-toggle w-full border px-2 py-1 rounded text-left flex items-center justify-between" style="margin-top: 2px!important;">
+                                        <span class="flag-selected-text">Select a flag...</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="flag-dropdown-menu absolute top-full left-0 w-full bg-white border border-gray-300 rounded shadow-lg z-10 max-h-60 overflow-y-auto" style="display: none;">
+                                        <div class="flag-option p-2 hover:bg-gray-100 cursor-pointer flex items-center selected" data-value="">
+                                            <span>Select a flag...</span>
+                                        </div>
+                                        {{#each flags}}
+                                            <div class="flag-option p-2 hover:bg-gray-100 cursor-pointer flex items-center" data-value="{{this}}">
+                                                <img src="/flags/{{this}}" alt="{{this}}" class="w-6 h-4 mr-2 object-cover">
+                                                <span>{{upperCase (removeExtension this)}}</span>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                                <input type="hidden" id="flag-new" name="flag" value="">
                             </div>
                         </div>
 
@@ -348,6 +391,54 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        function initializeFlagDropdowns() {
+            document.querySelectorAll('.flag-dropdown-container').forEach(dropdown => {
+                const toggle = dropdown.querySelector('.flag-dropdown-toggle');
+                const menu = dropdown.querySelector('.flag-dropdown-menu');
+                const selectedText = dropdown.querySelector('.flag-selected-text');
+                const hiddenInput = dropdown.parentNode.querySelector('input[type="hidden"]');
+                const options = dropdown.querySelectorAll('.flag-option');
+                console.log("test")
+
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+                });
+
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        options.forEach(opt => opt.classList.remove('selected', 'bg-gray-100'));
+
+                        this.classList.add('selected', 'bg-gray-100');
+
+                        const value = this.dataset.value;
+                        const text = this.querySelector('span').textContent;
+                        const img = this.querySelector('img');
+
+                        hiddenInput.value = value;
+
+                        if (img && value) {
+                            selectedText.innerHTML = `<img src="${img.src}" alt="${img.alt}" class="w-6 h-4 mr-2 object-cover inline"> ${text}`;
+                        } else {
+                            selectedText.textContent = text;
+                        }
+
+                        menu.style.display = 'none';
+                    });
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.flag-dropdown-container')) {
+                    document.querySelectorAll('.flag-dropdown-menu').forEach(menu => {
+                        menu.style.display = 'none';
+                    });
+                }
+            });
+        }
+
+        initializeFlagDropdowns();
+
         let dragData = {
             sourceType: null,      // "pool" or "slot"
             sourceGrid: null,      //

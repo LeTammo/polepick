@@ -33,6 +33,12 @@ const hbsHelpers = {
     log: function (m) {
         console.log(m);
     },
+    removeExtension: function (filename) {
+        return filename ? filename.replace(/\.[^/.]+$/, '') : '';
+    },
+    upperCase: function (str) {
+        return str ? str.toUpperCase() : '';
+    }
 };
 
 app.engine('.hbs', handlebars.engine({
