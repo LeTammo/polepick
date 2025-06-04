@@ -100,6 +100,7 @@ function getPreparedRaces() {
             resultArray: resultArray,
             daysUntilRace: getDaysUntilRace(race.date) >= 0 ? getDaysUntilRace(race.date) : null,
             hasResult: race.predictionsEnded && isCompleted(race.result),
+            shortName: race.name.replace('Grand Prix', 'GP'),
         };
     });
 }
