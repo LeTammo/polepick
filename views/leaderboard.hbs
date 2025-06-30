@@ -13,6 +13,9 @@
                         User
                     </th>
                     <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
+                        Ø Points
+                    </th>
+                    <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
                         Total Points
                     </th>
                     <th class="px-2 py-3 text-left text-xs text-center font-medium uppercase tracking-wider">
@@ -22,24 +25,37 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 {{#leaderboard}}
-                    <tr class="hover:bg-gray-50 transition-colors duration-150 {{#if isTied}}bg-gray-50{{/if}}">
+                    <tr class="hover:bg-gray-50 transition-colors duration-150 
+                               {{#if isTied}}bg-gray-50{{/if}} 
+                               {{#unless averagePoints}}text-gray-400{{/unless}}">
                         <td class="px-2 py-2">
-                            {{#if isTopThree}}
-                                <div class="flex items-center mx-auto justify-center w-8 h-8 rounded-full {{rankBackgroundColor}} text-white font-bold">
-                                    {{rank}}
-                                </div>
+                            {{#if rank}}
+                                {{#if isTopThree}}
+                                    <div class="flex items-center mx-auto justify-center w-8 h-8 rounded-full {{rankBackgroundColor}} text-white font-bold">
+                                        {{rank}}
+                                    </div>
+                                {{else}}
+                                    <div class="text-gray-800 text-center font-medium">{{rank}}</div>
+                                {{/if}}
                             {{else}}
-                                <div class="text-gray-800 text-center font-medium">{{rank}}</div>
+                                <div class="text-center text-sm text-gray-400">–</div>
                             {{/if}}
                         </td>
                         <td class="px-2 py-2">
-                            <div class="font-medium text-center text-gray-900">{{username}}</div>
+                            <div class="font-medium text-center">{{username}}</div>
+                        </td>
+                        <td class="px-2 py-2 text-center font-bold">
+                            {{#if averagePoints}}
+                                {{toFixed averagePoints 2}}
+                            {{else}}
+                                <span class="text-gray-400" title="Minimum 3 predictions required">–</span>
+                            {{/if}}
                         </td>
                         <td class="px-2 py-2">
-                            <div class="font-bold text-gray-900 text-center">{{totalPoints}}</div>
+                            <div class="text-center">{{totalPoints}}</div>
                         </td>
                         <td class="px-2 py-2">
-                            <div class="text-gray-700 text-center">{{totalPredictions}}</div>
+                            <div class="text-center">{{totalPredictions}}</div>
                         </td>
                     </tr>
                 {{/leaderboard}}

@@ -38,6 +38,9 @@ const hbsHelpers = {
     },
     upperCase: function (str) {
         return str ? str.toUpperCase() : '';
+    },
+    toFixed: function(number, digits) {
+        return number.toFixed(digits);
     }
 };
 
