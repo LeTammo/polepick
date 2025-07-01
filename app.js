@@ -1,48 +1,18 @@
-
-const express = require('express');
 const path = require('path');
+const express = require('express');
 const bodyParser = require('body-parser');
-const handlebars = require('express-handlebars')
+const handlebars = require('express-handlebars');
+const cookieParser = require('cookie-parser');
+
 const dataService = require('./services/dataService');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
 const errorRoutes = require('./routes/error');
-const utils = require("./utils");
-const cookieParser = require('cookie-parser');
+const utils = require('./utils');
+const hbsHelpers = require('./helpers/hbsHelpers');
 
-const app = express();
 require('dotenv').config();
-
-const hbsHelpers = {
-    json: function (context) {
-        return JSON.stringify(context);
-    },
-    range: function (start, end) {
-        const result = [];
-        for (let i = start; i <= end; i++) {
-            result.push(i);
-        }
-        return result;
-    },
-    eq: function (a, b) {
-        return a === b;
-    },
-    subtract: function (a, b) {
-        return a - b;
-    },
-    log: function (m) {
-        console.log(m);
-    },
-    removeExtension: function (filename) {
-        return filename ? filename.replace(/\.[^/.]+$/, '') : '';
-    },
-    upperCase: function (str) {
-        return str ? str.toUpperCase() : '';
-    },
-    toFixed: function(number, digits) {
-        return number.toFixed(digits);
-    }
-};
+const app = express();
 
 app.engine('.hbs', handlebars.engine({
     extname: '.hbs',
@@ -65,9 +35,9 @@ userRoutes(app);
 adminRoutes(app);
 errorRoutes(app);
 
-module.exports = app;
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     utils.log(`Server running on http://localhost:${PORT}`);
 });
+
+module.exports = app;
