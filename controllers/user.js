@@ -6,7 +6,7 @@ const utils = require('../utils');
 function getHomePage(req, res) {
     const races = raceModel.getPreparedRaces().reverse();
 
-    return res.render('pages/home', { races })
+    return res.render('user/home', { races })
 }
 
 function getNextRace(req, res) {
@@ -37,7 +37,7 @@ function getRacePage(req, res) {
         let userPrediction = predictions.find(p => p.username === username);
         userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
 
-        res.render('pages/main', {
+        res.render('user/main', {
             race: race,
             races: races,
             predictions: predictions.filter(p => p.username !== username),
@@ -110,7 +110,7 @@ function getLeaderboardPage(req, res) {
                 totalPoints: 0,
                 racePoints: [],
                 totalPredictions: 0,
-                averagePoints: null // init
+                averagePoints: null
             };
         });
 
@@ -137,14 +137,12 @@ function getLeaderboardPage(req, res) {
             });
         });
 
-        // Calculate averagePoints (only for users with 3+ predictions)
         leaderboard.forEach(user => {
             if (user.totalPredictions >= 3) {
                 user.averagePoints = user.totalPoints / user.totalPredictions;
             }
         });
 
-        // Sort by: 1) has averagePoints (i.e. totalPredictions >= 3), 2) averagePoints desc
         leaderboard.sort((a, b) => {
             const aEligible = a.averagePoints !== null;
             const bEligible = b.averagePoints !== null;
@@ -156,11 +154,10 @@ function getLeaderboardPage(req, res) {
             } else if (bEligible) {
                 return 1; // b before a
             } else {
-                return b.totalPoints - a.totalPoints; // fallback for ineligible
+                return b.totalPoints - a.totalPoints; // fallback
             }
         });
 
-        // Rank assignment only for eligible users (3+ predictions)
         let currentRank = 1;
         let previousAvg = -1;
         leaderboard.forEach((entry, index) => {
@@ -185,15 +182,14 @@ function getLeaderboardPage(req, res) {
                     entry.rankBackgroundColor = 'bg-amber-600';
                 }
             } else {
-                // Ineligible for ranking
                 entry.rank = null;
                 entry.isTied = false;
                 entry.isTopThree = false;
-                entry.rankBackgroundColor = 'bg-gray-300'; // for greying out
+                entry.rankBackgroundColor = 'bg-gray-300';
             }
         });
 
-        res.render('leaderboard', {
+        res.render('user/leaderboard', {
             pageTitle: 'Polepick - Leaderboard',
             leaderboard,
             races: races,
