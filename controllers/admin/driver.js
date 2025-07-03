@@ -3,8 +3,8 @@ const utils = require('../../utils');
 
 function getDrivers(req, res) {
     try {
-        const drivers = driverModel.findAllDrivers();
-        const teams = teamModel.getAllTeams();
+        const drivers = driverModel.getDrivers();
+        const teams = teamModel.getTeams();
 
         const enhancedDrivers = drivers.map(driver => {
             const team = teams.find(t => t.id === driver.defaultTeamId);

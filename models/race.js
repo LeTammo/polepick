@@ -2,17 +2,15 @@ const dataService = require('../services/dataService');
 const driverModel = require('./driver');
 const utils = require('../utils');
 
-function findAllRaces() {
-    return dataService.loadData('races.json');
-}
-
-function findRaceById(id) {
-    const races = getAllRaces();
+function getRaceById(id) {
+    const races = getRaces();
     return races.find(race => race.id === id) || null;
 }
 
-function getAllRaces() {
-    return findAllRaces().map(race => {
+function getRaces() {
+    const races = dataService.loadData('races.json');
+
+    return races.map(race => {
         return {
             ...race,
             formattedDate: utils.formatDateShort(race.date),
@@ -21,7 +19,7 @@ function getAllRaces() {
 }
 
 function getLatestRace() {
-    const races = getAllRaces();
+    const races = getRaces();
     if (races.length === 0) return null;
 
     const sortedRaces = [...races].sort((a, b) => {
@@ -34,7 +32,7 @@ function getLatestRace() {
 }
 
 function getPreparedRace(id) {
-    const race = findRaceById(id);
+    const race = getRaceById(id);
     if (!race) return null;
 
     let result = null;
@@ -66,7 +64,7 @@ function isCompleted(driversList) {
 }
 
 function getPreparedRaces() {
-    const races = getAllRaces();
+    const races = getRaces();
     const allDrivers = driverModel.getPreparedDrivers();
 
     return races.map(race => {
@@ -114,11 +112,11 @@ function getDaysUntilRace(date) {
 }
 
 function getRaceDrivers(id) {
-    const race = findRaceById(id);
+    const race = getRaceById(id);
     if (!race) return [];
 
     return race.drivers.map((id, index) => {
-        const driver = driverModel.findDriverById(id);
+        const driver = driverModel.getDriverById(id);
         if (!driver) return null;
 
         return {
@@ -260,13 +258,12 @@ function validateDrivers(drivers) {
 }
 
 module.exports = {
-    findAllRaces,
-    findRaceById,
-    getAllRaces,
-    getLatestRace,
+    getRaces,
+    getRaceById,
     getRaceDrivers,
     getPreparedRace,
     getPreparedRaces,
+    getLatestRace,
     createRace,
     updateRace,
     deleteRace

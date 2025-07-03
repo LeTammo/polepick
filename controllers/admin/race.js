@@ -3,7 +3,7 @@ const utils = require('../../utils');
 
 function getRaces(req, res) {
     try {
-        const races = raceModel.getAllRaces();
+        const races = raceModel.getRaces();
 
         const enhancedRaces = races.map(race => {
             const hasResult = race.result.some(r => r.raceId === race.id);

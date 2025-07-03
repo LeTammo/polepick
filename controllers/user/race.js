@@ -6,7 +6,7 @@ function getRacePage(req, res) {
     try {
         const raceId = req.params.id;
         const race = raceModel.getPreparedRace(raceId);
-        const races = raceModel.getAllRaces();
+        const races = raceModel.getRaces();
 
         if (!race) {
             return res.status(404).render('error', {
@@ -40,7 +40,7 @@ function getRacePage(req, res) {
 function submitPrediction(req, res) {
     try {
         const raceId = req.params.id;
-        const race = raceModel.findRaceById(raceId);
+        const race = raceModel.getRaceById(raceId);
 
         if (!race) {
             return res.status(400).json({

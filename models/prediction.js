@@ -4,17 +4,17 @@ const raceModel =require('./race');
 const scoreService = require('../services/scoreService');
 const utils = require('../utils');
 
-function findAllPredictions() {
+function getPredictions() {
     return dataService.loadData('predictions.json');
 }
 
-function findPredictionsByRaceId(raceId) {
-    const predictions = findAllPredictions();
+function getPredictionsByRaceId(raceId) {
+    const predictions = getPredictions();
     return predictions.filter(prediction => prediction.raceId === raceId);
 }
 
 function getPreparedPredictions(raceId) {
-    const predictions = findPredictionsByRaceId(raceId);
+    const predictions = getPredictionsByRaceId(raceId);
     const race = raceModel.getPreparedRace(raceId);
 
     return predictions.map(prediction => {
@@ -42,7 +42,7 @@ function createOrUpdatePrediction(raceId, { username, first, second, third, othe
             return false;
         }
 
-        const predictions = findAllPredictions();
+        const predictions = getPredictions();
         const existingPredictionIndex = predictions.findIndex(p =>
             p.raceId === raceId && p.username === username
         );
@@ -83,7 +83,7 @@ function createOrUpdatePrediction(raceId, { username, first, second, third, othe
 
 function deletePrediction(predictionId) {
     try {
-        const predictions = findAllPredictions();
+        const predictions = getPredictions();
         const filteredPredictions = predictions.filter(p => p.id !== predictionId);
 
         if (filteredPredictions.length === predictions.length) {
@@ -98,8 +98,8 @@ function deletePrediction(predictionId) {
 }
 
 module.exports = {
-    findAllPredictions,
-    findPredictionsByRaceId,
+    getPredictions,
+    getPredictionsByRaceId,
     getPreparedPredictions,
     createOrUpdatePrediction,
     deletePrediction

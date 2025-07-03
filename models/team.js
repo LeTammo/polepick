@@ -1,18 +1,18 @@
 const dataService = require('../services/dataService');
 const utils = require('../utils');
 
-function getAllTeams() {
+function getTeams() {
     return dataService.loadData('teams.json');
 }
 
 function getTeamById(teamId) {
-    const teams = getAllTeams();
+    const teams = getTeams();
     return teams.find(team => team.id === teamId) || null;
 }
 
 function createTeam({ name, nameLong, color }) {
     try {
-        const teams = getAllTeams();
+        const teams = getTeams();
         const id = teams.length > 0
             ? (parseInt(teams[teams.length - 1].id) + 1).toString()
             : "1";
@@ -29,7 +29,7 @@ function createTeam({ name, nameLong, color }) {
 
 function updateTeam(id, data) {
     try {
-        const teams = getAllTeams();
+        const teams = getTeams();
         const index = teams.findIndex(t => t.id === id);
 
         if (index === -1) return false;
@@ -50,7 +50,7 @@ function updateTeam(id, data) {
 
 function deleteTeam(id) {
     try {
-        const teams = getAllTeams();
+        const teams = getTeams();
         const filteredTeams = teams.filter(t => t.id !== id);
 
         if (filteredTeams.length === teams.length) {
@@ -65,7 +65,7 @@ function deleteTeam(id) {
 }
 
 module.exports = {
-    getAllTeams,
+    getTeams,
     getTeamById,
     createTeam,
     updateTeam,

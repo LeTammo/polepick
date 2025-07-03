@@ -3,7 +3,7 @@ const utils = require('../../utils');
 
 function getResults(req, res) {
     try {
-        const races = raceModel.getAllRaces();
+        const races = raceModel.getRaces();
 
         const enhancedResults = races.result.map(result => {
             const race = races.find(r => r.id === result.raceId);
@@ -32,7 +32,7 @@ function getResults(req, res) {
 function getResultForm(req, res) {
     try {
         const raceId = req.params.id;
-        const race = raceModel.findRaceById(raceId);
+        const race = raceModel.getRaceById(raceId);
 
         if (!race) {
             return res.status(404).render('error', {

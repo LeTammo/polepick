@@ -3,7 +3,7 @@ const utils = require('../../utils');
 
 function getTeams(req, res) {
     try {
-        const teams = teamModel.getAllTeams();
+        const teams = teamModel.getTeams();
 
         res.render('admin/teams', {
             useAdminHeader: true,

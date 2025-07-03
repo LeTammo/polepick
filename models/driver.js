@@ -2,20 +2,20 @@ const dataService = require('../services/dataService');
 const teamModel = require('./team');
 const utils = require('../utils');
 
-function findAllDrivers() {
+function getDrivers() {
     return dataService.loadData('drivers.json');
 }
 
-function findDriverById(id) {
-    return findAllDrivers().find(driver => driver.id === id) || null;
+function getDriverById(id) {
+    return getDrivers().find(driver => driver.id === id) || null;
 }
 
-function findDriverByLabelAndTeam(label, team) {
-    return findAllDrivers().find(d => d.label === label && d.team === team) || null;
+function getDriverByLabelAndTeam(label, team) {
+    return getDrivers().find(d => d.label === label && d.team === team) || null;
 }
 
 function getPreparedDrivers() {
-    return findAllDrivers().map((driver) => {
+    return getDrivers().map((driver) => {
         const team = teamModel.getTeamById(driver.team);
 
         return {
@@ -43,7 +43,7 @@ function getPreparedDriversByIds(drivers, startIndex = 0) {
 function getPreparedDriverById(id) {
     if (!id) return {};
 
-    const driver = findDriverById(id);
+    const driver = getDriverById(id);
     const team = teamModel.getTeamById(driver.team);
 
     return {
@@ -57,7 +57,7 @@ function getPreparedDriverById(id) {
 
 function createDriver(driverData) {
     try {
-        const drivers = findAllDrivers();
+        const drivers = getDrivers();
         const uniqueDrivers = Array.from(new Set(drivers.map(d => d.label)))
             .map(label => drivers.find(d => d.label === label));
 
@@ -76,7 +76,7 @@ function createDriver(driverData) {
 
 function updateDriver(driver) {
     try {
-        const drivers = findAllDrivers();
+        const drivers = getDrivers();
 
         drivers[driver.id] = {
             ...drivers[driver.id],
@@ -94,7 +94,7 @@ function updateDriver(driver) {
 
 function deleteDriver(id) {
     try {
-        const drivers = findAllDrivers();
+        const drivers = getDrivers();
         const filteredDrivers = drivers.filter(d => d.id !== id);
 
         if (filteredDrivers.length === drivers.length) {
@@ -109,9 +109,9 @@ function deleteDriver(id) {
 }
 
 module.exports = {
-    findAllDrivers,
-    findDriverById,
-    findDriverByLabelAndTeam,
+    getDrivers,
+    getDriverById,
+    getDriverByLabelAndTeam,
     getPreparedDrivers,
     getPreparedDriversByIds,
     getPreparedDriverById,

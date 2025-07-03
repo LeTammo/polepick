@@ -5,8 +5,8 @@ const utils = require("../../utils");
 
 function getLeaderboardPage(req, res) {
     try {
-        const races = raceModel.getAllRaces();
-        const predictions = predictionModel.findAllPredictions();
+        const races = raceModel.getRaces();
+        const predictions = predictionModel.getPredictions();
 
         const allUsers = [...new Set(predictions.map(p => p.username))];
 

@@ -7,7 +7,7 @@ function getDashboard(req, res) {
     try {
         const races = raceModel.getPreparedRaces();
         const drivers = driverModel.getPreparedDrivers();
-        const teams = teamModel.getAllTeams();
+        const teams = teamModel.getTeams();
 
         res.render('admin/dashboard', {
             useAdminHeader: true,
