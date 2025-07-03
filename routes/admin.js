@@ -1,39 +1,45 @@
 const express = require('express');
-const controller = require('../controllers/admin/index');
+const authController = require('../controllers/admin/auth');
+const dashboardController = require('../controllers/admin/dashboard');
+const teamController = require('../controllers/admin/team');
+const driverController = require('../controllers/admin/driver');
+const raceController = require('../controllers/admin/race');
+const resultController = require('../controllers/admin/result');
+const predictionController = require('../controllers/admin/prediction');
 
 module.exports = function(app) {
     const router = express.Router();
 
-    router.get('/login', controller.getLoginPage);
-    router.post('/login', controller.handleLogin);
-    router.get('/logout', controller.handleLogout);
+    router.get('/login', authController.getLoginPage);
+    router.post('/login', authController.handleLogin);
+    router.get('/logout', authController.handleLogout);
 
-    router.use(controller.requireAdmin);
+    router.use(authController.requireAdmin);
 
-    router.get('/', controller.getDashboard);
+    router.get('/', dashboardController.getDashboard);
 
-    router.get('/teams', controller.getTeams);
-    router.post('/teams', controller.createTeam);
-    router.put('/teams/:id', controller.updateTeam);
-    router.delete('/teams/:id', controller.deleteTeam);
+    router.get('/teams', teamController.getTeams);
+    router.post('/teams', teamController.createTeam);
+    router.put('/teams/:id', teamController.updateTeam);
+    router.delete('/teams/:id', teamController.deleteTeam);
 
-    router.get('/drivers', controller.getDrivers);
-    router.post('/drivers', controller.createDriver);
-    router.put('/drivers/:id', controller.updateDriver);
-    router.delete('/drivers/:id', controller.deleteDriver);
+    router.get('/drivers', driverController.getDrivers);
+    router.post('/drivers', driverController.createDriver);
+    router.put('/drivers/:id', driverController.updateDriver);
+    router.delete('/drivers/:id', driverController.deleteDriver);
 
-    router.get('/races', controller.getRaces);
-    router.post('/races', controller.createOrUpdateRace);
-    router.post('/races/:id', controller.createOrUpdateRace);
-    router.delete('/races/:id', controller.deleteRace);
+    router.get('/races', raceController.getRaces);
+    router.post('/races', raceController.createOrUpdateRace);
+    router.post('/races/:id', raceController.createOrUpdateRace);
+    router.delete('/races/:id', raceController.deleteRace);
 
-    router.get('/results', controller.getResults);
-    router.get('/results/:id', controller.getResultForm);
-    router.post('/results/:id', controller.createOrUpdateResult);
-    router.delete('/results/:id', controller.deleteResult);
+    router.get('/results', resultController.getResults);
+    router.get('/results/:id', resultController.getResultForm);
+    router.post('/results/:id', resultController.createOrUpdateResult);
+    router.delete('/results/:id', resultController.deleteResult);
 
-    router.get('/races/:id/predictions', controller.getPredictions);
-    router.delete('/predictions/:id', controller.deletePrediction);
+    router.get('/races/:id/predictions', predictionController.getPredictions);
+    router.delete('/predictions/:id', predictionController.deletePrediction);
 
     app.use('/admin', router);
 };
