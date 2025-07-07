@@ -146,7 +146,7 @@ function createRace({
     result
 }) {
     try {
-        const races = findAllRaces();
+        const races = getRaces();
         const id = races.length > 0
             ? (parseInt(races[races.length - 1].id) + 1).toString()
             : "1";
@@ -197,7 +197,7 @@ function updateRace(id, {
     result
 }) {
     try {
-        const races = findAllRaces();
+        const races = getRaces();
         const index = races.findIndex(r => r.id === id);
 
         if (index === -1) return false;
@@ -233,7 +233,7 @@ function updateRace(id, {
 
 function deleteRace(raceId) {
     try {
-        const races = findAllRaces();
+        const races = getRaces();
         const filteredRaces = races.filter(r => r.id !== raceId);
 
         if (filteredRaces.length === races.length) {
