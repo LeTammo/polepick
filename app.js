@@ -31,9 +31,11 @@ app.use(cookieParser());
 
 dataService.initializeDataFiles();
 
-userRoutes(app);
-adminRoutes(app);
-errorRoutes(app);
+app.use('/', userRoutes);
+app.use('/admin', adminRoutes);
+
+app.use(errorRoutes.notFoundHandler);
+app.use(errorRoutes.errorHandler);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
