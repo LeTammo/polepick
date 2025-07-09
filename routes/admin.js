@@ -6,6 +6,7 @@ const driverController = require('../controllers/admin/driver');
 const raceController = require('../controllers/admin/race');
 const resultController = require('../controllers/admin/result');
 const predictionController = require('../controllers/admin/prediction');
+const apiController = require('../controllers/admin/api');
 
 module.exports = function(app) {
     const router = express.Router();
@@ -40,6 +41,9 @@ module.exports = function(app) {
 
     router.get('/races/:id/predictions', predictionController.getPredictions);
     router.delete('/predictions/:id', predictionController.deletePrediction);
+
+    router.post('/query/quali/:id', apiController.loadQualiFromApi);
+    router.post('/query/race/:id', apiController.loadRaceFromApi);
 
     app.use('/admin', router);
 };
