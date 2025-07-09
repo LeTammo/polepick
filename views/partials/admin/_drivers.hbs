@@ -46,6 +46,11 @@
                 </select>
             </div>
 
+            <div>
+                <label for="driverActive" class="block text-sm font-medium">Active</label>
+                <input type="checkbox" name="active" id="driverActive" {{#if active}}checked{{/if}}>
+            </div>
+
             <div class="flex items-center justify-between gap-2 text-sm">
                 <button type="button" id="deleteDriverButton" onclick="deleteDriver()" class="bg-red-600 text-white px-2 py-1 rounded">Delete</button>
                 <div class="flex justify-end gap-2">
@@ -66,6 +71,7 @@
         document.getElementById('driverLabel').value = driver?.label || '';
         document.getElementById('driverName').value = driver?.name || '';
         document.getElementById('driverTeam').value = driver?.teamId || '';
+        document.getElementById('driverActive').checked = driver?.active || false;
 
         const deleteBtn = document.getElementById('deleteDriverButton');
         if (driver?.id) {
@@ -87,8 +93,9 @@
         const label = document.getElementById('driverLabel').value;
         const name = document.getElementById('driverName').value;
         const team = document.getElementById('driverTeam').value;
+        const active = document.getElementById('driverActive').checked;
 
-        const data = { label, name, team };
+        const data = { label, name, team, active };
         const url = id ? `/admin/drivers/${id}` : `/admin/drivers`;
         const method = id ? 'PUT' : 'POST';
 

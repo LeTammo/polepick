@@ -63,7 +63,8 @@ function createDriver(driverData) {
 
         const newDriver = {
             id: (1 + 5 * uniqueDrivers.length).toString(),
-            ...driverData
+            ...driverData,
+            active: driverData.active !== undefined ? driverData.active : true
         };
 
         drivers.push(newDriver);
@@ -74,15 +75,16 @@ function createDriver(driverData) {
     }
 }
 
-function updateDriver(driver) {
+function updateDriver(id, driverData) {
     try {
         const drivers = getDrivers();
-
-        drivers[driver.id] = {
-            ...drivers[driver.id],
-            name: driver.name || drivers[driver.id].name,
-            label: driver.label || drivers[driver.id].label,
-            team: driver.team || drivers[driver.id].team,
+        const idx = drivers.findIndex(d => d.id === id);
+        drivers[idx] = {
+            ...drivers[idx],
+            name: driverData.name || drivers[idx].name,
+            label: driverData.label || drivers[idx].label,
+            team: driverData.team || drivers[idx].team,
+            active: driverData.active !== undefined ? driverData.active : drivers[idx].active
         };
 
         return dataService.saveData('drivers.json', drivers);

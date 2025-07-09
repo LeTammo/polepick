@@ -29,7 +29,7 @@ function getDrivers(req, res) {
 
 function createDriver(req, res) {
     try {
-        const { label, name, team } = req.body;
+        const { label, name, team, active } = req.body;
 
         if (!name || !label || !team) {
             return res.status(400).json({
@@ -38,7 +38,7 @@ function createDriver(req, res) {
             });
         }
 
-        const newDriver = driverModel.createDriver({ label, name, team });
+        const newDriver = driverModel.createDriver({ label, name, team, active: active === 'on' || active === true });
 
         if (!newDriver) {
             return res.status(500).json({
@@ -63,7 +63,7 @@ function createDriver(req, res) {
 function updateDriver(req, res) {
     try {
         const id = req.params.id;
-        const { label, name, team } = req.body;
+        const { label, name, team, active } = req.body;
 
         if (!id || !label || !name || !team) {
             return res.status(400).json({
@@ -72,7 +72,7 @@ function updateDriver(req, res) {
             });
         }
 
-        const success = driverModel.updateDriver(id, { label, name, team });
+        const success = driverModel.updateDriver(id, { label, name, team, active });
 
         if (!success) {
             return res.status(500).json({
