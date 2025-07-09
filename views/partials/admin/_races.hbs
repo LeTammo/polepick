@@ -199,7 +199,7 @@
                                                     <div class="driver-item flex items-center p-1 cursor-move rounded w-full"
                                                          style="background-color: {{driver.color}}; color: white;"
                                                          data-driver-id="{{driver.id}}" draggable="true">
-                                                        <span class="text-xs">{{driver.name}} - {{driver.team}}</span>
+                                                        <span class="text-xs text-shadow">{{driver.name}} - {{driver.team}}</span>
                                                         <input type="hidden" name="drivers[]" value="{{driver.id}}">
                                                     </div>
                                                 {{else}}
@@ -226,7 +226,7 @@
                                                     <div class="driver-item flex items-center p-1 cursor-move rounded w-full"
                                                          style="background-color: {{driver.color}}; color: white;"
                                                          data-driver-id="{{driver.id}}" draggable="true">
-                                                        <span class="text-xs">{{driver.name}} - {{driver.team}}</span>
+                                                        <span class="text-xs text-shadow">{{driver.name}} - {{driver.team}}</span>
                                                         <input type="hidden" name="result[]" value="{{driver.id}}">
                                                     </div>
                                                 {{else}}
@@ -391,7 +391,7 @@
                                     <div class="driver-item flex items-center p-1 cursor-move rounded"
                                          style="background-color: {{color}}; color: white;"
                                          data-driver-id="{{id}}" draggable="true">
-                                        <span class="text-xs truncate">{{name}}</span>
+                                        <span class="text-xs truncate text-shadow">{{name}}</span>
                                     </div>
                                 {{/each}}
                             </div>
