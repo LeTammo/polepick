@@ -41,7 +41,6 @@ router.delete('/results/:id', resultController.deleteResult);
 router.get('/races/:id/predictions', predictionController.getPredictions);
 router.delete('/predictions/:id', predictionController.deletePrediction);
 
-router.post('/query/quali/:id', apiController.loadQualiFromApi);
-router.post('/query/race/:id', apiController.loadRaceFromApi);
+router.post('/push/notify', apiController.sendNotification);
 
 module.exports = router;

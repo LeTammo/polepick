@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const dataService = require('./services/dataService');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
+const apiRoutes = require('./routes/api');
 const errorRoutes = require('./routes/error');
 const utils = require('./utils');
 const hbsHelpers = require('./helpers/hbsHelpers');
@@ -33,6 +34,7 @@ dataService.initializeDataFiles();
 
 app.use('/', userRoutes);
 app.use('/admin', adminRoutes);
+app.use('/api', apiRoutes);
 
 app.use(errorRoutes.notFoundHandler);
 app.use(errorRoutes.errorHandler);
