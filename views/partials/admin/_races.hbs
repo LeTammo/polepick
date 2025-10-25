@@ -175,11 +175,13 @@
                                 </div>
                                 <div id="driver-pool-{{id}}" class="grid grid-cols-2 gap-1 driver-pool-items" data-pool>
                                     {{#each ../drivers}}
-                                        <div class="driver-item flex items-center p-1 cursor-move rounded"
-                                             style="background-color: {{color}}; color: white;"
-                                             data-driver-id="{{id}}" draggable="true">
-                                            <span class="text-xs truncate text-shadow">{{name}} - {{team}}</span>
-                                        </div>
+                                        {{#if active}}
+                                            <div class="driver-item flex items-center p-1 cursor-move rounded"
+                                                 style="background-color: {{color}}; color: white;"
+                                                 data-driver-id="{{id}}" draggable="true">
+                                                <span class="text-xs truncate text-shadow">{{name}} - {{team}}</span>
+                                            </div>
+                                        {{/if}}
                                     {{/each}}
                                 </div>
                             </div>
@@ -388,11 +390,13 @@
                             <div class="text-xs text-gray-500 mb-2">Driver Pool - Drag to Quali and/or Race grids</div>
                             <div id="driver-pool-new" class="grid grid-cols-2 gap-1 driver-pool-items" data-pool>
                                 {{#each drivers}}
-                                    <div class="driver-item flex items-center p-1 cursor-move rounded"
-                                         style="background-color: {{color}}; color: white;"
-                                         data-driver-id="{{id}}" draggable="true">
-                                        <span class="text-xs truncate text-shadow">{{name}}</span>
-                                    </div>
+                                    {{#if active}}
+                                        <div class="driver-item flex items-center p-1 cursor-move rounded"
+                                             style="background-color: {{color}}; color: white;"
+                                             data-driver-id="{{id}}" draggable="true">
+                                            <span class="text-xs truncate text-shadow">{{name}}</span>
+                                        </div>
+                                    {{/if}}
                                 {{/each}}
                             </div>
                         </div>
