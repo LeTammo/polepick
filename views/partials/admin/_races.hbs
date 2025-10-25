@@ -449,6 +449,19 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
         function initializeFlagDropdowns() {
             document.querySelectorAll('.flag-dropdown-container').forEach(dropdown => {
                 const toggle = dropdown.querySelector('.flag-dropdown-toggle');
@@ -552,124 +565,114 @@
             setTimeout(() => dragData.driverItem.classList.add('opacity-40'), 1);
         });
 
+        let lastHoveredSlot = null;
+
         // Drag end
         document.body.addEventListener('dragend', function (ev) {
             if (dragData.driverItem) dragData.driverItem.classList.remove('opacity-40');
             dragData = {sourceType: null, sourceGrid: null, sourceSlot: null, driverItem: null, slotType: null};
             document.querySelectorAll('.position-slot').forEach(el => el.classList.remove('ring', 'ring-blue-400'));
+            if (lastHoveredSlot) {
+                lastHoveredSlot.classList.remove('ring', 'ring-blue-400');
+                lastHoveredSlot = null;
+            }
         });
 
-        // Slot listener
-        function setupGridDnD(gridId, slotType, inputName) {
-            document.querySelectorAll('[id^="' + gridId + '"]').forEach(function (grid) {
-                grid.classList.add(slotType + '-grid');
+        const throttledDragover = throttle(function(slot) {
+            if (lastHoveredSlot && lastHoveredSlot !== slot) {
+                lastHoveredSlot.classList.remove('ring', 'ring-blue-400');
+            }
+            slot.classList.add('ring', 'ring-blue-400');
+            lastHoveredSlot = slot;
+        }, 100);
 
-                grid.querySelectorAll('.position-slot').forEach(function (slot) {
-                    slot.setAttribute('data-slot-type', slotType);
-                    slot.addEventListener('dragover', function (ev) {
-                        ev.preventDefault();
-                        slot.classList.add('ring', 'ring-blue-400');
-                    });
-                    slot.addEventListener('dragleave', function (ev) {
-                        slot.classList.remove('ring', 'ring-blue-400');
-                    });
+        document.body.addEventListener('dragover', function(ev) {
+            const slot = ev.target.closest('.position-slot');
+            if (slot) {
+                ev.preventDefault();
+                throttledDragover(slot);
+            }
+        });
 
-                    slot.addEventListener('drop', function (ev) {
-                        ev.preventDefault();
-                        slot.classList.remove('ring', 'ring-blue-400');
-                        if (!dragData.driverItem) return;
+        document.body.addEventListener('drop', function(ev) {
+            const slot = ev.target.closest('.position-slot');
+            if (slot) {
+                ev.preventDefault();
+                slot.classList.remove('ring', 'ring-blue-400');
+                if (!dragData.driverItem) return;
 
-                        // Is this driver already in this grid?
-                        const gridSlots = Array.from(grid.querySelectorAll('.position-slot'));
-                        const draggedDriverId = dragData.driverItem.getAttribute('data-driver-id');
-                        if (gridSlots.some(s => {
-                            let d = s.querySelector('.driver-item');
-                            return d && d.getAttribute('data-driver-id') === draggedDriverId;
-                        })) {
-                            if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
-                            } else {
-                                slot.classList.add('bg-red-100');
-                                setTimeout(() => slot.classList.remove('bg-red-100'), 500);
-                                return;
-                            }
+                const grid = slot.closest('[id^="quali-grid-"], [id^="race-grid-"]');
+                const slotType = slot.getAttribute('data-slot-type') || (grid.id.includes('quali') ? 'quali' : 'race');
+                const inputName = slotType === 'quali' ? 'drivers[]' : 'result[]';
+
+                const gridSlots = Array.from(grid.querySelectorAll('.position-slot'));
+                const draggedDriverId = dragData.driverItem.getAttribute('data-driver-id');
+                if (gridSlots.some(s => {
+                    let d = s.querySelector('.driver-item');
+                    return d && d.getAttribute('data-driver-id') === draggedDriverId;
+                })) {
+                    if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
+                    } else {
+                        slot.classList.add('bg-red-100');
+                        setTimeout(() => slot.classList.remove('bg-red-100'), 500);
+                        return;
+                    }
+                }
+
+                if (dragData.sourceType === "pool") {
+                    let current = slot.querySelector('.driver-item');
+                    if (current) current.remove();
+                    let empty = slot.querySelector('.empty-slot');
+                    if (empty) empty.remove();
+
+                    let clone = dragData.driverItem.cloneNode(true);
+                    clone.classList.remove('opacity-40');
+
+                    Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
+                    let newInput = document.createElement('input');
+                    newInput.type = 'hidden';
+                    newInput.name = inputName;
+                    newInput.value = clone.getAttribute('data-driver-id');
+                    clone.appendChild(newInput);
+                    slot.appendChild(clone);
+                } else if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
+                    const sourceSlot = dragData.sourceSlot;
+                    const targetSlot = slot;
+
+                    const sourceDriver = sourceSlot.querySelector('.driver-item');
+                    const targetDriver = targetSlot.querySelector('.driver-item');
+
+                    if (sourceDriver) {
+                        if (targetDriver) {
+                            sourceSlot.appendChild(targetDriver);
+                            targetSlot.appendChild(sourceDriver);
+                        } else {
+                            targetSlot.innerHTML = '';
+                            targetSlot.appendChild(sourceDriver);
+                            sourceSlot.innerHTML = `<div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
+                                <input type="hidden" name="${inputName}" value="">
+                                Drop driver here
+                            </div>`;
                         }
+                    }
+                } else if (dragData.sourceType === "slot") {
+                    let current = slot.querySelector('.driver-item');
+                    if (current) current.remove();
+                    let empty = slot.querySelector('.empty-slot');
+                    if (empty) empty.remove();
 
-                        // Either dragging from pool to slot (insert) or from slot to slot (reorder)
-                        if (dragData.sourceType === "pool") {
-                            let current = slot.querySelector('.driver-item');
-                            if (current) current.remove();
-                            let empty = slot.querySelector('.empty-slot');
-                            if (empty) empty.remove();
-
-                            let clone = dragData.driverItem.cloneNode(true);
-                            clone.classList.remove('opacity-40');
-
-                            Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
-                            let newInput = document.createElement('input');
-                            newInput.type = 'hidden';
-                            newInput.name = inputName;
-                            newInput.value = clone.getAttribute('data-driver-id');
-                            clone.appendChild(newInput);
-                            slot.appendChild(clone);
-                        } else if (dragData.sourceType === "slot" && dragData.sourceSlot && dragData.sourceSlot.closest('[id]') === grid.closest('[id]')) {
-                            const slots = Array.from(grid.querySelectorAll('.position-slot'));
-                            const fromIdx = slots.indexOf(dragData.sourceSlot);
-                            const toIdx = slots.indexOf(slot);
-
-                            let drivers = slots.map(s => s.querySelector('.driver-item') || null);
-
-                            const moved = drivers[fromIdx];
-                            drivers.splice(fromIdx, 1);
-                            drivers.splice(toIdx, 0, moved);
-
-                            slots.forEach((slotNode, i) => {
-                                let d = slotNode.querySelector('.driver-item');
-                                if (d) d.remove();
-                                let e = slotNode.querySelector('.empty-slot');
-                                if (e) e.remove();
-                                if (drivers[i]) {
-                                    slotNode.appendChild(drivers[i]);
-                                    let inp = drivers[i].querySelector('input[type="hidden"]');
-                                    if (inp) {
-                                        inp.name = inputName;
-                                        inp.value = drivers[i].getAttribute('data-driver-id');
-                                    } else {
-                                        inp = document.createElement('input');
-                                        inp.type = "hidden";
-                                        inp.name = inputName;
-                                        inp.value = drivers[i].getAttribute('data-driver-id');
-                                        drivers[i].appendChild(inp);
-                                    }
-                                } else {
-                                    slotNode.innerHTML = `<div class="h-6 flex items-center justify-center text-gray-400 empty-slot select-none">
-                                    <input type="hidden" name="${inputName}" value="">
-                                    Drop driver here
-                                </div>`;
-                                }
-                            });
-                        } else if (dragData.sourceType === "slot") {
-                            let current = slot.querySelector('.driver-item');
-                            if (current) current.remove();
-                            let empty = slot.querySelector('.empty-slot');
-                            if (empty) empty.remove();
-
-                            let clone = dragData.driverItem.cloneNode(true);
-                            clone.classList.remove('opacity-40');
-                            Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
-                            let newInput = document.createElement('input');
-                            newInput.type = 'hidden';
-                            newInput.name = inputName;
-                            newInput.value = clone.getAttribute('data-driver-id');
-                            clone.appendChild(newInput);
-                            slot.appendChild(clone);
-                        }
-                    });
-                });
-            });
-        }
-
-        setupGridDnD("race-grid", "race", "result[]");
-        setupGridDnD("quali-grid", "quali", "drivers[]");
+                    let clone = dragData.driverItem.cloneNode(true);
+                    clone.classList.remove('opacity-40');
+                    Array.from(clone.querySelectorAll('input[type="hidden"]')).forEach(i => i.remove());
+                    let newInput = document.createElement('input');
+                    newInput.type = 'hidden';
+                    newInput.name = inputName;
+                    newInput.value = clone.getAttribute('data-driver-id');
+                    clone.appendChild(newInput);
+                    slot.appendChild(clone);
+                }
+            }
+        });
 
         document.body.addEventListener('dblclick', function (e) {
             const slot = e.target.closest('.position-slot');
