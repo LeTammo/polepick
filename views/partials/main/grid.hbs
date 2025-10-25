@@ -22,10 +22,10 @@
                 {{#race.grid}}
                     <div class="{{#isOdd}}mt-2 sm:mt-4{{/isOdd}} {{^isOdd}}mb-2 sm:mb-4{{/isOdd}}">
                         <div draggable="true" data-driver="{{id}}" data-color="{{color}}" data-team="{{team}}" data-name="{{name}}" data-label="{{label}}"
-                             class="driver-item w-full p-1 text-xs sm:text-base font-bold text-center hover:scale-105 transition duration-150 cursor-move
+                             class="driver-item relative w-full p-1 text-xs sm:text-base font-bold text-center hover:scale-105 transition duration-150 cursor-move
                             rounded-lg bg-[{{color}}] text-white shadow-md shadow-zinc-300
                             nowrap whitespace-nowrap overflow-hidden overflow-ellipsis">
-                            <div class="text-shadow">{{name}}</div class="text-shadow">
+                            <div class="text-shadow"><span class="absolute left-0 top-[-4px] font-light text-xs">{{position}}</span>{{name}}</div>
                         </div>
                     </div>
                 {{/race.grid}}
