@@ -18,7 +18,22 @@ function getRacePage(req, res) {
         const predictions = predictionModel.getPreparedPredictions(raceId);
         const username = req.cookies[`polepick-username-for-race-${raceId}`];
 
-        const predictionsWithRank = predictions.map((p, i) => ({ ...p, rank: i + 1 }));
+        const predictionsWithRank = [];
+        predictions.forEach((p, index) => {
+            if (index === 0) {
+                p.rank = 1;
+            } else {
+                const prevPrediction = predictions[index - 1];
+                if (p.points === prevPrediction.points) {
+                    p.rank = prevPrediction.rank;
+                } else {
+                    p.rank = index + 1;
+                }
+            }
+            predictionsWithRank.push(p);
+        });
+
+        console.log(predictionsWithRank);
 
         let userPrediction = predictionsWithRank.find(p => p.username === username);
         userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
