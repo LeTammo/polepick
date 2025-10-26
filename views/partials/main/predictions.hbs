@@ -5,7 +5,7 @@
         {{#if @root.renderResult}}
             {{#userPrediction}}
                 <div class="flex flex-wrap">
-                    <div class="w-full sm:w-1/4 flex justify-between sm:flex-col sm:justify-center items-center">
+                    <div class="w-full sm:w-1/4 flex justify-left sm:flex-col sm:justify-center items-end sm:items-center sm:gap-0 gap-4">
                         <span class="text-5xl sm:text-8xl font-bold text-opacity-40
                             {{#if (eq rank 1)}}text-yellow-500{{/if}}
                             {{#if (eq rank 2)}}text-gray-400{{/if}}
@@ -24,7 +24,7 @@
             {{/userPrediction}}
             {{#each predictions}}
                 <div class="flex flex-wrap">
-                    <div class="w-full sm:w-1/4 flex justify-between sm:flex-col sm:justify-center items-center">
+                    <div class="w-full sm:w-1/4 flex justify-left sm:flex-col sm:justify-center items-end sm:items-center sm:gap-0 gap-4">
                         <span class="text-5xl sm:text-8xl font-bold text-opacity-40
                             {{#if (eq rank 1)}}text-yellow-500{{/if}}
                             {{#if (eq rank 2)}}text-gray-400{{/if}}
