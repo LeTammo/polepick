@@ -4,44 +4,40 @@
     <div class="{{#if @root.renderResult}}grid grid-cols-1 gap-y-4{{else}}grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4{{/if}}">
         {{#if @root.renderResult}}
             {{#userPrediction}}
-                <div class="grid grid-cols-12 gap-x-4">
-                    <div class="col-span-3 flex items-center justify-center">
-                        <span class="text-8xl font-bold text-opacity-40
+                <div class="flex flex-wrap">
+                    <div class="w-full sm:w-1/4 flex justify-between sm:flex-col sm:justify-center items-center">
+                        <span class="text-5xl sm:text-8xl font-bold text-opacity-40
                             {{#if (eq rank 1)}}text-yellow-500{{/if}}
                             {{#if (eq rank 2)}}text-gray-400{{/if}}
                             {{#if (eq rank 3)}}text-amber-600{{/if}}
                             {{#if (gt rank 3)}}text-gray-500{{/if}}">
                             {{rank}}.
                         </span>
-                    </div>
-                    <div class="col-span-6">
-                        {{> prediction}}
-                    </div>
-                    <div class="col-span-3 flex items-center justify-center">
-                        <span class="text-2xl font-bold text-gray-500 text-opacity-40">
+                        <span class="text-xl sm:text-2xl font-bold text-gray-500 text-opacity-40 sm:mt-4">
                             {{points}} Points
                         </span>
+                    </div>
+                    <div class="w-full sm:w-2/4">
+                        {{> prediction}}
                     </div>
                 </div>
             {{/userPrediction}}
             {{#each predictions}}
-                <div class="grid grid-cols-12 gap-x-4">
-                    <div class="col-span-3 flex items-center justify-center">
-                        <span class="text-8xl font-bold text-opacity-40
+                <div class="flex flex-wrap">
+                    <div class="w-full sm:w-1/4 flex justify-between sm:flex-col sm:justify-center items-center">
+                        <span class="text-5xl sm:text-8xl font-bold text-opacity-40
                             {{#if (eq rank 1)}}text-yellow-500{{/if}}
                             {{#if (eq rank 2)}}text-gray-400{{/if}}
                             {{#if (eq rank 3)}}text-amber-600{{/if}}
                             {{#if (gt rank 3)}}text-gray-500{{/if}}">
                             {{rank}}.
                         </span>
-                    </div>
-                    <div class="col-span-6">
-                        {{> prediction}}
-                    </div>
-                    <div class="col-span-3 flex items-center justify-center">
-                        <span class="text-2xl font-bold text-gray-500 text-opacity-40">
+                        <span class="text-xl sm:text-2xl font-bold text-gray-500 text-opacity-40 sm:mt-4">
                             {{points}} Points
                         </span>
+                    </div>
+                    <div class="w-full sm:w-2/4">
+                        {{> prediction}}
                     </div>
                 </div>
             {{/each}}
