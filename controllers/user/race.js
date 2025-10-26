@@ -33,8 +33,6 @@ function getRacePage(req, res) {
             predictionsWithRank.push(p);
         });
 
-        console.log(predictionsWithRank);
-
         let userPrediction = predictionsWithRank.find(p => p.username === username);
         userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
 
