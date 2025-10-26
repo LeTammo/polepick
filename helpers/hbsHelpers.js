@@ -26,6 +26,9 @@ const hbsHelpers = {
     },
     toFixed: function(number, digits) {
         return number.toFixed(digits);
+    },
+    gt: function (a, b) {
+        return a > b;
     }
 };
 

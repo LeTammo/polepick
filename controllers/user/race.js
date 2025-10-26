@@ -18,16 +18,19 @@ function getRacePage(req, res) {
         const predictions = predictionModel.getPreparedPredictions(raceId);
         const username = req.cookies[`polepick-username-for-race-${raceId}`];
 
-        let userPrediction = predictions.find(p => p.username === username);
+        const predictionsWithRank = predictions.map((p, i) => ({ ...p, rank: i + 1 }));
+
+        let userPrediction = predictionsWithRank.find(p => p.username === username);
         userPrediction = userPrediction ? { ...userPrediction, isUserPrediction: true } : null;
 
         res.render('user/main', {
             race: race,
             races: races,
-            predictions: predictions.filter(p => p.username !== username),
+            predictions: predictionsWithRank.filter(p => p.username !== username),
             userPrediction: userPrediction,
             predictionsJson: JSON.stringify(predictions),
             hasResult: !!race.result,
+            renderResult: race.renderResult,
         });
     } catch (error) {
         utils.error('Error rendering race page: ', error);

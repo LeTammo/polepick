@@ -5,11 +5,6 @@
         <span class="text-lg font-bold pl-4 {{#isUserPrediction}}text-red-900 text-opacity-90{{/isUserPrediction}}">
             {{username}}
         </span>
-        {{#if @root.hasResult}}
-            <span class="predictionPoints font-semibold text-lg pr-2 hidden text-red-900 text-opacity-90">
-                {{points}} points
-            </span>
-        {{/if}}
     </div>
     <div class="podium-slots grid grid-cols-3 items-end gap-2 mb-2 text-xs">
         <div class="col-span-1 h-14 flex flex-col items-center justify-center p-1 bg-gray-100 rounded-md">
