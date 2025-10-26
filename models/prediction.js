@@ -18,17 +18,23 @@ function getPreparedPredictions(raceId) {
     const race = raceModel.getPreparedRace(raceId);
 
     return predictions.map(prediction => {
-        const points = race.result ? scoreService.calculatePoints(prediction, race.result) : 0;
+        const score = race.result ? scoreService.calculatePoints(prediction, race.result) : { points: 0, driverPoints: {} };
+
+        const addPointsToDriver = (driver) => {
+            if (!driver) return null;
+            const points = score.driverPoints[driver.id] || 0;
+            return { ...driver, points };
+        };
 
         return {
             id: prediction.id,
             username: prediction.username,
             timestamp: prediction.timestamp,
-            first: driverModel.getPreparedDriverById(prediction.first),
-            second: driverModel.getPreparedDriverById(prediction.second),
-            third: driverModel.getPreparedDriverById(prediction.third),
-            others: prediction.others.map(driverId => driverModel.getPreparedDriverById(driverId)),
-            points: points
+            first: addPointsToDriver(driverModel.getPreparedDriverById(prediction.first)),
+            second: addPointsToDriver(driverModel.getPreparedDriverById(prediction.second)),
+            third: addPointsToDriver(driverModel.getPreparedDriverById(prediction.third)),
+            others: prediction.others.map(driverId => addPointsToDriver(driverModel.getPreparedDriverById(driverId))),
+            points: score.points
         };
     }).sort((a, b) =>
         b.points - a.points || new Date(b.timestamp) - new Date(a.timestamp)

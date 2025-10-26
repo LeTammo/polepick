@@ -29,3 +29,7 @@ body {
 .text-shadow {
     filter: drop-shadow(1px 1px 2px #000000);
 }
+
+.right-shadow {
+    box-shadow: 3px 0 5px -2px #888;
+}
