@@ -32,7 +32,7 @@ function getLeaderboardPage(req, res) {
 
                 if (userIndex !== -1) {
                     const user = leaderboard[userIndex];
-                    user.totalPoints += points;
+                    user.totalPoints += points.points;
                     user.totalPredictions += 1;
                     user.racePoints.push({
                         raceId: race.id,
